@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="uk" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Body Space — масаж і ендосфера біля дому · Київ</title>
+  <meta name="description" content="Масаж, ендосфера і масаж для вагітних у 4 студіях Києва: Оболонь, Теремки, Солом’янка, ЖК Варшавський+. Ціни, майстрині і запис онлайн за 2 кліки.">
+  <link rel="canonical" href="https://bodyspace.netlify.app/">
+  <meta name="theme-color" content="#F7F2E8">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="uk_UA">
+  <meta property="og:site_name" content="Body Space">
+  <meta property="og:title" content="Body Space — місце, де про вас турбуються">
+  <meta property="og:description" content="Масаж, ендосфера і масаж для вагітних у 4 студіях біля дому. Запис до своєї майстрині за 2 кліки.">
+  <meta property="og:url" content="https://bodyspace.netlify.app/">
+  <meta property="og:image" content="https://bodyspace.netlify.app/assets/img/og-image.jpg">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;500;600&display=swap">
+  <link rel="preload" as="image" href="assets/img/studio-neon-wall.webp" imagesrcset="assets/img/studio-neon-wall.webp 1x, assets/img/studio-neon-wall@2x.webp 2x">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/pages.css">
+  <script>document.documentElement.classList.replace("no-js", "js");</script>
+</head>
+<body data-page="home">
+<!-- Набір іконок (SVG-спрайт) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-leaf" viewBox="0 0 22 30"><path d="M11 1C3.5 8 2.6 19.5 11 29c8.4-9.5 7.5-21 0-28Z" fill="currentColor"/><path d="M11 6.5v19" stroke="#F7F2E8" stroke-width="1" stroke-linecap="round" opacity=".55"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 28 40"><path d="M9 39C10 28 12 17 18 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M18 4c-6 2-8.5 7.5-6.6 12.5C17.6 13.8 19.4 9 18 4Z" fill="currentColor"/><path d="M14 16c-6.3.6-9.6 5.3-8.5 10.5 5.7-1.6 8.6-5.5 8.5-10.5Z" fill="currentColor" opacity=".85"/><path d="M13.6 18.5c6 1.7 8.2 6.8 6.2 11.4-5.3-2.2-7.4-6.7-6.2-11.4Z" fill="currentColor" opacity=".7"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 8h16M4 16h16"/></symbol>
+  <symbol id="i-locate" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14" stroke-width="2.4"/></symbol>
+  <symbol id="i-insta" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".6" fill="currentColor"/></symbol>
+  <symbol id="i-telegram" viewBox="0 0 24 24"><path d="M21 4 3 11l6 2.2M21 4l-3 16-9-6.8M21 4 9 13.2V19l3.2-3.4"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 18.5V7a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3H8l-4 3.5Z"/></symbol>
+  <symbol id="i-gift" viewBox="0 0 24 24"><rect x="4" y="9" width="16" height="11" rx="1.5"/><path d="M3 9h18M12 9v11M12 9S10.5 4 8 4.5 7.5 9 12 9Zm0 0s1.5-5 4-4.5S16.5 9 12 9Z"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+</svg>
+
+<a class="skip-link" href="#main">Перейти до змісту</a>
+
+<!-- 1. Шапка -->
+<header class="site-header" id="top">
+  <div class="container">
+    <a class="logo" href="index.html" aria-label="Body Space — на головну">
+      <svg aria-hidden="true"><use href="#i-branch"/></svg>
+      <span>Body<br>Space</span>
+    </a>
+    <nav class="nav" aria-label="Головне меню">
+      <ul>
+        <li><a href="poslugy.html">Послуги і ціни</a></li>
+        <li><a href="endosfera.html">Ендосфера</a></li>
+        <li><a href="vagitnym.html">Вагітним</a></li>
+        <li><a href="komanda.html">Команда</a></li>
+        <li><a href="studii.html">Студії</a></li>
+        <li><a href="sertyfikat.html">Сертифікат</a></li>
+        <li><a href="zasoby.html">Засоби</a></li>
+        <li><a href="faq.html">Питання</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <button class="studio-pill js-studio-pill" type="button" aria-haspopup="dialog">
+        <svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg>
+        <span class="studio-pill__label js-studio-label">Оберіть студію</span>
+      </button>
+      <a class="btn btn--sm header-book js-book" href="https://ig.me/m/body__space">Записатися<span class="js-book-studio"></span></a>
+      <button class="menu-toggle js-menu-open" type="button" aria-label="Відкрити меню" aria-expanded="false" aria-controls="mobile-menu">
+        <svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu" role="dialog" aria-modal="true" aria-label="Меню" hidden>
+  <div class="mobile-menu__top">
+    <a class="logo" href="index.html"><svg aria-hidden="true"><use href="#i-branch"/></svg><span>Body<br>Space</span></a>
+    <button class="close-btn js-menu-close" type="button" aria-label="Закрити меню"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+  </div>
+  <ul>
+    <li><a class="mobile-menu__link" href="poslugy.html">Послуги і ціни</a></li>
+    <li><a class="mobile-menu__link" href="endosfera.html">Ендосфера</a></li>
+    <li><a class="mobile-menu__link" href="vagitnym.html">Вагітним</a></li>
+    <li><a class="mobile-menu__link" href="komanda.html">Команда</a></li>
+    <li><a class="mobile-menu__link" href="studii.html">Студії</a></li>
+    <li><a class="mobile-menu__link" href="sertyfikat.html">Сертифікат</a></li>
+    <li><a class="mobile-menu__link" href="zasoby.html">Засоби</a></li>
+    <li><a class="mobile-menu__link" href="faq.html">Питання</a></li>
+  </ul>
+  <div class="mobile-menu__foot">
+    <a class="btn js-book" href="https://ig.me/m/body__space">Записатися<span class="js-book-studio"></span></a>
+    <a class="btn btn--ghost" href="https://ig.me/m/body__space" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg>Написати в Direct</a>
+  </div>
+</div>
+
+<div class="page">
+<svg class="glow-line" aria-hidden="true" focusable="false"></svg>
+
+<main id="main">
+
+  <!-- 2. Герой -->
+  <section class="hero" data-line="right" aria-labelledby="hero-title">
+    <div class="container hero__grid">
+      <div class="hero__text">
+        <p class="eyebrow"><svg aria-hidden="true"><use href="#i-leaf"/></svg>Масаж · ендосфера · для вагітних</p>
+        <h1 id="hero-title">Місце, де про&nbsp;вас <em>турбуються</em></h1>
+        <p class="hero__lead">Чотири студії біля дому — в Оболоні, на Теремках, Солом’янці та в ЖК Варшавський+. Усі майстрині — дівчата.</p>
+        <div class="hero__actions">
+          <a class="btn js-book" href="https://ig.me/m/body__space">Записатися<span class="js-book-studio"></span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn--ghost js-quiz-open" href="#turbuie">Підібрати масаж</a>
+        </div>
+        <button class="book-change js-studio-change" type="button">змінити студію</button>
+      </div>
+
+      <div class="hero__media">
+        <div class="hero__arch frame-arch">
+          <img src="assets/img/studio-neon-wall.webp" srcset="assets/img/studio-neon-wall.webp 1x, assets/img/studio-neon-wall@2x.webp 2x"
+               width="720" height="1280" alt="Жовта неонова лінія на стіні студії Body Space і плетений світильник" fetchpriority="high">
+        </div>
+        <a class="rating-pill hero__rating js-rating" href="studii.html"></a>
+        <div class="hero__lamp frame-circle">
+          <img src="assets/img/studio-lamp.webp" srcset="assets/img/studio-lamp.webp 1x, assets/img/studio-lamp@2x.webp 2x"
+               width="720" height="456" alt="Теплий плетений світильник у кабінеті">
+        </div>
+      </div>
+    </div>
+
+    <!-- Рядок швидкого запису: Студія · Послуга · Майстриня → Записатися -->
+    <div class="container">
+      <form class="quickbook js-quickbook" aria-label="Швидкий запис" onsubmit="return false">
+        <label class="quickbook__field">
+          <span>Студія</span>
+          <select name="studio" class="js-qb-studio"></select>
+        </label>
+        <label class="quickbook__field">
+          <span>Послуга</span>
+          <select name="service" class="js-qb-service"></select>
+        </label>
+        <label class="quickbook__field">
+          <span>Майстриня</span>
+          <select name="master" class="js-qb-master"></select>
+        </label>
+        <a class="btn quickbook__go js-qb-go" href="https://ig.me/m/body__space" target="_blank" rel="noopener">Записатися<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <p class="quickbook__note">Дату й час оберете в Altegio — онлайн-записі студії.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- 3. Що вас турбує? -->
+  <section class="section concerns" id="turbuie" data-line="left" aria-labelledby="concerns-title">
+    <div class="container concerns__grid">
+      <div class="concerns__intro reveal">
+        <p class="eyebrow"><svg aria-hidden="true"><use href="#i-leaf"/></svg>Підбір за один клік</p>
+        <h2 id="concerns-title">Що вас <em>турбує?</em></h2>
+        <p class="lead">Оберіть відчуття — покажемо масаж, який підійде, і його ціну.</p>
+        <div class="chips concerns__chips js-concerns" role="group" aria-label="Що вас турбує"></div>
+      </div>
+      <div class="concerns__result reveal" aria-live="polite">
+        <div class="concerns__photo frame-circle js-concern-photo"></div>
+        <div class="concerns__card js-concern-card"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Студії -->
+  <section class="section section--beige studios" id="studii" data-line="right" aria-labelledby="studios-title">
+    <div class="container">
+      <div class="section-head section-head--split reveal">
+        <div>
+          <p class="eyebrow"><svg aria-hidden="true"><use href="#i-leaf"/></svg>Біля дому</p>
+          <h2 id="studios-title">Студія у <em>вашому</em> ЖК</h2>
+        </div>
+        <p class="muted">Щодня з 9:00 до 21:00. Статус «відкрито» — за київським часом.</p>
+      </div>
+      <div class="studio-cards js-studio-cards"></div>
+    </div>
+  </section>
+
+  <!-- 5. У вартість входить / факти -->
+  <section class="section facts" id="fakty" data-line="left" aria-labelledby="facts-title">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow"><svg aria-hidden="true"><use href="#i-leaf"/></svg>Body Space у цифрах</p>
+        <h2 id="facts-title" class="js-facts-title">Чому до нас <em>повертаються</em></h2>
+      </div>
+      <div class="facts__grid js-facts"></div>
+    </div>
+  </section>
+
+  <!-- 6. Як проходить перший візит -->
+  <section class="section section--sage visit" data-line="right" aria-labelledby="visit-title">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow"><svg aria-hidden="true"><use href="#i-leaf"/></svg>Вперше у нас</p>
+        <h2 id="visit-title">Як проходить <em>перший</em> візит</h2>
+      </div>
+      <ol class="visit__steps">
+        <li class="visit__step reveal">
+          <span class="visit__num">01</span>
+          <h3>Запис</h3>
+          <p>Онлайн за два кліки або в Direct. Оберіть студію біля дому і, якщо хочете, свою майстриню. Дату й час обираєте в Altegio.</p>
+        </li>
+        <li class="visit__step reveal">
+          <span class="visit__num">02</span>
+          <h3>Розмова з майстринею</h3>
+          <p>Розкажіть, що турбує і який тиск вам приємний. Не знаєте, що обрати, — майстриня підкаже на місці.</p>
+        </li>
+        <li class="visit__step reveal">
+          <span class="visit__num">03</span>
+          <h3>Процедура</h3>
+          <p>Тепле світло, тиша і ваш темп. Якщо під час релакс-масажу ви заснете — це цілком нормально.</p>
+        </li>
+      </ol>
+      <p class="visit__note small muted reveal"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>Якщо потрібна парковка, закладіть ще 5–10 хвилин: час запізнення віднімається від масажу.</p>
+    </div>
+  </section>
+
+  <!-- 7. Прайс — «вечірня» зелена секція -->
+  <section class="section on-forest prices" id="prais" data-line="left" data-glow aria-labelledby="prices-title">
+    <div class="container">
+      <div class="section-head section-head--split reveal">
+        <div>
+          <p class="eyebrow"><svg aria-hidden="true"><use href="#i-leaf"/></svg>Прайс</p>
+          <h2 id="prices-title">Ціни, які <em>не ховаємо</em></h2>
+        </div>
+        <a class="link-arrow" href="poslugy.html">Увесь прайс<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      </div>
+      <div class="prices__controls reveal">
+        <div class="toggle-group">
+          <span class="toggle-label" id="tier-label">Рівень майстрині</span>
+          <div class="toggle js-tier-toggle" role="group" aria-labelledby="tier-label">
+            <button type="button" data-tier="top" aria-pressed="true">Топ</button>
+            <button type="button" data-tier="lead" aria-pressed="false">Провідна</button>
+          </div>
+        </div>
+        <div class="toggle-group">
+          <span class="toggle-label" id="dur-label">Тривалість</span>
+          <div class="toggle js-dur-toggle" role="group" aria-labelledby="dur-label">
+            <button type="button" data-dur="0" aria-pressed="true">Коротша</button>
+            <button type="button" data-dur="1" aria-pressed="false">Довша</button>
+          </div>
+        </div>
+        <p class="prices__hint small">Провідна — найбільший досвід у команді.</p>
+      </div>
+      <div class="price-cards js-price-cards"></div>
+    </div>
+  </section>
+
+  <!-- 8. Ендосфера: тест-драйв + калькулятор -->
+  <section class="section endo" id="endosfera" data-line="right" aria-labelledby="endo-title">
+    <div class="container endo__grid">
+      <div class="endo__intro reveal">
+        <p class="eyebrow"><svg aria-hidden="true"><use href="#i-leaf"/></svg>Ендосфера</p>
+        <h2 id="endo-title">Почніть з <em>тест-драйву</em></h2>
+        <p class="lead js-endo-test"></p>
+        <div class="endo__actions">
+          <a class="btn js-book" data-service="endosfera-test" href="https://ig.me/m/body__space">Записатися на тест-драйв<span class="js-book-studio"></span></a>
+          <a class="link-arrow" href="endosfera.html">Про ендосферу<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        </div>
+      </div>
+      <div class="calc card reveal js-calc" aria-labelledby="calc-title">
+        <h3 id="calc-title" class="calc__title">Порахуйте свій курс</h3>
+        <div class="calc__row">
+          <span class="toggle-label" id="calc-dur">Тривалість</span>
+          <div class="toggle js-calc-dur" role="group" aria-labelledby="calc-dur">
+            <button type="button" data-v="45" aria-pressed="true">45 хв</button>
+            <button type="button" data-v="60" aria-pressed="false">60 хв</button>
+          </div>
+        </div>
+        <div class="calc__row">
+          <span class="toggle-label" id="calc-n">Процедур</span>
+          <div class="toggle js-calc-n" role="group" aria-labelledby="calc-n">
+            <button type="button" data-v="1" aria-pressed="false">1</button>
+            <button type="button" data-v="5" aria-pressed="false">5</button>
+            <button type="button" data-v="10" aria-pressed="true">10</button>
+          </div>
+        </div>
+        <div class="calc__out js-calc-out" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. Вагітним -->
+  <section class="section section--beige preg" id="vagitnym" data-line="left" aria-labelledby="preg-title">
+    <div class="container preg__grid">
+      <div class="preg__media reveal">
+        <div class="frame-arch preg__arch">
+          <img src="assets/img/pregnancy-belly.webp" srcset="assets/img/pregnancy-belly.webp 1x, assets/img/pregnancy-belly@2x.webp 2x"
+               width="720" height="779" loading="lazy" alt="Майбутня мама тримає руки на животику">
+        </div>
+      </div>
+      <div class="preg__text reveal">
+        <p class="eyebrow"><svg aria-hidden="true"><use href="#i-leaf"/></svg>Для вагітних</p>
+        <h2 id="preg-title">Для майбутніх <em>мам</em></h2>
+        <p class="lead">Зі збільшенням животика зростає навантаження на спину та поперек. Ми підбираємо комфортне положення — лежачи на боці або сидячи — і працюємо м’якими, делікатними рухами.</p>
+        <ul class="preg__list js-preg-list"></ul>
+        <p class="preg__note small"><svg class="icon" aria-hidden="true"><use href="#i-leaf"/></svg><span class="js-preg-note"></span></p>
+        <div class="preg__actions">
+          <a class="btn js-book" data-service="vagitni-zahalnyi" href="https://ig.me/m/body__space">Записатися<span class="js-book-studio"></span></a>
+          <a class="link-arrow" href="vagitnym.html">Детальніше для вагітних<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. Майстрині -->
+  <section class="section masters" id="maystryni" data-line="right" aria-labelledby="masters-title">
+    <div class="container">
+      <div class="section-head section-head--split reveal">
+        <div>
+          <p class="eyebrow"><svg aria-hidden="true"><use href="#i-leaf"/></svg>Команда</p>
+          <h2 id="masters-title">Руки, яким <em>довіряють</em></h2>
+          <p class="js-masters-sub"></p>
+        </div>
+        <div class="carousel-nav">
+          <button class="round-btn js-masters-prev" type="button" aria-label="Попередні майстрині"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg></button>
+          <button class="round-btn js-masters-next" type="button" aria-label="Наступні майстрині"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        </div>
+      </div>
+    </div>
+    <div class="masters__track js-masters-track" tabindex="0" aria-label="Майстрині, гортайте вбік"></div>
+    <div class="container masters__all reveal">
+      <a class="btn btn--ghost" href="komanda.html">Уся команда<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    </div>
+  </section>
+
+  <!-- 11. Історії -->
+  <section class="section section--sage stories" data-line="left" aria-labelledby="stories-title">
+    <div class="container">
+      <div class="section-head section-head--split reveal">
+        <div>
+          <p class="eyebrow"><svg aria-hidden="true"><use href="#i-leaf"/></svg>Instagram</p>
+          <h2 id="stories-title">Історії зі <em>студії</em></h2>
+        </div>
+        <a class="link-arrow" href="https://www.instagram.com/body__space/" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-insta"/></svg>@body__space</a>
+      </div>
+      <div class="stories__row js-stories"></div>
+    </div>
+  </section>
+
+  <!-- 12. Відгуки -->
+  <section class="section reviews" id="vidguky" data-line="right" aria-labelledby="reviews-title">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow"><svg aria-hidden="true"><use href="#i-leaf"/></svg>Відгуки</p>
+        <h2 id="reviews-title" class="visually-hidden">Відгуки гостей</h2>
+      </div>
+      <div class="review-focus reveal js-review" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- 13. Сертифікат -->
+  <section class="section section--beige cert" data-line="left" aria-labelledby="cert-title">
+    <div class="container cert__grid">
+      <div class="cert__text reveal">
+        <p class="eyebrow"><svg aria-hidden="true"><use href="#i-gift"/></svg>Подарунок</p>
+        <h2 id="cert-title">Подаруйте <em>годину тиші</em></h2>
+        <p class="lead">Сертифікат на процедуру в Body Space. Оберіть масаж, дизайн і напишіть кілька теплих слів — картку побачите одразу.</p>
+        <p class="small muted js-cert-terms"></p>
+        <a class="btn" href="sertyfikat.html">Створити сертифікат<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      </div>
+      <div class="cert__preview reveal" aria-hidden="true">
+        <div class="gift-card gift-card--forest">
+          <div class="gift-card__top"><svg><use href="#i-branch"/></svg><span>Body Space</span></div>
+          <p class="gift-card__label">Подарунковий сертифікат</p>
+          <p class="gift-card__title">Релакс-масаж</p>
+          <p class="gift-card__for">для вас — з турботою</p>
+          <div class="gift-card__bottom"><span>Діє 30 днів</span><span>Київ</span></div>
+        </div>
+        <div class="gift-card gift-card--cream gift-card--back"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14. Продовжте догляд вдома -->
+  <section class="section shop-teaser" data-line="right" aria-labelledby="shop-title">
+    <div class="container">
+      <div class="section-head section-head--split reveal">
+        <div>
+          <p class="eyebrow"><svg aria-hidden="true"><use href="#i-leaf"/></svg>Догляд вдома</p>
+          <h2 id="shop-title">Продовжте догляд <em>вдома</em></h2>
+          <p>Засоби STYX і White Mandarin, якими користуються в студії. Тестери гелів — на Оболоні, доставка Новою поштою.</p>
+        </div>
+        <a class="link-arrow" href="zasoby.html">Усі засоби<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      </div>
+      <div class="product-row js-products"></div>
+    </div>
+  </section>
+
+  <!-- 15. FAQ «Перед візитом» -->
+  <section class="section section--beige faq-teaser" id="pered-vizytom" data-line="left" aria-labelledby="faq-title">
+    <div class="container faq-teaser__grid">
+      <div class="section-head reveal">
+        <p class="eyebrow"><svg aria-hidden="true"><use href="#i-leaf"/></svg>Перед візитом</p>
+        <h2 id="faq-title">Що варто <em>знати</em></h2>
+        <p>Не знайшли відповідь — напишіть у Direct, допоможемо визначитися.</p>
+        <a class="link-arrow" href="faq.html">Усі питання<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      </div>
+      <div class="accordion reveal">
+        <details>
+          <summary><span class="acc-thumb"><img src="assets/img/massage-relax-green.webp" width="720" height="800" loading="lazy" alt=""></span>Який масаж обрати вперше?</summary>
+          <div class="acc-body">
+            <p>Хочеться розслабитися та відпочити — релакс-масаж. Турбує біль чи м’язове напруження — оздоровчий масаж: він інтенсивніший, з глибшим пропрацюванням м’язів.</p>
+            <p>Якщо не знаєте, що обрати, пишіть у Direct — допоможемо визначитися.</p>
+          </div>
+        </details>
+        <details>
+          <summary><span class="acc-thumb"><img src="assets/img/massage-neon-healthy.webp" width="720" height="733" loading="lazy" alt=""></span>Чи буде боляче?</summary>
+          <div class="acc-body">
+            <p>Ні, якщо ви цього не хочете. Майстриня орієнтується на ваші відчуття: скажіть, коли тиск завеликий, — і вона зробить м’якше. Оздоровчий масаж відчутніший за релакс, але має лишатися комфортним.</p>
+          </div>
+        </details>
+        <details>
+          <summary><span class="acc-thumb"><img src="assets/img/studio-lamp.webp" width="720" height="456" loading="lazy" alt=""></span>За скільки прийти і що, як запізнююсь?</summary>
+          <div class="acc-body">
+            <p>Приходьте вчасно, а якщо потрібна парковка — закладіть ще 5–10 хвилин. Час запізнення віднімається від часу масажу.</p>
+            <p>Перенести чи скасувати запис можна щонайпізніше за 6 годин. Повітряна тривога — виняток.</p>
+          </div>
+        </details>
+        <details>
+          <summary><span class="acc-thumb"><img src="assets/img/pregnancy-belly.webp" width="720" height="779" loading="lazy" alt=""></span>Чи можна масаж вагітним?</summary>
+          <div class="acc-body">
+            <p>Так, у нас є масаж спини, загальний масаж і загальний масаж з обличчям для вагітних. Перед записом обов’язково погодьте масаж зі своїм акушером-гінекологом, особливо якщо вагітність має ускладнення.</p>
+            <p><a href="vagitnym.html">Усе про масаж для вагітних</a></p>
+          </div>
+        </details>
+        <details>
+          <summary><span class="acc-thumb"><span class="ph"><svg aria-hidden="true"><use href="#i-leaf"/></svg></span></span>Що взяти з собою?</summary>
+          <div class="acc-body">
+            <p>Напишіть нам у Direct, на яку процедуру записалися, — підкажемо, що знадобиться саме вам.</p>
+            <!-- TODO власниця: що взяти й одягнути — точна відповідь -->
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- 16. Футер -->
+<footer class="site-footer on-forest" data-line="end" data-glow>
+  <div class="container">
+    <div class="footer__cta">
+      <p class="eyebrow"><svg aria-hidden="true"><use href="#i-leaf"/></svg>Body Space</p>
+      <p class="footer__title">Час подбати <em>про себе</em></p>
+      <a class="btn btn--glow footer__book js-book js-line-end" href="https://ig.me/m/body__space">Записатися<span class="js-book-studio"></span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    </div>
+    <div class="footer__grid">
+      <div class="footer__studios js-footer-studios"></div>
+      <div class="footer__col">
+        <p class="footer__h">Зв’язок</p>
+        <ul class="footer__links">
+          <li><a href="https://ig.me/m/body__space" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg>Написати в Direct</a></li>
+          <li><a href="https://www.instagram.com/body__space/" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-insta"/></svg>Instagram</a></li>
+          <li><a href="https://t.me/+OLutqxuYHAtlZDY6" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-telegram"/></svg>Telegram</a></li>
+          <li><a href="https://n803030.alteg.io/select-city/4/select-branch" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>Онлайн-запис мережі</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <p class="footer__h">Правила</p>
+        <ul class="footer__rules js-footer-rules"></ul>
+        <a class="footer__more" href="faq.html#pravyla">Усі правила</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2026 Body Space · Київ</span>
+      <span>Щодня 9:00–21:00</span>
+    </div>
+  </div>
+</footer>
+</div>
+
+<!-- Мобільна смуга запису -->
+<div class="book-bar js-book-bar">
+  <a class="btn js-book" href="https://ig.me/m/body__space"><span>Записатися<span class="js-book-studio"></span></span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+</div>
+
+<!-- Панель вибору студії -->
+<div class="overlay js-overlay" hidden></div>
+<div class="sheet js-studio-sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" hidden>
+  <div class="sheet__grip" aria-hidden="true"></div>
+  <div class="sheet__head">
+    <div>
+      <h2 id="sheet-title" class="js-sheet-title">Оберіть студію</h2>
+      <p class="js-sheet-sub">Запис відкриється в Altegio обраної студії.</p>
+    </div>
+    <button class="close-btn js-sheet-close" type="button" aria-label="Закрити"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+  </div>
+  <ul class="studio-list js-studio-list"></ul>
+  <div class="sheet__foot">
+    <button class="geo-btn js-geo" type="button"><svg class="icon" aria-hidden="true"><use href="#i-locate"/></svg>Показати найближчу</button>
+    <a class="link-arrow" href="https://ig.me/m/body__space" target="_blank" rel="noopener">Або напишіть у Direct</a>
+  </div>
+</div>
+
+<div class="toast js-toast" role="status" aria-live="polite"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span></span></div>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/concerns.js"></script>
+<script src="assets/js/pricing.js"></script>
+<script src="assets/js/calculator.js"></script>
+<script src="assets/js/masters.js"></script>
+<script src="assets/js/shop.js"></script>
+</body>
+</html>

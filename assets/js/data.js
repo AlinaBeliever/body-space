@@ -35,6 +35,7 @@
   const studios = [
     {
       id: "obolon",
+      short: "Оболонь",
       district: "Оболонь",
       complex: null,                 // TODO власниця: назва ЖК на Оболоні (якщо є)
       label: "Оболонь",
@@ -53,6 +54,7 @@
     },
     {
       id: "teremky",
+      short: "Теремки",
       district: "Теремки",
       complex: "ЖК Нова Англія",
       label: "Теремки | ЖК Нова Англія",
@@ -71,6 +73,7 @@
     },
     {
       id: "solomianka",
+      short: "Солом’янка",
       district: "Солом’янка",
       complex: "ЖК Смарагдовий",
       label: "Солом’янка | ЖК Смарагдовий",
@@ -89,6 +92,7 @@
     },
     {
       id: "varshavskyi",
+      short: "Варшавський+",
       district: "Поділ",            // TODO власниця: як ви називаєте район (Виноградар? Поділ?)
       complex: "ЖК Варшавський+",
       label: "ЖК Варшавський+",
@@ -407,6 +411,11 @@
       photo: "assets/img/masters/master-liubov", handsPhoto: null, days: null,
       altegio: { obolon: 2891770 }, altegioReviews: 67 }
   ];
+  // Родовий відмінок для кнопок «Записатися до …»
+  const nameTo = { asya: "Асі", kateryna: "Катерини", bohdana: "Богдани", diana: "Діани",
+    mariia: "Марії", liudmyla: "Людмили", anna: "Анни", valeriia: "Валерії",
+    nataliia: "Наталії", tetiana: "Тетяни", liubov: "Любові" };
+  masters.forEach((m) => { m.nameTo = nameTo[m.id]; });
   // TODO власниця: робочі дні та фото рук кожної майстрині.
   // TODO власниця: у Altegio є ще Марина (Оболонь, Варшавський) і Алла (Солом’янка) — додати?
 

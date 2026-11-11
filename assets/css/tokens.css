@@ -1,0 +1,84 @@
+/* =====================================================================
+   Body Space — дизайн-токени (кольори, шрифти, розміри, відступи).
+   Палітра і шрифти — точно за стратегією. Жовтий --glow лише на зеленому.
+   ===================================================================== */
+:root {
+  /* Кольори */
+  --forest: #1E3B2F;        /* лісовий зелений: кнопки, футер, «вечірні» секції */
+  --forest-deep: #142A21;   /* найтемніший: hover, заголовки */
+  --olive: #8C9A6E;         /* оливково-шавлієвий акцент */
+  --sage: #DDE3D0;          /* світла шавлія: чипи, картки */
+  --cream: #F7F2E8;         /* кремовий фон */
+  --beige: #EADFCB;         /* бежевий фон секцій */
+  --sand: #C9A978;          /* свічковий пісок: тонкі лінії, бейджі */
+  --glow: #F5D76E;          /* світна лінія — ЛИШЕ на зеленому */
+  --glow-shadow: drop-shadow(0 0 6px rgba(245, 215, 110, .6));
+  --ink: #1F2A24;           /* основний текст */
+  --muted: #5E6B60;         /* другорядний текст */
+
+  /* Похідні (прозорості тих самих кольорів) */
+  --forest-08: rgba(30, 59, 47, .08);
+  --forest-16: rgba(30, 59, 47, .16);
+  --cream-70: rgba(247, 242, 232, .72);
+  --cream-on-forest: #EDE6D6; /* текст на зеленому */
+  --sand-ink: #8A6A3A;        /* пісок, достатньо темний для тексту на кремовому (AA) */
+  --white: #FFFDF8;
+
+  /* Шрифти */
+  --font-serif: "Cormorant Garamond", "Lora", Georgia, serif;
+  --font-sans: "Manrope", "Onest", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Типографічна шкала (mobile-first, плавно росте до 1440) */
+  --fs-xs: .8125rem;                               /* 13 */
+  --fs-sm: .9375rem;                               /* 15 */
+  --fs-base: 1rem;                                 /* 16 */
+  --fs-md: 1.125rem;                               /* 18 */
+  --fs-lg: clamp(1.25rem, 1.1rem + .6vw, 1.5rem);  /* 20–24 */
+  --fs-h3: clamp(1.5rem, 1.25rem + 1vw, 2rem);     /* 24–32 */
+  --fs-h2: clamp(2.125rem, 1.6rem + 2.2vw, 3.5rem); /* 34–56 */
+  --fs-h1: clamp(2.75rem, 1.9rem + 4vw, 5.75rem);  /* 44–92 */
+  --fs-num: clamp(3rem, 2.2rem + 3.4vw, 5rem);     /* великі цифри цін */
+
+  --lh-tight: 1.04;
+  --lh-head: 1.12;
+  --lh-body: 1.6;
+
+  /* Відступи (крок 4px) */
+  --s-1: .25rem; --s-2: .5rem; --s-3: .75rem; --s-4: 1rem; --s-5: 1.5rem;
+  --s-6: 2rem; --s-7: 3rem; --s-8: 4rem; --s-9: 6rem; --s-10: 8rem;
+  --section-y: clamp(4rem, 3rem + 5vw, 8.5rem);
+  --gutter: 16px;
+  --container: 1240px;
+
+  /* Радіуси */
+  --r-sm: 10px; --r-md: 18px; --r-lg: 28px; --r-pill: 999px;
+  --r-arch: 999px 999px 24px 24px; /* арка — як дзеркало в студії */
+
+  /* Тіні — м'які, теплі */
+  --shadow-sm: 0 1px 2px rgba(20, 42, 33, .06), 0 2px 8px rgba(20, 42, 33, .05);
+  --shadow-md: 0 8px 28px rgba(20, 42, 33, .10);
+  --shadow-lg: 0 24px 60px rgba(20, 42, 33, .18);
+
+  /* Анімації */
+  --ease: cubic-bezier(.22, .61, .36, 1);
+  --t-fast: 200ms;
+  --t-mid: 400ms;
+  --t-reveal: 600ms;
+
+  /* Висоти */
+  --header-h: 64px;
+  --bar-h: 64px; /* мобільна смуга «Записатися →» */
+
+  color-scheme: light;
+}
+
+@media (min-width: 768px) {
+  :root { --gutter: 32px; --header-h: 76px; }
+}
+@media (min-width: 1200px) {
+  :root { --gutter: 48px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --t-fast: 0ms; --t-mid: 0ms; --t-reveal: 0ms; }
+}

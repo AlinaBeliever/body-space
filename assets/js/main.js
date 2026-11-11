@@ -57,13 +57,23 @@
     }
   }
   /** Для тестів: BSUI.openStatus(studio, {h: 20, m: 59}) */
+  // Якщо людина не в київському часовому поясі (напр. у Словенії) — уточнюємо «за Києвом»
+  const outsideKyiv = (() => {
+    try {
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+      if (tz === "Europe/Kyiv" || tz === "Europe/Kiev") return false;
+      const off = (zone) => new Date(new Date().toLocaleString("en-US", { timeZone: zone })).getTime();
+      return off("Europe/Kyiv") !== off(tz);
+    } catch (e) { return false; }
+  })();
   function openStatus(studio, now = kyivNow()) {
     const [open, close] = studio.hours || [9, 21];
     const mins = now.h * 60 + now.m;
     const pad = (h) => String(h).padStart(2, "0") + ":00";
-    if (mins >= open * 60 && mins < close * 60) return { open: true, text: "Відкрито · до " + pad(close) };
-    if (mins < open * 60) return { open: false, text: "Зачинено · відкриємо о " + pad(open) };
-    return { open: false, text: "Зачинено · завтра з " + pad(open) };
+    const kyiv = outsideKyiv ? " за Києвом" : "";
+    if (mins >= open * 60 && mins < close * 60) return { open: true, text: "Відкрито · до " + pad(close) + kyiv };
+    if (mins < open * 60) return { open: false, text: "Зачинено · відкриємо о " + pad(open) + kyiv };
+    return { open: false, text: "Зачинено · завтра з " + pad(open) + kyiv };
   }
 
   /* ---------- Відстань (лише з дозволу на геолокацію) ---------- */

@@ -85,4 +85,174 @@
   }
   document.addEventListener("bs:tier", renderPreg);
   renderPreg();
+
+  /* =====================================================================
+     Сторінка «Послуги і ціни»: вкладки категорій (фільтр в адресі ?cat=),
+     картки послуг з 3 кроками і засобом, курси, доповнення.
+     ===================================================================== */
+  const tabs = UI.$(".js-svc-tabs"), list = UI.$(".js-svc-list");
+  if (tabs && list) {
+    const cats = BS.categories;
+    const durSel = {}; // обрана тривалість для кожної картки
+    const getCat = () => { try { return new URLSearchParams(location.search).get("cat") || "all"; } catch (e) { return "all"; } };
+    let cat = cats.some((c) => c.id === getCat()) ? getCat() : "all";
+
+    tabs.innerHTML = [{ id: "all", name: "Усі" }].concat(cats).map((c) =>
+      `<button class="chip" type="button" data-cat="${c.id}" aria-pressed="${c.id === cat}">${UI.esc(c.name)}</button>`).join("");
+
+    const simple = (s) => !s.steps; // обгортання, тейпування — компактні рядки
+    function card(s) {
+      const tier = UI.getTier();
+      const d = durSel[s.id] || (s.durations ? s.durations[0] : null);
+      const price = BS.priceOf(s, tier, d);
+      if (simple(s)) {
+        return `<li class="svc-row" data-id="${s.id}">
+          <span class="svc-row__name">${UI.esc(s.name)}${s.short ? `<small>${UI.esc(s.short)}</small>` : ""}${s.note ? `<small>${UI.esc(s.note)}</small>` : ""}</span>
+          <span class="svc-row__meta">${s.durations ? s.durations[0] + " хв" : ""}${s.product ? ` · ${UI.esc(s.product)}` : ""}</span>
+          <span class="svc-row__price">${s.priceFrom ? "від " : ""}<b>${UI.fmt(price)}</b> грн</span>
+        </li>`;
+      }
+      const durs = s.durations.length > 1
+        ? `<div class="toggle toggle--sm" role="group" aria-label="Тривалість: ${UI.esc(s.name)}">${s.durations.map((x) =>
+            `<button type="button" data-dur="${x}" aria-pressed="${x === d}">${x} хв</button>`).join("")}</div>`
+        : `<span class="svc-card__dur">${d} хв</span>`;
+      return `<article class="svc-card reveal" data-id="${s.id}">
+        <div class="svc-card__head">
+          <h3 class="svc-card__name">${UI.esc(s.name)}</h3>
+          <p class="svc-card__short">${UI.esc(s.short)}</p>
+        </div>
+        <div class="svc-card__price-row">
+          ${durs}
+          <p class="svc-card__price"><span class="num js-sp" data-value="${price}">${UI.fmt(price)}</span> <small>грн</small></p>
+        </div>
+        ${s.price.all ? '<p class="small muted">Ціна однакова в усіх майстринь</p>' : ""}
+        <ol class="svc-card__steps">${s.steps.map((t) => `<li>${UI.esc(t)}</li>`).join("")}</ol>
+        ${s.product ? `<p class="tag tag--sand">Засоби: ${UI.esc(s.product)}</p>` : ""}
+        <a class="btn btn--block js-book" data-service="${s.id}" href="${BS.brand.direct}">Записатися<span class="js-book-studio"></span></a>
+      </article>`;
+    }
+    function render() {
+      const shown = cat === "all" ? cats : cats.filter((c) => c.id === cat);
+      list.innerHTML = shown.map((c) => {
+        const items = BS.services.filter((s) => s.cat === c.id);
+        if (!items.length) return "";
+        const rows = items.every(simple);
+        let inner;
+        if (rows) {
+          const groups = [...new Set(items.map((s) => s.group || ""))];
+          inner = groups.map((g) => `${g ? `<h4 class="svc-group">${UI.esc(g)}</h4>` : ""}<ul class="svc-rows">${items.filter((s) => (s.group || "") === g).map(card).join("")}</ul>`).join("");
+          if (c.id === "teipuvannia" || c.id === "obhortannia") inner += `<p class="small muted svc-note">Курсом вигідніше: 5 послуг — мінус ${BS.courses.wrapsTapingDiscount[5] * 100}%, 10 — мінус ${BS.courses.wrapsTapingDiscount[10] * 100}%.</p>`;
+          inner += `<div class="svc-rows__book">${'<a class="btn js-book" data-service="' + items[0].id + '" href="' + BS.brand.direct + '">Записатися<span class="js-book-studio"></span></a>'}</div>`;
+        } else {
+          inner = `<div class="svc-grid">${items.map(card).join("")}</div>`;
+        }
+        const extra = c.id === "endosfera" ? `<a class="link-arrow" href="endosfera.html#kalkulyator">Курси й калькулятор ендосфери<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>` :
+          c.id === "vagitnym" ? `<a class="link-arrow" href="vagitnym.html">Усе для вагітних<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>` : "";
+        return `<section class="svc-cat" id="cat-${c.id}" aria-labelledby="h-${c.id}">
+          <div class="svc-cat__head"><h2 id="h-${c.id}">${UI.esc(c.name)}</h2>${extra}</div>${inner}</section>`;
+      }).join("");
+      UI.refreshBooking();
+      UI.observeReveal(list);
+    }
+    tabs.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-cat]");
+      if (!b) return;
+      cat = b.dataset.cat;
+      UI.$$("[data-cat]", tabs).forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+      // фільтр в адресі — таке посилання можна вставити в сторіс
+      try { const u = new URL(location.href); if (cat === "all") u.searchParams.delete("cat"); else u.searchParams.set("cat", cat); history.replaceState(null, "", u); } catch (err) { /* ок */ }
+      render();
+    });
+    list.addEventListener("click", (e) => {
+      const b = e.target.closest(".svc-card .toggle button");
+      if (!b) return;
+      const cardEl = b.closest(".svc-card");
+      const s = BS.byId(BS.services, cardEl.dataset.id);
+      durSel[s.id] = Number(b.dataset.dur);
+      UI.$$(".toggle button", cardEl).forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+      UI.rollNumber(UI.$(".js-sp", cardEl), BS.priceOf(s, UI.getTier(), durSel[s.id]), 200);
+    });
+    document.addEventListener("bs:tier", () => {
+      UI.$$(".svc-card", list).forEach((el) => {
+        const s = BS.byId(BS.services, el.dataset.id);
+        UI.rollNumber(UI.$(".js-sp", el), BS.priceOf(s, UI.getTier(), durSel[s.id] || s.durations[0]), 200);
+      });
+      UI.$$(".svc-row", list).forEach((el) => {
+        const s = BS.byId(BS.services, el.dataset.id);
+        UI.$(".svc-row__price b", el).textContent = UI.fmt(BS.priceOf(s, UI.getTier(), s.durations ? s.durations[0] : null));
+      });
+    });
+    render();
+  }
+
+  /* Курси */
+  const coursesBox = UI.$(".js-courses");
+  if (coursesBox) {
+    const C = BS.courses, pct = (x) => Math.round(x * 100) + "%";
+    coursesBox.innerHTML = `
+      <article class="course-card reveal"><p class="course-card__k">Ендосфера</p><p class="course-card__num">−${pct(C.endosphereDiscount[5])}</p>
+        <p>5 процедур · діє ${C.validity[5]} днів</p></article>
+      <article class="course-card course-card--accent reveal"><p class="course-card__k">Ендосфера</p><p class="course-card__num">−${pct(C.endosphereDiscount[10])}</p>
+        <p>10 процедур · діє ${C.validity[10]} днів</p><p class="course-card__gift"><svg class="icon" aria-hidden="true"><use href="#i-gift"/></svg>Подарунок: ${UI.esc(C.gift[10])}</p>
+        <a class="link-arrow" href="endosfera.html#kalkulyator">Порахувати<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></article>
+      <article class="course-card reveal"><p class="course-card__k">Обгортання і тейпування</p><p class="course-card__num">−${pct(C.wrapsTapingDiscount[5])} / −${pct(C.wrapsTapingDiscount[10])}</p>
+        <p>5 або 10 послуг · діє ${C.validity[5]} / ${C.validity[10]} днів</p></article>`;
+  }
+
+  /* Доповнення */
+  const addonsBox = UI.$(".js-addons");
+  function renderAddons() {
+    if (!addonsBox) return;
+    const t = UI.getTier();
+    addonsBox.innerHTML = BS.addons.map((a) => `<li><span>${UI.esc(a.name)}${a.duration ? ` <small>${a.duration} хв</small>` : ""}</span><b>${UI.fmt(a.price[t])} грн</b></li>`).join("");
+  }
+  document.addEventListener("bs:tier", renderAddons);
+  renderAddons();
+
+  /* Правила (послуги, FAQ) */
+  UI.$$(".js-rules").forEach((dl) => {
+    dl.innerHTML = BS.rules.map((r) => `<div><dt>${UI.esc(r.title)}</dt><dd>${UI.esc(r.text)}</dd></div>`).join("");
+  });
+
+  /* =====================================================================
+     Сторінка «Вагітним»
+     ===================================================================== */
+  const typesBox = UI.$(".js-preg-types");
+  const PREG_PHOTO = { "vagitni-spyna": ["assets/img/massage-relax-green", 720, 800], "vagitni-zahalnyi": ["assets/img/massage-pregnant-side", 600, 1269], "vagitni-oblychchia": ["assets/img/studio-lamp", 720, 456] };
+  function renderTypes() {
+    if (!typesBox) return;
+    const tier = UI.getTier();
+    typesBox.innerHTML = BS.services.filter((s) => s.pregnancy).map((s, i) => {
+      const p = PREG_PHOTO[s.id];
+      return `<article class="preg-type reveal">
+        <div class="preg-type__media">${p ? UI.img(p[0], p[1], p[2], s.name) : UI.placeholder()}</div>
+        <div class="preg-type__body">
+          <span class="preg-type__n">0${i + 1}</span>
+          <h3>${UI.esc(s.name.replace(" для вагітних", ""))}</h3>
+          <p class="muted">${UI.esc(s.short)}</p>
+          <ul class="preg-type__prices">${s.durations.map((d) => `<li><span>${d} хв</span><b>${UI.fmt(BS.priceOf(s, tier, d))} грн</b></li>`).join("")}</ul>
+          <a class="btn btn--block js-book" data-service="${s.id}" href="${BS.brand.direct}">Записатися<span class="js-book-studio"></span></a>
+        </div>
+      </article>`;
+    }).join("");
+    UI.refreshBooking();
+    UI.observeReveal(typesBox);
+  }
+  document.addEventListener("bs:tier", renderTypes);
+  renderTypes();
+
+  const P = BS.pregnancy;
+  const safe = UI.$(".js-preg-safe");
+  if (safe) {
+    safe.innerHTML = [
+      ["Положення", P.positions],
+      ["Рухи", P.approach],
+      ["Зони", "У загальному масажі — усе тіло, окрім попереку та живота."],
+      ["Атмосфера", "Під час масажу для нас важливо не просто попрацювати з напруженням у тілі, а й створити атмосферу, у якій ви зможете розслабитися та бути в комфорті."]
+    ].concat(P.fromWeek ? [["Термін", P.fromWeek]] : []).map(([t, d]) => `<div><dt>${UI.esc(t)}</dt><dd>${UI.esc(d)}</dd></div>`).join("");
+  }
+  const contra = UI.$(".js-preg-contra");
+  if (contra) contra.innerHTML = P.contraindications.map((c) => `<li>${UI.esc(c[0].toUpperCase() + c.slice(1))}</li>`).join("");
+  const cn = UI.$(".js-preg-contra-note"); if (cn) cn.textContent = P.contraNote;
+  const doc = UI.$(".js-preg-doctor"); if (doc) doc.textContent = P.doctorNote;
 })();

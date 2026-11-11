@@ -42,6 +42,7 @@
 @media (prefers-reduced-motion: reduce) { .btn::after { display: none; } }
 
 .link-arrow {
+  background: none; border: 0; padding: 0; cursor: pointer; font-family: inherit; text-align: left;
   display: inline-flex; align-items: center; gap: .4em; min-height: 44px;
   font-weight: 600; font-size: var(--fs-sm); color: var(--forest); text-decoration: none;
 }

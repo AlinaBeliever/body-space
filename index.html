@@ -501,6 +501,20 @@
   </div>
 </div>
 
+<!-- Квіз «Який масаж потрібен вам зараз?» (#pidbir) -->
+<div class="sheet sheet--quiz js-quiz" id="pidbir" role="dialog" aria-modal="true" aria-labelledby="quiz-title" hidden>
+  <div class="sheet__grip" aria-hidden="true"></div>
+  <div class="sheet__head">
+    <div>
+      <p class="eyebrow quiz__step js-quiz-step">Крок 1 з 4</p>
+      <h2 id="quiz-title" class="js-quiz-title">Який масаж потрібен вам зараз?</h2>
+    </div>
+    <button class="close-btn js-quiz-close" type="button" aria-label="Закрити"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+  </div>
+  <div class="quiz__progress" aria-hidden="true"><span class="js-quiz-bar"></span></div>
+  <div class="quiz__body js-quiz-body" aria-live="polite"></div>
+</div>
+
 <div class="toast js-toast" role="status" aria-live="polite"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span></span></div>
 
 <script src="assets/js/data.js"></script>
@@ -510,5 +524,6 @@
 <script src="assets/js/calculator.js"></script>
 <script src="assets/js/masters.js"></script>
 <script src="assets/js/shop.js"></script>
+<script src="assets/js/quiz.js"></script>
 </body>
 </html>

@@ -15,6 +15,31 @@
     el.innerHTML = `${E.testDrive.minutes} хвилин на апараті — ноги, сідниці, талія й живіт — за <b>${UI.fmt(E.testDrive.price)} грн</b>. Щоб зрозуміти, чи ваше, ще до курсу.`;
   });
 
+  UI.$$(".js-endo-price").forEach((el) => { el.innerHTML = `${UI.fmt(E.testDrive.price)} <small>грн · ${E.testDrive.minutes} хв</small>`; });
+
+  /* Таблиця всіх цін ендосфери (сторінка «Ендосфера») */
+  const table = UI.$(".js-endo-table");
+  function renderTable() {
+    if (!table) return;
+    const tier = UI.getTier() === "lead" ? "lead" : "top";
+    const rows = [
+      { name: "Тіло · 45 хв", zones: E.body[45].zones, p: E.body[45][tier], svc: "endosfera" },
+      { name: "Тіло · 60 хв", zones: E.body[60].zones, p: E.body[60][tier], svc: "endosfera" },
+      { name: `Обличчя · ${E.face.minutes} хв`, zones: E.face.zones, p: E.face[tier], svc: "endosfera-oblychchia" },
+      { name: `Тіло + обличчя · ${E.bodyFace.minutes} хв`, zones: E.bodyFace.zones, p: E.bodyFace[tier], svc: "endosfera-kompleks" }
+    ];
+    table.innerHTML = `<div class="endo-table__head" aria-hidden="true"><span></span><span>1 процедура</span><span>5 процедур</span><span>10 процедур</span></div>` +
+      rows.map((r) => `<div class="endo-table__row">
+        <div class="endo-table__name"><b>${UI.esc(r.name)}</b><small>${UI.esc(r.zones)}</small></div>
+        <div><span class="endo-table__k">1 процедура</span><b>${UI.fmt(r.p[1])}</b> грн</div>
+        <div><span class="endo-table__k">5 процедур</span><b>${UI.fmt(r.p[5])}</b> грн<small>${UI.fmt(Math.round(r.p[5] / 5))} / процедура</small></div>
+        <div><span class="endo-table__k">10 процедур</span><b>${UI.fmt(r.p[10])}</b> грн<small>${UI.fmt(Math.round(r.p[10] / 10))} / процедура</small></div>
+      </div>`).join("") +
+      `<p class="endo-table__note small">Ціни ${tier === "lead" ? "провідної " : "топ-"}майстрині. Курс з 5 процедур діє ${BS.courses.validity[5]} днів, з 10 — ${BS.courses.validity[10]} днів. Подарунок «${BS.courses.gift[10]}» — до курсу з 10 процедур тіла. Тест-драйв — ${UI.fmt(E.testDrive.price)} грн у всіх майстринь.</p>`;
+  }
+  document.addEventListener("bs:tier", renderTable);
+  renderTable();
+
   UI.$$(".js-calc").forEach((root) => {
     const out = UI.$(".js-calc-out", root);
     const state = { dur: 45, n: 10 };

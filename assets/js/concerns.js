@@ -48,7 +48,7 @@
         <p class="concerns__tier small muted js-c-tier"></p>
         <div class="concerns__actions">
           <a class="btn js-book js-c-book" href="${BS.brand.direct}">Записатися<span class="js-book-studio"></span></a>
-          <a class="link-arrow js-c-more" href="poslugy.html">Детальніше<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="link-arrow js-c-more" href="poslugy.html"><span class="js-c-more-t">Усе про масаж</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </div>`;
     }
     UI.$(".js-c-name", cardBox).textContent = svc.name;
@@ -58,6 +58,7 @@
     UI.$(".js-c-tier", cardBox).textContent = svc.price.all ? "Ціна однакова для всіх майстринь" : `Ціна в ${tierName === "топ" ? "топ-майстрині" : "провідної майстрині"}`;
     UI.$(".js-c-book", cardBox).dataset.service = svc.id;
     UI.$(".js-c-more", cardBox).href = moreLink(c, svc);
+    UI.$(".js-c-more-t", cardBox).textContent = c.link ? "Усе для майбутніх мам" : svc.cat === "endosfera" ? "Усе про ендосферу" : "Усі ціни: " + BS.byId(BS.categories, svc.cat).name.toLowerCase();
     UI.refreshBooking();
   }
 

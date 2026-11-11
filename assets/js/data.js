@@ -35,6 +35,7 @@
   const studios = [
     {
       id: "obolon",
+      shortLoc: "на Оболоні",
       short: "Оболонь",
       district: "Оболонь",
       complex: null,                 // TODO власниця: назва ЖК на Оболоні (якщо є)
@@ -54,6 +55,7 @@
     },
     {
       id: "teremky",
+      shortLoc: "на Теремках",
       short: "Теремки",
       district: "Теремки",
       complex: "ЖК Нова Англія",
@@ -73,6 +75,7 @@
     },
     {
       id: "solomianka",
+      shortLoc: "на Солом’янці",
       short: "Солом’янка",
       district: "Солом’янка",
       complex: "ЖК Смарагдовий",
@@ -92,6 +95,7 @@
     },
     {
       id: "varshavskyi",
+      shortLoc: "у ЖК Варшавський+",
       short: "Варшавський+",
       district: "Поділ",            // TODO власниця: як ви називаєте район (Виноградар? Поділ?)
       complex: "ЖК Варшавський+",
@@ -133,14 +137,14 @@
     { id: "spyna", cat: "ozdorovchyi", name: "Масаж спини",
       short: "Шия, плечі, лопатки й поперек — там, де накопичується напруга від сидячої роботи.",
       durations: [45, 60], price: { top: [1150, 1300], lead: [1300, 1500] },
-      steps: ["Розмова про самопочуття і бажаний тиск", "Розігрів і глибше пропрацювання м’язів спини та шиї", "Спокійне завершення й кілька хвилин тиші"],
+      steps: ["Розмова про самопочуття і бажаний тиск", "Масаж спини, шиї та плечей", "Кілька хвилин, щоб спокійно повернутися"],
       product: null },
     { id: "zahalnyi", cat: "ozdorovchyi", name: "Загальний масаж",
       short: "Усе тіло від стоп до шиї — коли хочеться відчути легкість повністю.",
       durations: [60, 90, 120], price: { top: [1300, 1800, 2300], lead: [1500, 2050, 2550] },
-      steps: ["Розмова про самопочуття і зони, що турбують", "Масаж усього тіла в комфортному для вас темпі", "Спокійне завершення й кілька хвилин тиші"],
+      steps: ["Розмова про самопочуття і зони, що турбують", "Масаж усього тіла в комфортному для вас темпі", "Кілька хвилин, щоб спокійно повернутися"],
       product: null },
-    { id: "limfodrenazh", cat: "ozdorovchyi", name: "Лімфодренажний масаж",
+    { id: "limfodrenazh", nameGen: "лімфодренажного масажу", cat: "ozdorovchyi", name: "Лімфодренажний масаж",
       short: "М’які ритмічні рухи для відчуття легкості в тілі й ногах.",
       durations: [60], price: { top: [1300], lead: [1500] },
       steps: ["Розмова про самопочуття", "М’які ритмічні рухи по всьому тілу", "Відпочинок після процедури"],
@@ -148,7 +152,7 @@
     { id: "oblychchia", cat: "ozdorovchyi", name: "Масаж обличчя",
       short: "Обличчя, шия й зона декольте — для свіжого вигляду і розслаблених м’язів обличчя.",
       durations: [40, 60], price: { top: [1150, 1300], lead: [1300, 1500] },
-      steps: ["Очищення шкіри", "Масаж обличчя, шиї та декольте", "За бажанням — доглядова маска"],
+      steps: ["Розмова про побажання", "Масаж обличчя, шиї та декольте", "За бажанням — доглядова маска (+15 хв)"],
       product: null },
 
     // Для вагітних (ціни з Altegio)
@@ -169,29 +173,29 @@
       product: null, pregnancy: true },
 
     // Корекція фігури
-    { id: "antytselulitnyi", cat: "figura", name: "Антицелюлітний масаж",
+    { id: "antytselulitnyi", nameGen: "антицелюлітного масажу", cat: "figura", name: "Антицелюлітний масаж",
       short: "Інтенсивний масаж для тонусу й гладкості шкіри.",
       durations: [60, 75], price: { top: [1400, 1650], lead: [1600, 1850] },
-      steps: ["Розмова про зони, з якими працюємо", "Інтенсивний масаж проблемних зон", "Нанесення засобу для догляду"],
+      steps: ["Розмова про зони, з якими працюємо", "Інтенсивний масаж обраних зон", "Порада щодо догляду вдома"],
       product: null },
     { id: "antytselulitnyi-zona", cat: "figura", name: "Антицелюлітний масаж (одна зона)",
       short: "Коли хочеться попрацювати з однією зоною.",
       durations: [30, 40], price: { top: [1050, 1200], lead: [1200, 1400] },
-      steps: ["Обираємо зону", "Інтенсивний масаж зони", "Нанесення засобу для догляду"],
+      steps: ["Обираємо зону", "Інтенсивний масаж зони", "Порада щодо догляду вдома"],
       product: null },
-    { id: "modeliuiuchyi", cat: "figura", name: "Моделюючий масаж",
+    { id: "modeliuiuchyi", nameGen: "моделюючого масажу", cat: "figura", name: "Моделюючий масаж",
       short: "Довга процедура для тонусу й підтягнутого вигляду тіла.",
       durations: [90], price: { top: [1900], lead: [2150] },
-      steps: ["Розмова про зони, з якими працюємо", "Моделюючий масаж тіла", "Нанесення засобу для догляду"],
+      steps: ["Розмова про зони, з якими працюємо", "Моделюючий масаж тіла", "Порада щодо догляду вдома"],
       product: null },
 
     // Ендосфера (тіло; курси — у розділі endosphere нижче)
     { id: "endosfera-test", cat: "endosfera", name: "Тест-драйв ендосфери",
       short: "30 хвилин на апараті — щоб спробувати процедуру. Ноги, сідниці, талія, живіт.",
       durations: [30], price: { all: [850] },
-      steps: ["Знайомство з апаратом і розмова", "Процедура на зонах ніг, сідниць, талії й живота", "Порада, чи варто брати курс"],
+      steps: ["Розмова й знайомство з апаратом", "Процедура на зонах ніг, сідниць, талії й живота", "Порада, чи варто брати курс"],
       product: null },
-    { id: "endosfera", cat: "endosfera", name: "Ендосфера",
+    { id: "endosfera", nameGen: "ендосфери", cat: "endosfera", name: "Ендосфера",
       short: "Апаратний масаж тіла. 45 хв — ноги, сідниці, спина, живіт; 60 хв — ще стопи, руки й долоні.",
       durations: [45, 60], price: { top: [1300, 1600], lead: [1400, 1700] },
       steps: ["Розмова й вибір зон", "Апаратний масаж на ендосфері", "Порада щодо догляду вдома"],
@@ -199,7 +203,7 @@
     { id: "endosfera-oblychchia", cat: "endosfera", name: "Ендосфера обличчя",
       short: "Зона декольте, шия, обличчя.",
       durations: [30], price: { top: [800], lead: [900] },
-      steps: ["Очищення шкіри", "Апаратний масаж обличчя, шиї й декольте", "Догляд після процедури"],
+      steps: ["Розмова про побажання", "Апаратний масаж обличчя, шиї й декольте", "Порада щодо догляду вдома"],
       product: null },
     { id: "endosfera-kompleks", cat: "endosfera", name: "Ендосфера тіла + обличчя",
       short: "Стопи, ноги, сідниці, спина, руки, долоні й обличчя за один візит.",
@@ -208,12 +212,12 @@
       product: null },
 
     // Відновлення
-    { id: "sportyvnyi", cat: "vidnovlennia", name: "Спортивний масаж",
+    { id: "sportyvnyi", nameGen: "спортивного масажу", cat: "vidnovlennia", name: "Спортивний масаж",
       short: "Глибока робота з м’язами після тренувань і навантажень.",
       durations: [60, 90], price: { top: [1400, 1900], lead: [1600, 2150] },
-      steps: ["Розмова про навантаження і зони, що турбують", "Глибоке пропрацювання м’язів", "Розтягнення й спокійне завершення"],
+      steps: ["Розмова про навантаження і зони, що турбують", "Глибоке опрацювання м’язів", "Кілька хвилин, щоб спокійно повернутися"],
       product: null },
-    { id: "relaks", cat: "vidnovlennia", name: "Релакс-масаж",
+    { id: "relaks", nameGen: "релакс-масажу", cat: "vidnovlennia", name: "Релакс-масаж",
       short: "М’які, плавні рухи й глибокий, але комфортний вплив. Якщо заснете — це цілком нормально.",
       durations: [60, 90], price: { top: [1300, 1800], lead: [1500, 2050] },
       steps: ["Тиша, тепле світло й зручне положення", "М’які, плавні рухи по всьому тілу", "Кілька хвилин, щоб повільно повернутися"],
@@ -226,7 +230,7 @@
     { id: "stoun", cat: "vidnovlennia", name: "Стоун-масаж",
       short: "Масаж з теплим камінням — для глибокого розслаблення.",
       durations: [90], price: { top: [2100], lead: [2250] },
-      steps: ["Підготовка теплого каміння", "Масаж тіла з камінням", "Спокійне завершення"],
+      steps: ["Розмова про самопочуття", "Масаж тіла з теплим камінням", "Кілька хвилин, щоб спокійно повернутися"],
       product: null },
 
     // Комплекси
@@ -245,34 +249,34 @@
     { id: "kompleks-antytselulit-obhortannia", cat: "kompleksy", name: "Антицелюлітний масаж + обгортання (до грудей)",
       short: "Масаж і обгортання за один візит.",
       durations: [135], price: { top: [2300], lead: [2500] },
-      steps: ["Антицелюлітний масаж", "Обгортання", "Відпочинок у теплі"], product: null },
+      steps: ["Антицелюлітний масаж", "Обгортання", "Порада щодо догляду вдома"], product: null },
     { id: "kompleks-modeliuiuchyi-obhortannia", cat: "kompleksy", name: "Моделюючий масаж + обгортання (до грудей)",
       short: "Найдовший ритуал для тіла.",
       durations: [165], price: { top: [2800], lead: [3000] },
-      steps: ["Моделюючий масаж", "Обгортання", "Відпочинок у теплі"], product: null },
+      steps: ["Моделюючий масаж", "Обгортання", "Порада щодо догляду вдома"], product: null },
     { id: "kompleks-obhortannia-oblychchia", cat: "kompleksy", name: "Обгортання (до грудей) + масаж обличчя 40 хв",
       short: "Поки працює обгортання — масаж обличчя.",
       durations: [75], price: { top: [2100], lead: [2250] },
       steps: ["Обгортання", "Масаж обличчя", "Завершення"], product: null },
 
     // Обгортання (одна ціна)
-    { id: "obh-massena", cat: "obhortannia", name: "Обгортання MASSENA",
-      short: "Зволожуюче, антицелюлітне або ліфтингове — на вибір.",
+    { id: "obh-massena", cat: "obhortannia", name: "Обгортання Massena",
+      short: "Зволожувальне, антицелюлітне або ліфтингове — на вибір.",
       durations: [75], price: { all: [1200] }, steps: null, product: "Massena" },
     { id: "obh-massena-bandazh", cat: "obhortannia", name: "Бандажне обгортання Massena",
       short: "Антицелюлітне, лімфодренажне.",
       durations: [75], price: { all: [1300] }, steps: null, product: "Massena" },
     { id: "obh-celo-hrudy", cat: "obhortannia", name: "Термоактивне обгортання Celo gel (до грудей)",
-      short: "Зігріваюче обгортання.",
+      short: "Зігрівальне обгортання до грудей.",
       durations: [75], price: { all: [1100] }, steps: null, product: "STYX" },
     { id: "obh-celo-tilo", cat: "obhortannia", name: "Термоактивне обгортання Celo gel (все тіло)",
-      short: "Зігріваюче обгортання всього тіла.",
+      short: "Зігрівальне обгортання всього тіла.",
       durations: [75], price: { all: [1300] }, steps: null, product: "STYX" },
     { id: "obh-viski-hrudy", cat: "obhortannia", name: "«Віскі» сповивання (до грудей)",
-      short: "Сповивання STYX.",
+      short: "Сповивання з засобами STYX — до грудей.",
       durations: [90], price: { all: [1500] }, steps: null, product: "STYX" },
     { id: "obh-viski-tilo", cat: "obhortannia", name: "«Віскі» сповивання (все тіло)",
-      short: "Сповивання STYX усього тіла.",
+      short: "Сповивання з засобами STYX — усього тіла.",
       durations: [90], price: { all: [1850] }, steps: null, product: "STYX" },
     { id: "obh-parafin", cat: "obhortannia", name: "Обгортання холодним парафіном",
       short: "Обгортання від Bruno Vasari.",
@@ -285,7 +289,7 @@
     { id: "teip-kholka", cat: "teipuvannia", name: "Холка", group: "Реабілітаційне", durations: null, price: { all: [600] }, steps: null, product: null },
     { id: "teip-viddil", cat: "teipuvannia", name: "Грудний або поперековий відділ", group: "Реабілітаційне", durations: null, price: { all: [650] }, steps: null, product: null },
     { id: "teip-postava", cat: "teipuvannia", name: "Корекція постави", group: "Реабілітаційне", durations: null, price: { all: [1000] }, steps: null, product: null },
-    { id: "teip-suglob", cat: "teipuvannia", name: "Коліно, плече або лікоть", group: "Реабілітаційне", note: "два — 600 грн",
+    { id: "teip-suglob", cat: "teipuvannia", name: "Коліно, плече або лікоть (одна зона)", group: "Реабілітаційне", note: "дві зони — 600 грн",
       durations: null, price: { all: [400] }, steps: null, product: null },
     { id: "teip-zhyvit", cat: "teipuvannia", name: "Живіт", group: "Естетичне", durations: null, price: { all: [600] }, steps: null, product: null },
     { id: "teip-taliia", cat: "teipuvannia", name: "Талія", group: "Естетичне", durations: null, price: { all: [600] }, steps: null, product: null },
@@ -317,20 +321,21 @@
 
   /* Ендосфера: точні суми з прайсу (не рахуємо — беремо як у студії).
      Для калькулятора на сайті. */
+  const svc = (id) => services.find((x) => x.id === id);
   const endosphere = {
-    testDrive: { minutes: 30, price: 850 },
+    testDrive: { minutes: svc("endosfera-test").durations[0], price: svc("endosfera-test").price.all[0] },
     body: {
       45: { zones: "ноги, сідниці, спина, живіт",
-            top:  { 1: 1300, 5: 5850, 10: 10400 },
-            lead: { 1: 1400, 5: 6300, 10: 11200 } },
+            top:  { 1: svc("endosfera").price.top[0], 5: 5850, 10: 10400 },
+            lead: { 1: svc("endosfera").price.lead[0], 5: 6300, 10: 11200 } },
       60: { zones: "стопи, ноги, сідниці, спина, руки, долоні",
-            top:  { 1: 1600, 5: 7200, 10: 12800 },
-            lead: { 1: 1700, 5: 7650, 10: 13600 } }
+            top:  { 1: svc("endosfera").price.top[1], 5: 7200, 10: 12800 },
+            lead: { 1: svc("endosfera").price.lead[1], 5: 7650, 10: 13600 } }
     },
     face: { minutes: 30, zones: "зона декольте, шия, обличчя",
-            top: { 1: 800, 5: 3600, 10: 6400 }, lead: { 1: 900, 5: 4050, 10: 7200 } },
+            top: { 1: svc("endosfera-oblychchia").price.top[0], 5: 3600, 10: 6400 }, lead: { 1: svc("endosfera-oblychchia").price.lead[0], 5: 4050, 10: 7200 } },
     bodyFace: { minutes: 75, zones: "стопи, ноги, сідниці, спина, руки, долоні, обличчя",
-            top: { 1: 1950, 5: 8750, 10: 15600 }, lead: { 1: 2050, 5: 9200, 10: 16400 } }
+            top: { 1: svc("endosfera-kompleks").price.top[0], 5: 8750, 10: 15600 }, lead: { 1: svc("endosfera-kompleks").price.lead[0], 5: 9200, 10: 16400 } }
             // TODO власниця: 5 процедур — 8750 / 9200 у прайсі, а −10% дає 8775 / 9225
   };
 
@@ -354,33 +359,33 @@
       photo: "assets/img/masters/master-kateryna", handsPhoto: null, days: null,
       altegio: { solomianka: 2690318 }, altegioReviews: 77 },
     { id: "bohdana", name: "Богдана", studios: ["varshavskyi"], tier: "top", since: 2013, sinceMonth: null,
-      education: "Медична освіта", specs: ["ozdorovchyi", "relaks"],
+      education: "медична", specs: ["ozdorovchyi", "relaks"],
       bio: null,
       quote: "Мені подобається бачити результат своєї роботи: коли людина розслабляється, відчуває легкість у тілі та виходить із сеансу з посмішкою",
       photo: "assets/img/masters/master-bohdana", handsPhoto: null, days: null,
       altegio: { varshavskyi: 3004476 }, altegioReviews: 11 },
     { id: "diana", name: "Діана", studios: ["obolon"], tier: "top", since: 2025, sinceMonth: null,
-      education: "Медична освіта", specs: ["vagitni", "relaks"],
+      education: "медична", specs: ["vagitni", "relaks"],
       bio: null,
       quote: "У своїй роботі я дбаю не лише про фізичне розслаблення, а й про емоційний стан. Масаж — це мова дотику, яка допомагає зняти накопичений стрес, втому й тривожність",
       photo: "assets/img/masters/master-diana", handsPhoto: null, days: null,
       altegio: { obolon: 2855554 }, altegioReviews: 66 },
     { id: "mariia", name: "Марія", studios: ["obolon"], tier: "lead", since: 2021, sinceMonth: 9,
       // В Altegio підпис «Топ масажист», але записують за цінами провідної. TODO власниця: уточнити рівень
-      education: "Медична освіта", specs: ["vagitni", "relaks", "ozdorovchyi"],
+      education: "медична", specs: ["vagitni", "relaks", "ozdorovchyi"],
       bio: null,
       quote: "Я завжди поєдную техніки для досягнення максимального задоволення, розслаблення та оздоровлення організму",
       photo: "assets/img/masters/master-mariia", handsPhoto: null, days: null,
       altegio: { obolon: 2764145 }, altegioReviews: 137 },
     { id: "liudmyla", name: "Людмила", studios: ["teremky"], tier: "apparatus", since: 2003, sinceMonth: 9,
       // TODO власниця: за якими цінами (топ / провідна) записують Людмилу
-      education: "Медична освіта", specs: ["endosfera"],
+      education: "медична", specs: ["endosfera"],
       bio: "Майстриня апаратного масажу",
       quote: "Працюю у сфері естетичної медицини, спеціалізуюся на апаратних методиках корекції фігури та обгортаннях",
       photo: "assets/img/masters/master-liudmyla", handsPhoto: null, days: null,
       altegio: { teremky: 3027248 }, altegioReviews: 18 },
     { id: "anna", name: "Анна", studios: ["varshavskyi"], tier: "top", since: 2025, sinceMonth: null,
-      education: "Медична освіта", specs: ["ozdorovchyi", "relaks"],
+      education: "медична", specs: ["ozdorovchyi", "relaks"],
       bio: null,
       quote: "Найбільше люблю працювати з оздоровчим та релакс-масажем, адже саме ці техніки допомагають зняти напругу, відновити сили та повернути тілу відчуття легкості",
       photo: "assets/img/masters/master-anna", handsPhoto: null, days: null,
@@ -398,13 +403,13 @@
       photo: "assets/img/masters/master-nataliia", handsPhoto: null, days: null,
       altegio: { obolon: 2160443 }, altegioReviews: 194 },
     { id: "tetiana", name: "Тетяна", studios: ["teremky", "obolon"], tier: "lead", since: 2011, sinceMonth: null,
-      education: "Середня медична освіта, магістр фізичної реабілітації", specs: ["ozdorovchyi", "sport", "vagitni"],
+      education: "середня медична, магістр фізичної реабілітації", specs: ["ozdorovchyi", "sport", "vagitni"],
       bio: null,
       quote: "У своїй практиці обираю комплексний погляд, працюючи з різними напрямами тілесних практик. Поєдную м’язово-фасціальні і остеопатичні підходи, роблю точковий тригерний масаж з елементами кінезіології",
       photo: "assets/img/masters/master-tetiana", handsPhoto: null, days: null,
       altegio: { teremky: 2878160, obolon: 2889683 }, altegioReviews: 71 },
     { id: "liubov", name: "Любов", studios: ["obolon"], tier: "top", since: 2024, sinceMonth: 9,
-      education: "Курс практичної кінезіології", specs: ["ozdorovchyi", "relaks", "sport", "antytselulit", "oblychchia", "vagitni"],
+      education: "курс практичної кінезіології", specs: ["ozdorovchyi", "relaks", "sport", "antytselulit", "oblychchia", "vagitni"],
       bio: "Спеціалізуюсь на оздоровчому, релакс, спортивному та антицелюлітному масажі, а також на масажах обличчя",
       // Виправлено «інтергую» → «інтегрую». TODO власниця: погодити
       quote: "Пройшла курс практичної кінезіології, тож при потребі інтегрую ці знання в масажну практику",
@@ -420,18 +425,18 @@
   // TODO власниця: у Altegio є ще Марина (Оболонь, Варшавський) і Алла (Солом’янка) — додати?
 
   const specs = [
-    { id: "vagitni", name: "Вагітні" },
+    { id: "vagitni", name: "Для вагітних" },
     { id: "endosfera", name: "Ендосфера" },
     { id: "sport", name: "Спорт і відновлення" },
     { id: "oblychchia", name: "Обличчя" },
-    { id: "antytselulit", name: "Антицелюлітний" },
-    { id: "relaks", name: "Релакс" },
-    { id: "ozdorovchyi", name: "Оздоровчий" }
+    { id: "antytselulit", name: "Антицелюлітний масаж" },
+    { id: "relaks", name: "Релакс-масаж" },
+    { id: "ozdorovchyi", name: "Оздоровчий масаж" }
     // «Тейпування» і «Лімфодренаж» — TODO власниця: хто з майстринь це робить
   ];
 
   const tiers = {
-    top: { name: "Топ майстриня", short: "Топ" },
+    top: { name: "Топ-майстриня", short: "Топ" },
     lead: { name: "Провідна майстриня", short: "Провідна" },
     apparatus: { name: "Майстриня апаратного масажу", short: "Апаратний масаж" }
   };
@@ -467,7 +472,7 @@
     // Богдана
     { master: "bohdana", rating: 5, date: "2026-10-05", source: "altegio?", text: "Щиро дякую Богдані за її майстерність. Кожен сеанс-це повний релакс!" },
     { master: "bohdana", rating: 5, date: "2026-10-31", source: "altegio?", text: "Все пройшло на найкращому рівні" },
-    { master: "bohdana", rating: 5, date: "2026-10-10", source: "altegio?",
+    { master: "bohdana", rating: 5, date: "2026-10-10", source: "altegio?", card: true,
       text: "Дуже задоволена. Приємна атмосфера, професійний підхід та турбота про клієнта. Після процедури відчувається легкість, розслаблення. Обіцяю незабаром повернутися" },
     { master: "bohdana", rating: null, date: null, source: "direct",
       text: "Вітаю. Все ідеально, дякую, я давно себе так добре не почувала. Поки не потрібно, я повернусь самостійно" },
@@ -483,7 +488,7 @@
 
     // Марія
     { master: "mariia", rating: 5, date: "2025-12-20", source: "altegio?", text: "Дмитру все дуже сподобалось. Марії дуже дякує за масаж!)" },
-    { master: "mariia", rating: 5, date: "2025-12-05", source: "altegio?", text: "Дуже вдячна за класні масажі" },
+    { master: "mariia", rating: 5, date: "2025-12-05", source: "altegio?", card: true, text: "Дуже вдячна за класні масажі" },
     { master: "mariia", rating: 5, date: "2026-02-14", source: "altegio?", featured: true,
       text: "Величезна подяка майстру за надану допомогу! Тривалий час мене турбували болі в спині, але вже після першого візиту я відчула значне полегшення. Записалась ще , пораджусь при наступному візиті про курс масажів. Сьогодні мій поперек сказав :\"Дякую\"" },
     { master: "mariia", rating: 5, date: "2025-11-10", source: "altegio?",
@@ -515,16 +520,16 @@
     { master: "valeriia", rating: 5, date: "2026-08-18", source: "altegio?",
       text: "масаж був чудовий, дуже приємна й уважна Валерія зробила все на вищому рівні, дякую вам дуже!" },
     { master: "valeriia", rating: 5, date: "2026-07-16", source: "altegio?", text: "Чудова майстриня, відлітаєш в космос" },
-    { master: "valeriia", rating: 5, date: "2026-07-25", source: "altegio?", text: "Валерія прекрасний спеціаліст до якого хочеться повернутись!" },
+    { master: "valeriia", rating: 5, date: "2026-07-25", source: "altegio?", card: true, text: "Валерія прекрасний спеціаліст до якого хочеться повернутись!" },
     { master: "valeriia", rating: 5, date: "2026-06-18", source: "altegio?",
       text: "Неймовірно задоволена. Майстер була дуже акуратно, якісно виконувала все, я навіть засунула під кінець процедури) Отримала повний релакс - раджу!" },
     { master: "valeriia", rating: 5, date: "2026-06-13", source: "altegio?", featured: true,
       text: "Абсолютно фантастичне враження від масажу Валерії. Дуже професійна фахівчиня, вихована, делікатна. Залишилась задоволена. Масаж на вищому рівні. Рекомендую." },
 
     // Наталія
-    { master: "nataliia", rating: 5, date: "2026-01-14", source: "altegio?", featured: true,
+    { master: "nataliia", rating: 5, date: "2026-01-14", source: "altegio?",
       text: "Вже вдруге відвідую загальний масаж у цього майстра. Це кращій масаж який коли-небудь мені робили. Чудовий спеціаліст" },
-    { master: "nataliia", rating: 5, date: "2025-12-20", source: "altegio?",
+    { master: "nataliia", rating: 5, date: "2025-12-20", source: "altegio?", featured: true, card: true,
       text: "Масаж від Наталії, це щось більше ніж просто масаж. Дуже дякую , це було неперевершено!" },
     { master: "nataliia", rating: 5, date: "2025-12-20", source: "altegio?",
       text: "Наталя як завжди на висоті. Справжня мануальщик, чітко працює по проблемним зонам" },
@@ -592,7 +597,7 @@
      Тексти — без медичних обіцянок. */
   const products = [
     { id: "styx-contour", brand: "STYX", line: "Aroma Derm", name: "Contour Creme Warmend",
-      kind: "Зігріваючий крем для тіла", volume: null, price: 1275, need: ["tonus"],
+      kind: "Зігрівальний крем для тіла", volume: null, price: 1275, need: ["tonus"],
       use: "Масажними рухами на зони стегон, сідниць і живота.", after: "antytselulitnyi",
       photo: "assets/img/products/styx-contour-creme-warmend" },
     { id: "styx-zell", brand: "STYX", line: "Aroma Derm", name: "Zell Aktiv Gel з корицею",
@@ -600,7 +605,7 @@
       use: "Тонким шаром на потрібні зони, можна перед тренуванням. Дає відчуття тепла.", after: "endosfera",
       photo: "assets/img/products/styx-zell-aktiv-gel" },
     { id: "styx-cool", brand: "STYX", line: "Aroma Derm", name: "Cool Gel",
-      kind: "Охолоджуючий гель для ніг", volume: null, price: 1275, need: ["lehkist"],
+      kind: "Охолоджувальний гель для ніг", volume: null, price: 1275, need: ["lehkist"],
       use: "Знизу вгору, від стоп до колін, коли ноги втомилися за день.", after: "limfodrenazh",
       photo: "assets/img/products/styx-cool-gel" },
     { id: "styx-algen", brand: "STYX", line: "Aroma Derm", name: "Algen Creme Forte",
@@ -661,12 +666,13 @@
     { id: "health", title: "Здоров’я понад усе",
       text: "Якщо стан здоров’я не дозволяє провести масаж чи послугу, майстриня має право відмовити." },
     { id: "course", title: "Термін дії курсу",
-      text: "5 візитів — 60 днів, 10 візитів — 90 днів з першого відвідування." },
+      text: `5 візитів — ${courses.validity[5]} днів, 10 візитів — ${courses.validity[10]} днів з першого відвідування.` },
     { id: "certificate", title: "Термін дії сертифіката",
       text: "30 днів з моменту дарування." }
   ];
 
   /* ---------- Вагітним ---------- */
+  // (сертифікат оголошено нижче, тому його термін у правилах підставляємо після оголошення)
   const pregnancy = {
     fromWeek: null, // TODO власниця: з якого терміну приймаєте
     positions: "Лежачи на боці або сидячи — залежно від терміну вагітності та самопочуття.",
@@ -691,6 +697,8 @@
     formats: ["Цифровий (PDF)", "Друкований у студії"], // TODO власниця: підтвердити
     designs: ["Лісовий", "Кремовий", "Свічковий"]       // дизайни карток на сайті
   };
+
+  rules.find((r) => r.id === "certificate").text = `${certificate.validityDays} днів з моменту дарування.`;
 
   /* ---------- Що входить у вартість візиту ---------- */
   const included = null; // TODO власниця: чай, тепла кушетка, душ, засоби — що саме?

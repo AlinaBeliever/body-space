@@ -4,20 +4,26 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Ендосфера в Києві — тест-драйв і курси · Body Space</title>
-  <meta name="description" content="Ендосфера тіла й обличчя на Оболоні, Теремках, Солом’янці, у ЖК Варшавський+. Тест-драйв 30 хв, курси 5 і 10 процедур, калькулятор ціни.">
+  <meta name="description" content="Ендосфера тіла й обличчя в Body Space у Києві. Тест-драйв 30 хв, курси на 5 і 10 процедур, калькулятор ціни і запис до майстрині апаратного масажу.">
   <link rel="canonical" href="https://bodyspace.netlify.app/endosfera.html">
   <meta name="theme-color" content="#F7F2E8">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="uk_UA">
   <meta property="og:site_name" content="Body Space">
   <meta property="og:title" content="Ендосфера в Body Space">
-  <meta property="og:description" content="Ендосфера тіла й обличчя на Оболоні, Теремках, Солом’янці, у ЖК Варшавський+. Тест-драйв 30 хв, курси 5 і 10 процедур, калькулятор ціни.">
+  <meta property="og:description" content="Ендосфера тіла й обличчя в Body Space у Києві. Тест-драйв 30 хв, курси на 5 і 10 процедур, калькулятор ціни і запис до майстрині апаратного масажу.">
   <meta property="og:url" content="https://bodyspace.netlify.app/endosfera.html">
   <meta property="og:image" content="https://bodyspace.netlify.app/assets/img/og-image.jpg">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:image:alt" content="Body Space — місце, де про вас турбуються">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;500;600&display=swap">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;500;600&display=swap"></noscript>
   <link rel="stylesheet" href="assets/css/tokens.css">
   <link rel="stylesheet" href="assets/css/base.css">
   <link rel="stylesheet" href="assets/css/components.css">
@@ -95,6 +101,7 @@
   </ul>
   <div class="mobile-menu__foot">
     <a class="btn js-book" href="https://ig.me/m/body__space">Записатися<span class="js-book-studio"></span></a>
+    <a class="btn btn--ghost js-quiz-open" href="index.html#turbuie">Підібрати масаж</a>
     <a class="btn btn--ghost" href="https://ig.me/m/body__space" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg>Написати в Direct</a>
   </div>
 </div>
@@ -129,13 +136,13 @@
     </div>
   </section>
 
-  <section class="section endo" id="kalkulyator" data-line="right" aria-labelledby="calc-title">
+  <section class="section endo" id="kalkulyator" data-line="right" aria-labelledby="kurs-title">
     <div class="container endo__grid">
       <div class="endo__intro reveal">
         <p class="eyebrow"><svg aria-hidden="true"><use href="#i-leaf"/></svg>Калькулятор</p>
-        <h2>Порахуйте свій <em>курс</em></h2>
+        <h2 id="kurs-title">Порахуйте свій <em>курс</em></h2>
         <p class="lead">Курс з 5 процедур — мінус 10%, з 10 — мінус 20%. До курсу з 10 процедур — подарунок.</p>
-        <div class="toggle-group" style="margin-top:1.5rem">
+        <div class="toggle-group endo__tier">
           <span class="toggle-label" id="tier-label">Рівень майстрині</span>
           <div class="toggle js-tier-toggle" role="group" aria-labelledby="tier-label">
             <button type="button" data-tier="top" aria-pressed="true">Топ</button>
@@ -143,7 +150,7 @@
           </div>
         </div>
       </div>
-      <div class="calc card reveal js-calc" aria-labelledby="calc-title">
+      <div class="calc card reveal js-calc" role="group" aria-labelledby="calc-title">
         <h3 id="calc-title" class="calc__title">Ендосфера тіла</h3>
         <div class="calc__row"><span class="toggle-label" id="calc-dur">Тривалість</span>
           <div class="toggle js-calc-dur" role="group" aria-labelledby="calc-dur"><button type="button" data-v="45" aria-pressed="true">45 хв</button><button type="button" data-v="60" aria-pressed="false">60 хв</button></div></div>
@@ -157,7 +164,7 @@
   <section class="section on-forest" data-line="left" data-glow aria-labelledby="endo-prices-title">
     <div class="container">
       <div class="section-head reveal"><p class="eyebrow"><svg aria-hidden="true"><use href="#i-leaf"/></svg>Усі ціни</p>
-        <h2 id="endo-prices-title">Обличчя і <em>комплекс</em></h2>
+        <h2 id="endo-prices-title">Тіло, обличчя, <em>комплекс</em></h2>
         <p>Ціни за процедуру і за курс — як у прайсі студії.</p></div>
       <div class="endo-table js-endo-table reveal"></div>
     </div>
@@ -204,7 +211,7 @@
       <a class="btn btn--glow footer__book js-book js-line-end" href="https://ig.me/m/body__space">Записатися<span class="js-book-studio"></span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
     </div>
     <div class="footer__grid">
-      <div class="footer__studios js-footer-studios"></div>
+      <address class="footer__studios js-footer-studios"><div class="footer__studio"><p class="footer__h">Оболонь</p><p>вул. Героїв полку «Азов», 12в</p></div><div class="footer__studio"><p class="footer__h">Теремки · ЖК Нова Англія</p><p>вул. Михайла Максимовича, 24б</p></div><div class="footer__studio"><p class="footer__h">Солом’янка · ЖК Смарагдовий</p><p>вул. Генерала Шаповала, 2а</p></div><div class="footer__studio"><p class="footer__h">ЖК Варшавський+</p><p>вул. Олександра Олеся, 8а</p></div></address>
       <div class="footer__col">
         <p class="footer__h">Зв’язок</p>
         <ul class="footer__links">
@@ -222,7 +229,7 @@
     </div>
     <div class="footer__bottom">
       <span>© 2026 Body Space · Київ</span>
-      <span>Щодня 9:00–21:00</span>
+      <span class="js-hours">Щодня 9:00–21:00</span>
     </div>
   </div>
 </footer>
@@ -267,12 +274,12 @@
 
 <div class="toast js-toast" role="status" aria-live="polite"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span></span></div>
 
-<script src="assets/js/data.js"></script>
-<script src="assets/js/main.js"></script>
-<script src="assets/js/pricing.js"></script>
-<script src="assets/js/calculator.js"></script>
-<script src="assets/js/masters.js"></script>
-<script src="assets/js/shop.js"></script>
-<script src="assets/js/quiz.js"></script>
+<script src="assets/js/data.js" defer></script>
+<script src="assets/js/main.js" defer></script>
+<script src="assets/js/pricing.js" defer></script>
+<script src="assets/js/calculator.js" defer></script>
+<script src="assets/js/masters.js" defer></script>
+<script src="assets/js/shop.js" defer></script>
+<script src="assets/js/quiz.js" defer></script>
 </body>
 </html>

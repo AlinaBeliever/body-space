@@ -2,6 +2,7 @@
    Base — скидання стилів, типографіка, сітка, утиліти.
    ===================================================================== */
 *, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; } /* атрибут hidden завжди ховає, навіть якщо є display у стилях */
 
 html {
   -webkit-text-size-adjust: 100%;
@@ -24,6 +25,7 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
+  font-variant-numeric: lining-nums; /* рівні цифри в цінах на всіх сторінках */
 }
 /* Мобільна смуга запису ховається над футером, а футер має запас знизу — тож вона нічого не перекриває */
 
@@ -65,7 +67,7 @@ p { margin: 0; text-wrap: pretty; }
   width: 100%;
   max-width: calc(var(--container) + var(--gutter) * 2);
   margin-inline: auto;
-  padding-inline: var(--gutter);
+  padding-inline: max(var(--gutter), env(safe-area-inset-left)) max(var(--gutter), env(safe-area-inset-right));
 }
 .section { position: relative; padding-block: var(--section-y); }
 .section > .container { position: relative; z-index: 2; } /* над світною лінією */
@@ -91,6 +93,8 @@ p { margin: 0; text-wrap: pretty; }
 }
 .on-forest .eyebrow { color: var(--sand); }
 .eyebrow svg { width: 14px; height: 14px; }
+.section--beige .eyebrow svg, .section--sage .eyebrow svg { display: none; }
+.section--beige, .section--sage { --muted: #4E5A50; }
 .section-head { max-width: 720px; margin-bottom: clamp(2rem, 1.5rem + 2vw, 3.5rem); }
 .section-head p { margin-top: var(--s-4); color: var(--muted); font-size: var(--fs-md); }
 .on-forest .section-head p { color: var(--cream-on-forest); opacity: .85; }

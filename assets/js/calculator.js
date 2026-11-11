@@ -71,6 +71,7 @@
       </dl>
       <div class="calc__timeline js-timeline" aria-hidden="true"></div>
       <p class="calc__tl-note small muted js-tl-note"></p>
+      <p class="calc__gift-hint small muted js-gift-hint" hidden></p>
       <p class="calc__gift js-gift" hidden><svg class="icon" aria-hidden="true"><use href="#i-gift"/></svg><span></span></p>
       <p class="calc__zones small muted js-zones"></p>
       <a class="btn btn--block js-book" data-service="endosfera" href="${BS.brand.direct}">Записатися на першу процедуру<span class="js-book-studio"></span></a>
@@ -85,7 +86,7 @@
       const saveWrap = UI.$(".js-save-wrap", out);
       if (r.saving > 0) { saveWrap.innerHTML = `<span class="num js-save">${UI.fmt(r.saving)}</span> грн`; }
       else { saveWrap.textContent = "—"; }
-      UI.$(".js-valid", out).textContent = r.validity ? `${r.validity} днів` : "одна процедура";
+      UI.$(".js-valid", out).textContent = r.validity ? `${r.validity} днів` : "разова";
       // Таймлайн: N точок, ≈ 2 візити на тиждень
       const weeks = Math.ceil(state.n / 2);
       UI.$(".js-timeline", out).innerHTML = Array.from({ length: state.n }, (_, i) =>
@@ -95,11 +96,13 @@
         : "Спробуйте одну процедуру або почніть з тест-драйву";
       const gift = UI.$(".js-gift", out);
       gift.hidden = !r.gift;
-      if (r.gift) UI.$("span", gift).textContent = "Подарунок до курсу: " + r.gift;
+      if (r.gift) UI.$("span", gift).textContent = "Подарунок до курсу: " + r.gift.replace(/^1 /, "1\u00A0");
+      const hint = UI.$(".js-gift-hint", out);
+      if (hint) { hint.hidden = !!r.gift; hint.textContent = `До курсу з 10 процедур — подарунок: ${BS.courses.gift[10].replace(/^1 /, "1\u00A0")}.`; }
       UI.$(".js-zones", out).textContent = `${state.dur} хв: ${r.zones}`;
-      UI.$(".js-tier-note", out).textContent = tier === "lead"
-        ? "Ціни провідної майстрині. Перемкнути рівень можна в прайсі."
-        : "Ціни топ-майстрині. Перемкнути рівень можна в прайсі.";
+      // на сторінці ендосфери перемикач рівня стоїть поруч, на головній — у прайсі вище
+      const here = document.querySelector(".endo .js-tier-toggle") ? "" : " Рівень можна змінити в прайсі вище.";
+      UI.$(".js-tier-note", out).textContent = (tier === "lead" ? "Ціни провідної майстрині." : "Ціни топ-майстрині.") + here;
     }
 
     root.addEventListener("click", (e) => {

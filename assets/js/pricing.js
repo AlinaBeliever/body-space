@@ -140,7 +140,7 @@
         let inner;
         if (rows) {
           const groups = [...new Set(items.map((s) => s.group || ""))];
-          inner = groups.map((g) => `${g ? `<h4 class="svc-group">${UI.esc(g)}</h4>` : ""}<ul class="svc-rows">${items.filter((s) => (s.group || "") === g).map(card).join("")}</ul>`).join("");
+          inner = groups.map((g) => `${g ? `<h3 class="svc-group">${UI.esc(g)}</h3>` : ""}<ul class="svc-rows">${items.filter((s) => (s.group || "") === g).map(card).join("")}</ul>`).join("");
           if (c.id === "teipuvannia" || c.id === "obhortannia") inner += `<p class="small muted svc-note">Курсом вигідніше: 5 послуг — мінус ${BS.courses.wrapsTapingDiscount[5] * 100}%, 10 — мінус ${BS.courses.wrapsTapingDiscount[10] * 100}%.</p>`;
           inner += `<div class="svc-rows__book">${'<a class="btn js-book" data-service="' + items[0].id + '" href="' + BS.brand.direct + '">Записатися<span class="js-book-studio"></span></a>'}</div>`;
         } else {

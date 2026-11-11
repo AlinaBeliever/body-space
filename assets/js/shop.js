@@ -25,19 +25,19 @@
       `\nРазом: ${sum} грн.\nДоставка Новою поштою: місто, відділення, ПІБ, телефон — `;
   }
 
-  const afterName = (id) => { const s = id ? BS.byId(BS.services, id) : null; return s ? s.name.toLowerCase() : null; };
+  const afterName = (id) => { const s = id ? BS.byId(BS.services, id) : null; return s ? (s.nameGen || s.name.toLowerCase()) : null; };
 
   function productCard(p) {
     const inList = getList().includes(p.id);
     const after = afterName(p.after);
-    const tester = p.tester ? `<span class="tag tag--sand">Тестер на ${UI.esc(BS.byId(BS.studios, p.tester).short)}</span>` : "";
+    const tester = p.tester ? `<span class="tag tag--sand">Тестер — ${UI.esc(BS.byId(BS.studios, p.tester).shortLoc)}</span>` : "";
     return `<article class="product-card" data-id="${p.id}">
       <div class="product-card__media">${UI.img(p.photo, 400, 400, `${p.brand} ${p.name}`, { cls: "no-bg" })}</div>
       <div class="product-card__body">
         <p class="product-card__brand">${UI.esc(p.brand)}</p>
         <h3 class="product-card__name">${UI.esc(p.name)}</h3>
         <p class="product-card__kind">${UI.esc(p.kind)}${p.volume ? " · " + UI.esc(p.volume) : ""}</p>
-        ${after ? `<p class="product-card__after small">Радимо після: ${UI.esc(after)}</p>` : ""}
+        ${after ? `<p class="product-card__after small">Радимо після ${UI.esc(after)}</p>` : ""}
         ${tester}
         <div class="product-card__foot">
           <span class="product-card__price">${UI.fmt(p.price)} <small>грн</small></span>
@@ -58,7 +58,7 @@
   /* Оновлюємо кнопки без перемальовки всієї сторінки */
   document.addEventListener("bs:shop", () => {
     const l = getList();
-    UI.$$(".js-shop-toggle").forEach((b) => {
+    UI.$$(".product-card .js-shop-toggle").forEach((b) => {
       const on = l.includes(b.dataset.id);
       b.setAttribute("aria-pressed", String(on));
       b.classList.toggle("btn--ghost", !on);
@@ -133,6 +133,17 @@
       orderBtn.disabled = false;
     }
     document.addEventListener("bs:shop", renderOrder);
+    // На телефоні список — унизу сторінки, тож нижня смуга веде до нього, коли в списку щось є
+    const box = UI.$(".js-book-bar");
+    const barHTML = box ? box.innerHTML : "";
+    function syncBar() {
+      if (!box) return;
+      const n = getList().length;
+      if (n) box.innerHTML = `<a class="btn" href="#order-title"><span>Список для замовлення · ${n}</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>`;
+      else { box.innerHTML = barHTML; UI.refreshBooking(); }
+    }
+    document.addEventListener("bs:shop", syncBar);
+    syncBar();
     UI.$(".js-order-clear").addEventListener("click", () => { setList([]); UI.toast("Список очищено"); });
     renderOrder();
   }

@@ -39,8 +39,8 @@
   function pick(a) {
     if (a.pregnant === "yes") {
       // для вагітних — лише масажі для вагітних, без апаратних
-      if (a.goal === "face" || a.goal === "relax" && a.time === "long") return { service: "vagitni-oblychchia", spec: "vagitni" };
-      if (a.goal === "back" && a.time === "short") return { service: "vagitni-spyna", spec: "vagitni" };
+      if (a.time === "long" && (a.goal === "face" || a.goal === "relax")) return { service: "vagitni-oblychchia", spec: "vagitni" };
+      if (a.time === "short" && (a.goal === "back" || a.goal === "face")) return { service: "vagitni-spyna", spec: "vagitni" };
       return { service: "vagitni-zahalnyi", spec: "vagitni" };
     }
     const T = {
@@ -64,14 +64,14 @@
   function renderStep() {
     const s = STEPS[step];
     UI.$(".js-quiz-title", modal).textContent = s.title;
-    let html = `<div class="quiz__options" role="radiogroup" aria-label="${UI.esc(s.title)}">` +
-      s.options.map((o) => `<button class="chip quiz__opt" type="button" role="radio" aria-checked="${answers[s.key] === o.v}" data-k="${s.key}" data-v="${o.v}">
+    let html = `<div class="quiz__options" role="group" aria-label="${UI.esc(s.title)}">` +
+      s.options.map((o) => `<button class="chip quiz__opt" type="button" aria-pressed="${answers[s.key] === o.v}" data-k="${s.key}" data-v="${o.v}">
         <svg class="leaf-mark" aria-hidden="true"><use href="#i-leaf"/></svg>${UI.esc(o.label)}</button>`).join("") + `</div>`;
     if (s.studios) {
       const cur = answers.studio || UI.studio || "";
-      html += `<p class="quiz__sub">Студія</p><div class="quiz__options" role="radiogroup" aria-label="Студія">` +
+      html += `<p class="quiz__sub">Студія</p><div class="quiz__options" role="group" aria-label="Студія">` +
         [{ id: "", short: "Будь-яка" }].concat(BS.studios).map((st) =>
-          `<button class="chip quiz__opt" type="button" role="radio" aria-checked="${cur === st.id}" data-k="studio" data-v="${st.id}">
+          `<button class="chip quiz__opt" type="button" aria-pressed="${cur === st.id}" data-k="studio" data-v="${st.id}">
             <svg class="leaf-mark" aria-hidden="true"><use href="#i-leaf"/></svg>${UI.esc(st.short)}</button>`).join("") + `</div>`;
       if (!("studio" in answers)) answers.studio = cur;
     }
@@ -92,14 +92,19 @@
     const top = BS.priceOf(svc, "top", dur), lead = BS.priceOf(svc, "lead", dur);
     let pool = BS.masters.filter((m) => !answers.studio || m.studios.includes(answers.studio));
     let fit = r.spec ? pool.filter((m) => m.specs.includes(r.spec)) : pool;
-    // інших майстринь підставляємо, лише якщо з потрібною спеціалізацією нікого немає
+    // У цій студії ніхто цього не робить — показуємо майстринь з потрібною спеціалізацією в інших студіях
+    let elsewhere = false;
+    if (!fit.length && r.spec) { fit = BS.masters.filter((m) => m.specs.includes(r.spec)); elsewhere = !!answers.studio && fit.length > 0; }
     if (!fit.length) fit = pool;
     const two = fit.slice(0, 2);
     const studioName = answers.studio ? BS.byId(BS.studios, answers.studio).short : null;
+    const mastersTitle = elsewhere
+      ? `Найбільше досвіду в цьому — у майстринь інших студій`
+      : "Майстрині" + (studioName ? " студії «" + UI.esc(studioName) + "»" : "");
 
     UI.$(".js-quiz-title", modal).textContent = "Вам підійде";
-    const text = `Вітаю! Пройшла підбір на сайті Body Space. Мені підходить: ${svc.name}, ${dur} хв` +
-      (studioName ? `, студія ${studioName}` : "") + (two.length ? `. Хочу до майстрині: ${two.map((m) => m.name).join(" або ")}` : "") + ". Підкажіть, будь ласка, вільний час.";
+    const text = `Вітаю! Я з сайту Body Space, підбір порадив мені: ${svc.name}, ${dur} хв` +
+      (studioName && !elsewhere ? `, студія ${studioName}` : "") + (two.length ? `. Хочу до майстрині: ${two.map((m) => m.name).join(" або ")}` : "") + ". Підкажіть, будь ласка, вільний час.";
 
     body.innerHTML = `
       <div class="quiz__result">
@@ -110,7 +115,7 @@
           ${svc.price.all ? "" : `<div><span>${dur} хв · провідна</span><b>${UI.fmt(lead)} грн</b></div>`}
         </div>
         ${answers.pregnant === "yes" ? `<p class="quiz__note"><svg class="icon" aria-hidden="true"><use href="#i-leaf"/></svg>${UI.esc(BS.pregnancy.doctorNote)}</p>` : ""}
-        ${two.length ? `<p class="quiz__sub">Майстрині${studioName ? " студії «" + UI.esc(studioName) + "»" : ""}</p>
+        ${two.length ? `<p class="quiz__sub">${mastersTitle}</p>
         <ul class="quiz__masters">${two.map((m) => `<li>
             ${UI.img(m.photo, 360, 450, m.name, { cls: "no-bg" })}
             <span><b>${UI.esc(m.name)}</b><small>${UI.esc(BS.tiers[m.tier].name)} · ${m.studios.map((s) => BS.byId(BS.studios, s).short).join(", ")}</small></span>
@@ -123,7 +128,7 @@
         <button class="link-arrow js-quiz-restart" type="button">Пройти ще раз</button>
       </div>`;
     body.dataset.text = text;
-    if (answers.studio && answers.studio !== UI.studio) UI.setStudio(answers.studio);
+    if (answers.studio && !elsewhere && answers.studio !== UI.studio) UI.setStudio(answers.studio);
     UI.refreshBooking();
     bar();
   }
@@ -132,11 +137,17 @@
     const opt = e.target.closest(".quiz__opt");
     if (opt) {
       answers[opt.dataset.k] = opt.dataset.v;
-      UI.$$(`.quiz__opt[data-k="${opt.dataset.k}"]`, modal).forEach((b) => b.setAttribute("aria-checked", String(b === opt)));
+      UI.$$(`.quiz__opt[data-k="${opt.dataset.k}"]`, modal).forEach((b) => b.setAttribute("aria-pressed", String(b === opt)));
       const next = UI.$(".js-quiz-next", modal);
       if (next) next.disabled = !answers[STEPS[step].key];
-      // підказка лікаря одразу після «Так»
-      if (opt.dataset.k === "pregnant") renderStep();
+      // підказка лікаря після «Так» — без перемальовування, щоб фокус лишився на кнопці
+      if (opt.dataset.k === "pregnant") {
+        const note = UI.$(".quiz__note", body);
+        if (opt.dataset.v === "yes" && !note) {
+          UI.$(".quiz__options", body).insertAdjacentHTML("afterend",
+            `<p class="quiz__note"><svg class="icon" aria-hidden="true"><use href="#i-leaf"/></svg>${UI.esc(BS.pregnancy.doctorNote)}</p>`);
+        } else if (opt.dataset.v !== "yes" && note) note.remove();
+      }
       return;
     }
     if (e.target.closest(".js-quiz-next")) { step++; step >= 4 ? renderResult() : renderStep(); focusFirst(); return; }
@@ -154,4 +165,5 @@
   }
   window.BSQuiz = { open, pick };
   if (location.hash === "#pidbir") open();
+  window.addEventListener("hashchange", () => { if (location.hash === "#pidbir") open(); });
 })();

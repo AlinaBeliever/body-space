@@ -9,7 +9,7 @@
 
   const studioOf = (id) => BS.byId(BS.studios, id);
   const reviewsOf = (m) => BS.reviews.filter((r) => r.master === m.id);
-  const stars = (n) => (n ? `<span class="stars" aria-label="${n} з 5">${"★".repeat(n)}${"☆".repeat(5 - n)}</span>` : "");
+  const stars = (n) => (n ? `<span class="stars" role="img" aria-label="Оцінка ${n} з 5">${"★".repeat(n)}${"☆".repeat(5 - n)}</span>` : "");
   const MONTHS = ["січня", "лютого", "березня", "квітня", "травня", "червня", "липня", "серпня", "вересня", "жовтня", "листопада", "грудня"];
 
   // «з вересня 2003 року · 23 роки практики» (рахується від поточного року за Києвом)
@@ -19,9 +19,13 @@
     return years >= 1 ? `${from} · ${years} ${UI.yearsWord(years)} практики` : from;
   }
 
-  /** Найкоротший змістовний відгук для картки */
-  function cardReview(m) {
-    const list = reviewsOf(m).filter((r) => r.text.length >= 30 && r.text.length <= 150);
+  /** Відгук для картки: спершу позначений card (без опечаток, що змінюють зміст), для сітки «вагітні» — з цим тегом */
+  function cardReview(m, tag) {
+    const all = reviewsOf(m);
+    if (tag) { const t = all.find((r) => (r.tags || []).includes(tag)); if (t) return t; }
+    const marked = all.find((r) => r.card);
+    if (marked) return marked;
+    const list = all.filter((r) => r.text.length >= 30 && r.text.length <= 150);
     list.sort((a, b) => (b.rating || 5) - (a.rating || 5) || b.text.length - a.text.length);
     return list[0] || reviewsOf(m)[0] || null;
   }
@@ -29,7 +33,7 @@
   function masterCard(m, opts = {}) {
     const tier = BS.tiers[m.tier];
     const studios = m.studios.map((s) => studioOf(s).short).join(" · ");
-    const rev = cardReview(m);
+    const rev = cardReview(m, opts.tag);
     const days = m.days && m.days.length
       ? `<ul class="master-card__days" aria-label="Робочі дні">${m.days.map((d) => `<li>${UI.esc(d)}</li>`).join("")}</ul>` : "";
     const hands = m.handsPhoto
@@ -49,7 +53,7 @@
         <blockquote class="master-card__quote"><p>${UI.esc(m.quote)}</p></blockquote>
         ${rev ? `<figure class="master-card__review"><figcaption>${stars(rev.rating)}${rev.date ? ` <span>${UI.fmtDate(rev.date)}</span>` : ""}</figcaption><blockquote><p>«${UI.esc(rev.text)}»</p></blockquote></figure>` : ""}
         <div class="master-card__actions">
-          <a class="btn btn--block js-book" data-master="${m.id}" href="${BS.brand.direct}">Записатися до ${UI.esc(m.nameTo)}</a>
+          <a class="btn btn--block js-book" data-master="${m.id}"${opts.studio && m.studios.includes(opts.studio) ? ` data-studio="${opts.studio}"` : ""} href="${BS.brand.direct}">Записатися до ${UI.esc(m.nameTo)}</a>
           ${opts.more ? `<button class="link-arrow js-master-more" type="button" data-id="${m.id}">Усі відгуки (${reviewsOf(m).length})<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>` : ""}
         </div>
       </div>
@@ -93,8 +97,7 @@
   /* ---------- Відгук у фокусі ---------- */
   UI.$$(".js-review").forEach((box) => {
     const filter = box.dataset.tag || null;
-    let list = BS.reviews.filter((r) => r.featured && (!filter || (r.tags || []).includes(filter)));
-    if (filter) list = BS.reviews.filter((r) => (r.tags || []).includes(filter));
+    let list = filter ? BS.reviews.filter((r) => (r.tags || []).includes(filter)) : BS.reviews.filter((r) => r.featured);
     // першим — відгук про «поруч з домом»: це головна ідея Body Space
     list.sort((a, b) => (b.nearHome ? 1 : 0) - (a.nearHome ? 1 : 0));
     if (!list.length) { box.hidden = true; return; }
@@ -138,7 +141,8 @@
   UI.$$(".js-masters-grid").forEach((grid) => {
     const spec = grid.dataset.spec;
     const list = BS.masters.filter((m) => m.specs.includes(spec));
-    grid.innerHTML = list.map((m) => masterCard(m, { cls: "reveal" })).join("");
+    grid.innerHTML = list.map((m) => masterCard(m, { cls: "reveal", tag: spec })).join("");
+    grid.classList.toggle("team-grid--single", list.length === 1);
     UI.refreshBooking();
     UI.observeReveal(grid);
   });
@@ -156,7 +160,7 @@
         <div class="mm__photo">${UI.img(m.photo, 360, 450, m.name, { cls: "no-bg" })}</div>
         <div class="mm__info">
           <p class="master-card__since">${UI.esc(sinceLabel(m))}</p>
-          ${m.education ? `<p><b>Освіта:</b> ${UI.esc(m.education)}</p>` : ""}
+          ${m.education ? `<p><b>Освіта:</b> ${UI.esc(m.education)}${/курс/.test(m.education) ? "" : " освіта"}</p>` : ""}
           ${m.bio ? `<p>${UI.esc(m.bio)}</p>` : ""}
           <blockquote class="master-card__quote"><p>${UI.esc(m.quote)}</p></blockquote>
           <div class="mm__book">${m.studios.map((s) => `<a class="btn btn--sm js-book" data-master="${m.id}" data-studio="${s}" href="${BS.brand.direct}">Записатися · ${UI.esc(studioOf(s).short)}</a>`).join("")}</div>
@@ -204,9 +208,9 @@
         list = BS.masters.filter((m) => !sp || m.specs.includes(sp));
         noteText = `У студії «${studioOf(st).short}» цим займаються майстрині з інших студій — ось вони. Або напишіть нам у Direct, підберемо зручний варіант.`;
       }
-      teamGrid.innerHTML = list.map((m) => masterCard(m, { more: true })).join("");
+      teamGrid.innerHTML = list.map((m) => masterCard(m, { more: true, studio: st })).join("");
       count.textContent = noteText ? noteText : `Показано майстринь: ${list.length}`;
-      if (note) note.textContent = "Чипів робочих днів і фото рук поки немає — додамо, щойно студія їх надішле.";
+      if (note) note.textContent = "Вільні дні й години кожної майстрині видно в онлайн-записі.";
       UI.refreshBooking();
       try {
         const u = new URL(location.href);
@@ -217,7 +221,7 @@
     }
     UI.$(".js-team-filters").addEventListener("click", (e) => {
       const a = e.target.closest("[data-studio]"), b = e.target.closest("[data-spec]");
-      if (a) { st = a.dataset.studio; if (st) UI.setStudio(st); }
+      if (a) st = a.dataset.studio; // фільтр не змінює «вашу студію» в шапці — запис іде в студію фільтра
       if (b) sp = b.dataset.spec;
       if (a || b) { chips(); render(); }
       if (e.target.closest(".js-team-share")) {
@@ -239,7 +243,7 @@
       const st = UI.openStatus(s);
       const q = encodeURIComponent("Київ, " + s.address);
       const team = BS.masters.filter((m) => m.studios.includes(s.id));
-      const g = s.google ? `<p class="studio-sec__rating"><b>${s.google.rating.toFixed(1).replace(".", ",")}</b> <span class="stars" aria-hidden="true">★★★★★</span> ${s.google.count} відгуків у Google</p>` : "";
+      const g = s.google ? `<p class="studio-sec__rating"><b>${s.google.rating.toFixed(1).replace(".", ",")}</b> <span class="stars" aria-hidden="true">★★★★★</span> ${s.google.count} ${UI.reviewsWord(s.google.count)} у Google</p>` : "";
       return `<section class="section studio-sec${i % 2 ? " section--beige" : ""}" id="${s.id}" data-line="${i % 2 ? "right" : "left"}" aria-labelledby="st-${s.id}">
         <div class="container studio-sec__grid">
           <div class="studio-sec__info reveal">
@@ -250,7 +254,7 @@
             <p class="studio-sec__hours"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>${UI.esc(s.days)} · ${s.hours[0]}:00–${s.hours[1]}:00 <span class="status js-status ${st.open ? "" : "is-closed"}" data-studio="${s.id}">${st.text}</span></p>
             ${g}
             <div class="studio-sec__how"><p class="toggle-label">Як дістатися</p>
-              <p>${s.howToGet ? UI.esc(s.howToGet) : "Детальна підказка про вхід і паркінг — скоро. А поки напишіть у Direct, проведемо до дверей."}</p></div>
+              <p>${s.howToGet ? UI.esc(s.howToGet) : "Напишіть нам у Direct перед першим візитом — підкажемо вхід і де залишити авто, проведемо до дверей."}</p></div>
             <div class="studio-sec__actions">
               <a class="btn js-book" data-studio="${s.id}" href="${BS.brand.direct}">Записатися сюди</a>
               <a class="btn btn--ghost" href="https://www.google.com/maps/dir/?api=1&destination=${q}" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg>Маршрут</a>
@@ -258,21 +262,30 @@
             </div>
           </div>
           <div class="studio-sec__media reveal">
-            <div class="studio-sec__map"><iframe title="Карта: ${UI.esc(s.label)}" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-              src="https://maps.google.com/maps?q=${q}&z=16&output=embed" width="600" height="420"></iframe></div>
-            <div class="studio-sec__photos">${s.entrancePhoto ? UI.img(s.entrancePhoto, 720, 540, "Вхід у студію " + s.short) : UI.placeholder("Фото входу — від студії")}${s.interiorPhotos[0] ? UI.img(s.interiorPhotos[0], 720, 540, "Інтер’єр " + s.short) : UI.placeholder("Інтер’єр — від студії")}</div>
+            <div class="studio-sec__map"><button class="map-facade js-map" type="button" data-src="https://maps.google.com/maps?q=${q}&z=16&output=embed" data-title="Карта: ${UI.esc(s.label)}">
+              <svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg>Показати на карті</button></div>
+            <div class="studio-sec__photos">${s.entrancePhoto ? UI.img(s.entrancePhoto, 720, 540, "Вхід у студію " + s.short) : s.interiorPhotos[0] ? UI.img(s.interiorPhotos[0], 720, 540, "Інтер’єр " + s.short) : UI.placeholder("Фото від студії")}</div>
           </div>
           <div class="studio-sec__team reveal">
             <p class="toggle-label">Майстрині студії</p>
             <ul class="mini-team">${team.map((m) => `<li>
-              <span class="mini-team__photo">${UI.img(m.photo, 360, 450, "", { cls: "no-bg" })}</span>
+              <span class="mini-team__photo">${UI.img(m.photo, 360, 450, m.name, { cls: "no-bg" })}</span>
               <span class="mini-team__name"><b>${UI.esc(m.name)}</b><small>${UI.esc(BS.tiers[m.tier].name)}</small></span>
-              <a class="btn btn--sm btn--ghost js-book" data-master="${m.id}" data-studio="${s.id}" href="${BS.brand.direct}">Записатися</a></li>`).join("")}</ul>
+              <a class="btn btn--sm btn--ghost js-book" data-master="${m.id}" data-studio="${s.id}" href="${BS.brand.direct}">До ${UI.esc(m.nameTo)}</a></li>`).join("")}</ul>
           </div>
         </div>
       </section>`;
     }).join("");
     UI.refreshBooking();
     UI.observeReveal(secBox);
+    // Карта Google вантажиться лише після натискання — сторінка лишається швидкою
+    secBox.addEventListener("click", (e) => {
+      const b = e.target.closest(".js-map");
+      if (!b) return;
+      const f = document.createElement("iframe");
+      f.src = b.dataset.src; f.title = b.dataset.title; f.width = 600; f.height = 420;
+      f.referrerPolicy = "no-referrer-when-downgrade";
+      b.replaceWith(f);
+    });
   }
 })();

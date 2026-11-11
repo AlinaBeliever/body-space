@@ -25,7 +25,7 @@
 
   const isMama = (() => { try { return new URLSearchParams(location.search).get("for") === "mama"; } catch (e) { return false; } })();
   const state = {
-    proc: isMama ? 8 : 0, design: isMama ? "candle" : "forest",
+    proc: isMama ? PROCS.findIndex((p) => p.s.id === "vagitni-zahalnyi") : 0, design: isMama ? "candle" : "forest",
     format: BS.certificate.formats[0], pickup: UI.studio || BS.studios[0].id
   };
   if (isMama) form.wish.value = "Для майбутньої мами — з турботою";
@@ -34,12 +34,12 @@
   const procPrice = (p) => BS.priceOf(p.s, "top", p.d);
 
   UI.$(".js-cert-proc").innerHTML = PROCS.map((p, i) =>
-    `<button class="chip" type="button" role="radio" aria-checked="${i === state.proc}" data-i="${i}"><svg class="leaf-mark" aria-hidden="true"><use href="#i-leaf"/></svg>${UI.esc(p.s.name)} · ${p.d} хв</button>`).join("");
+    `<button class="chip" type="button" aria-pressed="${i === state.proc}" data-i="${i}"><svg class="leaf-mark" aria-hidden="true"><use href="#i-leaf"/></svg>${UI.esc(p.s.name)} · ${p.d} хв</button>`).join("");
   UI.$(".js-cert-design").innerHTML = DESIGNS.map((d) =>
-    `<button class="cert-swatch ${d.cls}" type="button" role="radio" aria-checked="${d.id === state.design}" data-d="${d.id}"><span>${d.name}</span></button>`).join("");
+    `<button class="cert-swatch ${d.cls}" type="button" aria-pressed="${d.id === state.design}" data-d="${d.id}"><span>${d.name}</span></button>`).join("");
   UI.$(".js-wish-ideas").innerHTML = WISHES.map((w) => `<button class="chip" type="button" data-w="${UI.esc(w)}">${UI.esc(w)}</button>`).join("");
   UI.$(".js-cert-format").innerHTML = BS.certificate.formats.map((f) =>
-    `<button class="chip" type="button" role="radio" aria-checked="${f === state.format}" data-f="${UI.esc(f)}"><svg class="leaf-mark" aria-hidden="true"><use href="#i-leaf"/></svg>${UI.esc(f)}</button>`).join("");
+    `<button class="chip" type="button" aria-pressed="${f === state.format}" data-f="${UI.esc(f)}"><svg class="leaf-mark" aria-hidden="true"><use href="#i-leaf"/></svg>${UI.esc(f)}</button>`).join("");
   form.pickup.innerHTML = BS.studios.map((s) => `<option value="${s.id}">${UI.esc(s.label)}</option>`).join("");
   form.pickup.value = state.pickup;
   UI.$(".js-cert-days").textContent = BS.certificate.validityDays;
@@ -71,7 +71,7 @@
 
   form.addEventListener("click", (e) => {
     const c = e.target.closest("[data-i]"), d = e.target.closest("[data-d]"), f = e.target.closest("[data-f]"), w = e.target.closest("[data-w]");
-    const check = (sel, el) => UI.$$(sel, form).forEach((x) => x.setAttribute("aria-checked", String(x === el)));
+    const check = (sel, el) => UI.$$(sel, form).forEach((x) => x.setAttribute("aria-pressed", String(x === el)));
     if (c) { state.proc = Number(c.dataset.i); check("[data-i]", c); }
     if (d) { state.design = d.dataset.d; check("[data-d]", d); }
     if (f) { state.format = f.dataset.f; check("[data-f]", f); }
@@ -121,7 +121,7 @@
       });
       if (!res.ok) throw new Error(res.status);
       UI.toast("Дякуємо! Заявку надіслано — ми напишемо вам найближчим часом");
-      form.reset(); render();
+      form.reset(); form.pickup.value = state.pickup; render();
     } catch (er) {
       UI.toast("Не вдалося надіслати — оформимо в Direct");
       UI.copyAndOpenDirect(summary());

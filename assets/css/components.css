@@ -72,7 +72,7 @@
 .site-header.is-scrolled { border-bottom-color: var(--forest-08); }
 .site-header .container { height: 100%; display: flex; align-items: center; gap: var(--s-4); }
 
-.logo { display: inline-flex; align-items: center; gap: .55rem; text-decoration: none; color: var(--forest-deep); flex: none; }
+.logo { min-height: 44px; display: inline-flex; align-items: center; gap: .55rem; text-decoration: none; color: var(--forest-deep); flex: none; }
 .logo svg { width: 22px; height: 30px; color: var(--forest); }
 .logo span { font-family: var(--font-serif); font-weight: 500; font-size: 1.05rem; line-height: .9; letter-spacing: .08em; text-transform: uppercase; }
 @media (min-width: 768px) { .logo span { font-size: 1.2rem; } }
@@ -120,7 +120,7 @@
 /* ---------- Мобільна смуга «Записатися →» ---------- */
 .book-bar {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 45;
-  padding: 8px var(--gutter) calc(8px + env(safe-area-inset-bottom));
+  padding: 8px max(var(--gutter), env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) max(var(--gutter), env(safe-area-inset-left));
   background: rgba(247, 242, 232, .97); border-top: 1px solid var(--forest-08);
   transition: transform var(--t-mid) var(--ease);
 }
@@ -137,7 +137,7 @@
   border-radius: var(--r-pill); background: var(--forest-08);
 }
 .toggle button {
-  min-height: 40px; padding: .45rem 1.05rem; border: 0; border-radius: var(--r-pill);
+  min-height: 44px; padding: .45rem 1.05rem; border: 0; border-radius: var(--r-pill);
   background: transparent; color: var(--muted); font-weight: 600; font-size: var(--fs-sm);
   transition: background var(--t-fast) var(--ease), color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
 }
@@ -177,7 +177,7 @@
   background: var(--white); box-shadow: var(--shadow-sm);
   font-size: var(--fs-xs); font-weight: 600; color: var(--forest-deep); text-decoration: none;
 }
-.rating-pill .stars { color: var(--sand); letter-spacing: 1px; font-size: .9rem; }
+.rating-pill .stars { color: var(--sand-ink); letter-spacing: 1px; font-size: .9rem; }
 .rating-pill b { font-family: var(--font-serif); font-size: 1.15rem; font-weight: 600; }
 .g-badge { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--cream); font-family: var(--font-serif); font-weight: 600; color: var(--forest); }
 
@@ -196,7 +196,7 @@
   color: var(--olive); text-align: center;
 }
 .ph svg { width: 34px; height: 46px; opacity: .8; }
-.ph span { font-size: .72rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--sand-ink); }
+.ph span { font-size: .75rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--sand-ink); }
 
 /* ---------- Рамки фото ---------- */
 .frame-arch { border-radius: var(--r-arch); overflow: hidden; }

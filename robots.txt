@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /docs/
 
 Sitemap: https://bodyspace.netlify.app/sitemap.xml

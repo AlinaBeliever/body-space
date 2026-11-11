@@ -12,13 +12,16 @@
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* ---------- Збереження (localStorage може бути недоступний) ---------- */
+  // Якщо браузер блокує localStorage — тримаємо вибір у пам'яті сторінки
+  const mem = {};
   const store = {
     get(key, fallback = null) {
-      try { const v = localStorage.getItem("bs:" + key); return v === null ? fallback : JSON.parse(v); }
-      catch (e) { return fallback; }
+      try { const v = localStorage.getItem("bs:" + key); if (v !== null) return JSON.parse(v); } catch (e) { /* немає сховища */ }
+      return key in mem ? mem[key] : fallback;
     },
     set(key, value) {
-      try { localStorage.setItem("bs:" + key, JSON.stringify(value)); } catch (e) { /* без збереження */ }
+      mem[key] = value;
+      try { localStorage.setItem("bs:" + key, JSON.stringify(value)); } catch (e) { /* лише в пам'яті */ }
     }
   };
 
@@ -62,7 +65,8 @@
     try {
       const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
       if (tz === "Europe/Kyiv" || tz === "Europe/Kiev") return false;
-      const off = (zone) => new Date(new Date().toLocaleString("en-US", { timeZone: zone })).getTime();
+      const now = new Date();
+      const off = (zone) => new Date(now.toLocaleString("en-US", { timeZone: zone })).getTime();
       return off("Europe/Kyiv") !== off(tz);
     } catch (e) { return false; }
   })();
@@ -110,9 +114,23 @@
     const m = masterId ? BS.byId(BS.masters, masterId) : null;
     return m ? m.studios : null;
   }
+  /** Студії, де є послуга. Ендосфера — лише там, де працює майстриня з ендосферою. */
+  function serviceStudios(serviceId) {
+    const s = serviceId ? BS.byId(BS.services, serviceId) : null;
+    if (!s || (s.cat !== "endosfera" && !/endosfera/.test(s.id))) return null;
+    const ids = new Set();
+    BS.masters.filter((m) => m.specs.includes("endosfera")).forEach((m) => m.studios.forEach((x) => ids.add(x)));
+    return ids.size ? [...ids] : null;
+  }
   function targetFor(el) {
     const masterId = el.dataset.master || null;
     const fixedStudio = el.dataset.studio || null;
+    const ss = serviceStudios(el.dataset.service);
+    if (ss && !masterId && !fixedStudio) {
+      if (currentStudio && ss.includes(currentStudio)) return { studio: currentStudio, master: null };
+      if (ss.length === 1) return { studio: ss[0], master: null };
+      return null;
+    }
     const ms = masterStudios(masterId);
     if (fixedStudio) return { studio: fixedStudio, master: masterId };
     if (ms && ms.length === 1) return { studio: ms[0], master: masterId };
@@ -144,7 +162,7 @@
     const t = targetFor(a);
     if (t) return; // звичайне посилання в Altegio
     e.preventDefault();
-    openStudioSheet({ mode: "book", master: a.dataset.master || null, trigger: a });
+    openStudioSheet({ mode: "book", master: a.dataset.master || null, service: a.dataset.service || null, trigger: a });
   });
 
   /* ---------- Модальні вікна: пастка фокусу, Esc ---------- */
@@ -154,8 +172,10 @@
 
   function openModal(modal, trigger) {
     if (!modal) return;
-    if (activeModal) closeModal(true);
-    lastFocus = trigger || document.activeElement;
+    // відкриваємо вікно з іншого вікна — фокус потім повернемо туди, звідки відкрили перше
+    const returnTo = activeModal ? lastFocus : (trigger || document.activeElement);
+    if (activeModal) closeModal(true, false);
+    lastFocus = returnTo;
     activeModal = modal;
     modal.hidden = false;
     if (overlay) overlay.hidden = false;
@@ -166,7 +186,7 @@
     const first = $$(FOCUSABLE, modal).find((el) => !el.classList.contains("close-btn")) || modal;
     first.focus({ preventScroll: true });
   }
-  function closeModal(instant) {
+  function closeModal(instant, restoreFocus = true) {
     if (!activeModal) return;
     const modal = activeModal;
     activeModal = null;
@@ -175,7 +195,8 @@
     document.body.style.overflow = "";
     const done = () => { modal.hidden = true; if (overlay && !activeModal) overlay.hidden = true; };
     if (instant || reducedMotion) done(); else setTimeout(done, 380);
-    if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+    if (lastFocus && lastFocus.hasAttribute && lastFocus.hasAttribute("aria-expanded")) lastFocus.setAttribute("aria-expanded", "false");
+    if (restoreFocus && lastFocus && lastFocus.isConnected && lastFocus.focus) lastFocus.focus({ preventScroll: true });
   }
   document.addEventListener("keydown", (e) => {
     if (!activeModal) return;
@@ -198,7 +219,7 @@
     const list = $(".js-studio-list", sheet);
     if (!list) return;
     let studios = BS.studios.slice();
-    const ms = masterStudios(sheetCtx.master);
+    const ms = masterStudios(sheetCtx.master) || serviceStudios(sheetCtx.service);
     if (ms) studios = studios.filter((s) => ms.includes(s.id));
     if (userPos) studios.sort((a, b) => distanceKm(userPos, a) - distanceKm(userPos, b));
     const master = sheetCtx.master ? BS.byId(BS.masters, sheetCtx.master) : null;
@@ -227,7 +248,7 @@
   }
   function openStudioSheet(ctx = {}) {
     if (!sheet) return;
-    sheetCtx = { mode: ctx.mode || "select", master: ctx.master || null };
+    sheetCtx = { mode: ctx.mode || "select", master: ctx.master || null, service: ctx.service || null };
     renderStudioList();
     openModal(sheet, ctx.trigger);
   }
@@ -342,7 +363,8 @@
       svg.setAttribute("width", W); svg.setAttribute("height", H);
       const cont = document.querySelector(".container");
       const contW = cont ? cont.getBoundingClientRect().width : W;
-      const side = Math.max(9, (W - contW) / 2 + (W < 768 ? 7 : 14));
+      const mobile = W < 768;
+      const side = mobile ? 6 : Math.max(9, (W - contW) / 2 + 14); // на мобільному — у полі, не торкаючись літер
       const X = { left: side, right: W - side };
 
       const secs = $$("[data-line]", page).filter((s) => s.dataset.line !== "end");
@@ -356,8 +378,16 @@
       const er = end.getBoundingClientRect();
       const ex = er.left + er.width / 2 - pr.left, ey = er.top + window.scrollY - top0 + er.height / 2;
 
-      // старт: м'яка хвиля в герої (як неон на стіні студії)
-      let d = `M ${X.right} ${pts.length ? pts[0].a - 40 : 0}`;
+      // старт: лінія «виходить» з неону на фото стіни студії в герої
+      const arch = $(".hero__arch");
+      let d;
+      if (arch && pts.length) {
+        const ar = arch.getBoundingClientRect();
+        const sx = ar.right - pr.left - 2, sy = ar.top + window.scrollY - top0 + ar.height * 0.3;
+        d = `M ${sx} ${sy} C ${sx + 30} ${sy}, ${X.right} ${sy + 10}, ${X.right} ${sy + 70}`;
+      } else {
+        d = `M ${X.right} ${pts.length ? pts[0].a - 40 : 0}`;
+      }
       pts.forEach((p, i) => {
         if (i === 0) { d += ` L ${p.x} ${p.b}`; return; }
         const prev = pts[i - 1];
@@ -366,7 +396,7 @@
         d += ` C ${prev.x} ${midY}, ${p.x} ${midY}, ${p.x} ${p.a}`;
         // невелика «неонова» хвиля всередині секції
         const len = p.b - p.a;
-        if (len > 260) {
+        if (len > 260 && !mobile) {
           const amp = (p.x < W / 2 ? 1 : -1) * Math.min(26, side * 0.9);
           const y1 = p.a + len * 0.33, y2 = p.a + len * 0.66;
           d += ` C ${p.x} ${y1 - 40}, ${p.x + amp} ${y1 - 30}, ${p.x + amp} ${y1}`;
@@ -375,8 +405,11 @@
         d += ` L ${p.x} ${p.b}`;
       });
       const last = pts[pts.length - 1] || { x: X.left, b: 0 };
-      const midY = (last.b + ey) / 2;
-      d += ` C ${last.x} ${midY}, ${ex - (ex > last.x ? 120 : -120)} ${ey}, ${er.left - pr.left - 6} ${ey}`;
+      // до кнопки — полем вниз до її рівня, потім горизонтально: заголовок над кнопкою не перетинаємо
+      const fromLeft = last.x < ex;
+      const endX = fromLeft ? er.left - pr.left - 6 : er.right - pr.left + 6;
+      const turn = fromLeft ? 48 : -48;
+      d += ` L ${last.x} ${ey - 48} Q ${last.x} ${ey}, ${last.x + turn} ${ey} L ${endX} ${ey}`;
 
       svg.innerHTML = "";
       const defs = document.createElementNS(NS, "defs");
@@ -397,7 +430,7 @@
       glow.setAttribute("d", d); glow.setAttribute("class", "glow-line__glow"); glow.setAttribute("clip-path", "url(#glow-clip)");
       svg.appendChild(base); svg.appendChild(glow);
       const dot = document.createElementNS(NS, "circle");
-      dot.setAttribute("cx", er.left - pr.left - 6); dot.setAttribute("cy", ey); dot.setAttribute("r", 4);
+      dot.setAttribute("cx", endX); dot.setAttribute("cy", ey); dot.setAttribute("r", 4);
       dot.setAttribute("class", "glow-line__dot"); svg.appendChild(dot);
 
       total = base.getTotalLength();
@@ -436,7 +469,7 @@
       const count = g.reduce((a, s) => a + s.google.count, 0);
       const min = Math.min(...g.map((s) => s.google.rating)), max = Math.max(...g.map((s) => s.google.rating));
       const r = (x) => x.toFixed(1).replace(".", ",");
-      el.innerHTML = `<span class="g-badge" aria-hidden="true">G</span><span><b>${r(min)}–${r(max)}</b> <span class="stars" aria-hidden="true">★★★★★</span><br>${count} відгуків у Google</span>`;
+      el.innerHTML = `<span class="g-badge" aria-hidden="true">G</span><span><b>${r(min)}–${r(max)}</b> <span class="stars" aria-hidden="true">★★★★★</span><br>${count} ${reviewsWord(count)} у Google</span>`;
       el.setAttribute("aria-label", `Рейтинг у Google від ${r(min)} до ${r(max)}, ${count} відгуків`);
     });
   }
@@ -453,10 +486,16 @@
         </div>`;
       }).join("");
     }
+    const [o, c] = BS.studios[0].hours;
+    $$(".js-hours").forEach((el) => { el.textContent = `Щодня ${o}:00–${c}:00`; });
+    // посилання на соцмережі й Altegio — з data.js (у HTML лише запасні значення)
+    const LINKS = { "https://ig.me/m/body__space": BS.brand.direct, "https://t.me/+OLutqxuYHAtlZDY6": BS.brand.telegram,
+      "https://www.instagram.com/body__space/": BS.brand.instagram, "https://n803030.alteg.io/select-city/4/select-branch": BS.brand.altegioNetwork };
+    $$("a[href]").forEach((a) => { const u = LINKS[a.getAttribute("href")]; if (u && !a.classList.contains("js-book")) a.href = u; });
     const rules = $(".js-footer-rules");
     if (rules) {
       rules.innerHTML = [
-        "Перенесення — щонайпізніше за 6 годин",
+        "Перенести чи скасувати — не пізніше ніж за 6 годин до візиту",
         `Курс: 5 візитів — ${BS.courses.validity[5]} днів, 10 — ${BS.courses.validity[10]} днів`,
         `Сертифікат діє ${BS.certificate.validityDays} днів`
       ].map((t) => `<li>${esc(t)}</li>`).join("");
@@ -483,6 +522,13 @@
     try { return new Intl.DateTimeFormat("uk-UA", { day: "numeric", month: "long", year: "numeric" }).format(new Date(iso + "T12:00:00")).replace(" р.", ""); }
     catch (e) { return iso; }
   };
+  const plural = (n, one, few, many) => {
+    const a = n % 10, b = n % 100;
+    if (a === 1 && b !== 11) return one;
+    if (a >= 2 && a <= 4 && (b < 12 || b > 14)) return few;
+    return many;
+  };
+  const reviewsWord = (n) => plural(n, "відгук", "відгуки", "відгуків");
   const yearsWord = (n) => {
     const a = n % 10, b = n % 100;
     if (a === 1 && b !== 11) return "рік";
@@ -494,7 +540,7 @@
   window.BSUI = {
     $, $$, store, fmt, esc, rollNumber, kyivNow, openStatus, distanceKm, setStudio,
     get studio() { return currentStudio; }, studioName, studioTitle, openStudioSheet, openModal, closeModal,
-    toast, copyAndOpenDirect, observeReveal, placeholder, img, getTier, setTier, fmtDate, yearsWord, kyivYear,
+    toast, copyAndOpenDirect, observeReveal, placeholder, img, getTier, setTier, fmtDate, yearsWord, reviewsWord, kyivYear, serviceStudios,
     refreshBooking, reducedMotion
   };
 
@@ -512,7 +558,7 @@
     box.innerHTML = list.map((s) => {
       const st = openStatus(s);
       const n = String(BS.studios.indexOf(s) + 1).padStart(2, "0");
-      const g = s.google ? `<span class="studio-card__rating"><b>${s.google.rating.toFixed(1).replace(".", ",")}</b> ★ · ${s.google.count} у Google</span>` : "";
+      const g = s.google ? `<span class="studio-card__rating"><b>${s.google.rating.toFixed(1).replace(".", ",")}</b> ★ · ${s.google.count} ${reviewsWord(s.google.count)} у Google</span>` : "";
       const hasPhoto = s.interiorPhotos && s.interiorPhotos[0];
       // Поки немає фото інтер'єру — типографічна картка (TODO власниця: фото студій)
       const media = hasPhoto
@@ -570,6 +616,7 @@
   function quickbook() {
     const form = $(".js-quickbook");
     if (!form) return;
+    form.addEventListener("submit", (e) => e.preventDefault());
     const sSel = $(".js-qb-studio", form), vSel = $(".js-qb-service", form), mSel = $(".js-qb-master", form), go = $(".js-qb-go", form);
     const MAIN = ["spyna", "zahalnyi", "relaks", "sportyvnyi", "oblychchia", "limfodrenazh", "antytselulitnyi", "endosfera-test", "endosfera", "vagitni-spyna", "vagitni-zahalnyi"];
     sSel.innerHTML = `<option value="">Оберіть студію</option>` + BS.studios.map((s) => `<option value="${s.id}">${esc(s.label)}</option>`).join("");

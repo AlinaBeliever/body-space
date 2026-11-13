@@ -146,7 +146,7 @@
       const t = targetFor(el);
       const label = el.querySelector(".js-book-studio");
       if (t) {
-        el.href = BS.bookingUrl(t.studio, t.master);
+        el.href = BS.bookingUrl(t.studio, t.master, el.dataset.service || null);
         el.target = "_blank"; el.rel = "noopener";
         const st = BS.byId(BS.studios, t.studio);
         if (label && !el.dataset.master) label.textContent = " · " + studioName(st);
@@ -235,7 +235,7 @@
         <span class="studio-option__go" aria-hidden="true"><svg class="icon"><use href="#i-arrow"/></svg></span>`;
       const cur = s.id === currentStudio ? " is-current" : "";
       if (sheetCtx.mode === "book") {
-        return `<li><a class="studio-option${cur}" href="${esc(BS.bookingUrl(s.id, master && master.id))}" target="_blank" rel="noopener" data-studio="${s.id}">${inner}</a></li>`;
+        return `<li><a class="studio-option${cur}" href="${esc(BS.bookingUrl(s.id, master && master.id, sheetCtx.service))}" target="_blank" rel="noopener" data-studio="${s.id}">${inner}</a></li>`;
       }
       return `<li><button class="studio-option${cur}" type="button" data-studio="${s.id}" aria-pressed="${s.id === currentStudio}">${inner}</button></li>`;
     }).join("");
@@ -440,7 +440,7 @@
       return `<article class="studio-card reveal${hasPhoto ? "" : " studio-card--text"}${s.id === currentStudio ? " is-current" : ""}">
         ${media}
         <div class="studio-card__body">
-          <p class="studio-card__num">${n}${s.id === currentStudio ? ‘ <span class="tag studio-card__mine">Ваша студія</span>’ : ""}</p>
+          <p class="studio-card__num">${n}${s.id === currentStudio ? ' <span class="tag studio-card__mine">Ваша студія</span>' : ""}</p>
           <h3 class="studio-card__name">${studioTitle(s)}</h3>
           <p class="studio-card__addr">${esc(s.address)}</p>
           <p class="studio-card__landmark small muted">${esc(s.landmark || "")}</p>
@@ -510,7 +510,7 @@
     }
     function update() {
       const st = sSel.value || (mSel.value ? BS.byId(BS.masters, mSel.value).studios[0] : "");
-      if (st) { go.href = BS.bookingUrl(st, mSel.value || null); go.target = "_blank"; go.classList.remove("is-muted"); }
+      if (st) { go.href = BS.bookingUrl(st, mSel.value || null, vSel.value || null); go.target = "_blank"; go.classList.remove("is-muted"); }
       else { go.href = BS.brand.direct; go.removeAttribute("target"); go.classList.add("is-muted"); }
     }
     sSel.value = currentStudio || "";

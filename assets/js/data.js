@@ -703,14 +703,18 @@
   /* ---------- Допоміжні функції ---------- */
   const byId = (list, id) => list.find((x) => x.id === id) || null;
 
-  /** Посилання на запис в Altegio: студія + (необов’язково) майстриня. */
-  function bookingUrl(studioId, masterId) {
+  /** Посилання на запис в Altegio: студія + (необов’язково) майстриня + послуга.
+      ID послуги береться з service.altegio[studioId] (спільне число — service.altegioId); якщо його немає — послугу не передаємо. */
+  function bookingUrl(studioId, masterId, serviceId) {
     const studio = byId(studios, studioId);
     if (!studio || !studio.altegioId) return brand.direct;
     let url = brand.altegioBase + studio.altegioId + "/personal/menu";
     const master = masterId ? byId(masters, masterId) : null;
     const mId = master && master.altegio ? master.altegio[studioId] : null;
-    if (mId) url += "?o=m" + mId;
+    const svc = serviceId ? byId(services, serviceId) : null;
+    const sId = svc ? ((svc.altegio && svc.altegio[studioId]) || svc.altegioId || null) : null;
+    const o = (mId ? "m" + mId : "") + (sId ? "s" + sId : "");
+    if (o) url += "?o=" + o;
     return url;
   }
 

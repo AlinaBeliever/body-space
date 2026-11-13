@@ -169,9 +169,6 @@
   background: var(--white); box-shadow: var(--shadow-sm);
   font-size: var(--fs-xs); font-weight: 600; color: var(--forest-deep); text-decoration: none;
 }
-.rating-pill .stars { color: var(--sand-ink); letter-spacing: 1px; font-size: .9rem; }
-.rating-pill b { font-family: var(--font-serif); font-size: 1.15rem; font-weight: 600; }
-.g-badge { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--cream); font-family: var(--font-serif); font-weight: 600; color: var(--forest); }
 
 .status { display: inline-flex; align-items: center; gap: .45rem; font-size: var(--fs-xs); font-weight: 600; color: var(--forest); }
 .status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #3F8F5A; box-shadow: 0 0 0 4px rgba(63, 143, 90, .15); }

@@ -241,9 +241,7 @@
     if (anchors) anchors.innerHTML = BS.studios.map((s) => `<a class="chip" href="#${s.id}">${UI.esc(s.short)}</a>`).join("");
     secBox.innerHTML = BS.studios.map((s, i) => {
       const st = UI.openStatus(s);
-      const q = encodeURIComponent("Київ, " + s.address);
       const team = BS.masters.filter((m) => m.studios.includes(s.id));
-      const g = s.google && s.google.count >= 5 ? `<p class="studio-sec__rating"><b>${s.google.rating.toFixed(1).replace(".", ",")}</b> <span class="stars" aria-hidden="true">★★★★★</span> ${s.google.count} ${UI.reviewsWord(s.google.count)} у Google</p>` : "";
       return `<section class="section studio-sec${i % 2 ? " section--beige" : ""}" id="${s.id}" data-line="${i % 2 ? "right" : "left"}" aria-labelledby="st-${s.id}">
         <div class="container studio-sec__grid">
           <div class="studio-sec__info reveal">
@@ -252,17 +250,13 @@
             <p class="studio-sec__addr">${UI.esc(s.address)}</p>
             <p class="muted">${UI.esc(s.landmark || "")}</p>
             <p class="studio-sec__hours"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>${UI.esc(s.days)} · ${s.hours[0]}:00–${s.hours[1]}:00 <span class="status js-status ${st.open ? "" : "is-closed"}" data-studio="${s.id}">${st.text}</span></p>
-            ${g}
             ${s.howToGet ? `<div class="studio-sec__how"><p class="toggle-label">Як дістатися</p><p>${UI.esc(s.howToGet)}</p></div>` : ""}
             <div class="studio-sec__actions">
               <a class="btn js-book" data-studio="${s.id}" href="${BS.brand.direct}">Записатися сюди</a>
-              <a class="btn btn--ghost" href="https://www.google.com/maps/dir/?api=1&destination=${q}" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg>Маршрут</a>
               <a class="link-arrow" href="${s.phone ? "tel:" + s.phone : BS.brand.direct}" ${s.phone ? "" : 'target="_blank" rel="noopener"'}>${s.phone ? "Подзвонити" : "Написати в Direct"}<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
             </div>
           </div>
           <div class="studio-sec__media reveal">
-            <div class="studio-sec__map"><button class="map-facade js-map" type="button" data-src="https://maps.google.com/maps?q=${q}&z=16&output=embed" data-title="Карта: ${UI.esc(s.label)}">
-              <svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg>Показати на карті</button></div>
             <div class="studio-sec__photos">${s.entrancePhoto ? UI.img(s.entrancePhoto, 720, 540, "Вхід у студію " + s.short) : s.interiorPhotos[0] ? UI.img(s.interiorPhotos[0], 720, 540, "Інтер’єр " + s.short) : ""}</div>
           </div>
           <div class="studio-sec__team reveal">
@@ -277,14 +271,5 @@
     }).join("");
     UI.refreshBooking();
     UI.observeReveal(secBox);
-    // Карта Google вантажиться лише після натискання — сторінка лишається швидкою
-    secBox.addEventListener("click", (e) => {
-      const b = e.target.closest(".js-map");
-      if (!b) return;
-      const f = document.createElement("iframe");
-      f.src = b.dataset.src; f.title = b.dataset.title; f.width = 600; f.height = 420;
-      f.referrerPolicy = "no-referrer-when-downgrade";
-      b.replaceWith(f);
-    });
   }
 })();

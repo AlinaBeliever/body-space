@@ -347,16 +347,6 @@
   }
 
   /* ---------- Спільні рендери для кількох сторінок ---------- */
-  function renderRating() {
-    $$(".js-rating").forEach((el) => {
-      const g = BS.studios.filter((s) => s.google);
-      const count = g.reduce((a, s) => a + s.google.count, 0);
-      const min = Math.min(...g.map((s) => s.google.rating)), max = Math.max(...g.map((s) => s.google.rating));
-      const r = (x) => x.toFixed(1).replace(".", ",");
-      el.innerHTML = `<span class="g-badge" aria-hidden="true">G</span><span><b>${r(min)}–${r(max)}</b> <span class="stars" aria-hidden="true">★★★★★</span><br>${count} ${reviewsWord(count)} у Google</span>`;
-      el.setAttribute("aria-label", `Рейтинг у Google від ${r(min)} до ${r(max)}, ${count} ${reviewsWord(count)}`);
-    });
-  }
   function renderFooter() {
     const box = $(".js-footer-studios");
     if (box) {
@@ -442,20 +432,19 @@
     box.innerHTML = list.map((s) => {
       const st = openStatus(s);
       const n = String(BS.studios.indexOf(s) + 1).padStart(2, "0");
-      const g = s.google && s.google.count >= 5 ? `<span class="studio-card__rating"><b>${s.google.rating.toFixed(1).replace(".", ",")}</b> ★ · ${s.google.count} ${reviewsWord(s.google.count)} у Google</span>` : "";
       const hasPhoto = s.interiorPhotos && s.interiorPhotos[0];
-      // Поки немає фото інтер'єру — типографічна картка (TODO власниця: фото студій)
+      // Поки немає фото інтер’єру — типографічна картка (TODO власниця: фото студій)
       const media = hasPhoto
         ? `<div class="studio-card__media">${img(s.interiorPhotos[0], 720, 540, "Інтер’єр студії " + s.short)}</div>`
         : `<svg class="studio-card__leaf" aria-hidden="true"><use href="#i-leaf"/></svg>`;
       return `<article class="studio-card reveal${hasPhoto ? "" : " studio-card--text"}${s.id === currentStudio ? " is-current" : ""}">
         ${media}
         <div class="studio-card__body">
-          <p class="studio-card__num">${n}${s.id === currentStudio ? ' <span class="tag studio-card__mine">Ваша студія</span>' : ""}</p>
+          <p class="studio-card__num">${n}${s.id === currentStudio ? ‘ <span class="tag studio-card__mine">Ваша студія</span>’ : ""}</p>
           <h3 class="studio-card__name">${studioTitle(s)}</h3>
           <p class="studio-card__addr">${esc(s.address)}</p>
           <p class="studio-card__landmark small muted">${esc(s.landmark || "")}</p>
-          <p class="studio-card__meta"><span class="status js-status ${st.open ? "" : "is-closed"}" data-studio="${s.id}">${st.text}</span>${g}</p>
+          <p class="studio-card__meta"><span class="status js-status ${st.open ? "" : "is-closed"}" data-studio="${s.id}">${st.text}</span></p>
           <div class="studio-card__actions">
             <a class="btn btn--sm js-book" data-studio="${s.id}" href="${BS.brand.direct}">Записатися сюди</a>
             <a class="link-arrow" href="studii.html#${s.id}">Як дістатися<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
@@ -595,7 +584,6 @@
   renderCertTerms();
 
   /* ---------- Старт ---------- */
-  renderRating();
   renderFooter();
   refreshBooking();
   // DOMContentLoaded настає після всіх скриптів сторінки — тоді вже все відмальовано

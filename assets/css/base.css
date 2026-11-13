@@ -104,7 +104,6 @@ p { margin: 0; text-wrap: pretty; }
 .lead { font-size: var(--fs-md); color: var(--muted); }
 .muted { color: var(--muted); }
 .small { font-size: var(--fs-sm); }
-.serif { font-family: var(--font-serif); }
 
 /* Доступність */
 .visually-hidden {

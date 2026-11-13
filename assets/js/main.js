@@ -316,7 +316,7 @@
       // ховаємо смугу, коли видно футер з великою кнопкою запису
       const r = footer.getBoundingClientRect();
       // на головній смуга з'являється лише після героя: там уже є кнопка запису
-      const hero = $(".hero");
+      const hero = $(".hero, .page-hero");
       const beforeHero = hero && hero.getBoundingClientRect().bottom > 0;
       bar.classList.toggle("is-hidden", r.top < window.innerHeight - 40 || !!beforeHero);
     }
@@ -561,7 +561,7 @@
     box.innerHTML = list.map((s) => {
       const st = openStatus(s);
       const n = String(BS.studios.indexOf(s) + 1).padStart(2, "0");
-      const g = s.google ? `<span class="studio-card__rating"><b>${s.google.rating.toFixed(1).replace(".", ",")}</b> ★ · ${s.google.count} ${reviewsWord(s.google.count)} у Google</span>` : "";
+      const g = s.google && s.google.count >= 5 ? `<span class="studio-card__rating"><b>${s.google.rating.toFixed(1).replace(".", ",")}</b> ★ · ${s.google.count} ${reviewsWord(s.google.count)} у Google</span>` : "";
       const hasPhoto = s.interiorPhotos && s.interiorPhotos[0];
       // Поки немає фото інтер'єру — типографічна картка (TODO власниця: фото студій)
       const media = hasPhoto
@@ -607,7 +607,7 @@
     const years = kyivYear() - oldest.since;
     const [o, c] = BS.studios[0].hours;
     const facts = [
-      { num: String(BS.studios.length), text: "студії біля дому — у ЖК, куди не треба їхати через усе місто" },
+      { num: String(BS.studios.length), text: "студії біля дому — у житлових районах, куди не треба їхати через усе місто" },
       { num: `${o}–${c}`, text: "щодня, без вихідних — і зранку до роботи, і ввечері після" },
       { num: `${med} з ${BS.masters.length}`, text: "майстринь мають медичну освіту" },
       { num: String(years), text: `${yearsWord(years)} — найдовша практика в команді: ${oldest.name}, з ${oldest.since} року` }

@@ -12,7 +12,7 @@
 
   // Текст про тест-драйв (головна і сторінка ендосфери)
   UI.$$(".js-endo-test").forEach((el) => {
-    el.innerHTML = `${E.testDrive.minutes} хвилин на апараті — ноги, сідниці, талія й живіт — за <b>${UI.fmt(E.testDrive.price)} грн</b>. Щоб зрозуміти, чи ваше, ще до курсу.`;
+    el.innerHTML = `${E.testDrive.minutes} хвилин на апараті — ноги, сідниці, талія й живіт — за <b>${UI.fmt(E.testDrive.price)} грн</b>. Щоб зрозуміти, чи вам підходить, ще до курсу.`;
   });
 
   UI.$$(".js-endo-price").forEach((el) => { el.innerHTML = `${UI.fmt(E.testDrive.price)} <small>грн · ${E.testDrive.minutes} хв</small>`; });
@@ -88,11 +88,10 @@
       else { saveWrap.textContent = "—"; }
       UI.$(".js-valid", out).textContent = r.validity ? `${r.validity} днів` : "разова";
       // Таймлайн: N точок, ≈ 2 візити на тиждень
-      const weeks = Math.ceil(state.n / 2);
       UI.$(".js-timeline", out).innerHTML = Array.from({ length: state.n }, (_, i) =>
         `<span class="calc__dot${i === 0 ? " is-first" : ""}" style="--i:${i}"></span>`).join("");
       UI.$(".js-tl-note", out).textContent = state.n > 1
-        ? `≈ 2 візити на тиждень — курс займе близько ${weeks} ${weeks === 1 ? "тижня" : "тижнів"}`
+        ? `Курс діє ${BS.courses.validity[state.n] || BS.courses.validity[5]} днів — є час не поспішати`
         : "Спробуйте одну процедуру або почніть з тест-драйву";
       const gift = UI.$(".js-gift", out);
       gift.hidden = !r.gift;

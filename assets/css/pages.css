@@ -422,7 +422,7 @@
 .svc-card__price { font-family: var(--font-serif); font-size: 2.6rem; line-height: 1; color: var(--forest-deep); font-weight: 500; white-space: nowrap; }
 .svc-card__price small { font-family: var(--font-sans); font-size: var(--fs-xs); font-weight: 600; color: var(--muted); }
 .svc-card__dur { font-weight: 600; color: var(--sand-ink); font-size: var(--fs-sm); }
-.toggle--sm button { min-height: 36px; padding: .3rem .8rem; font-size: var(--fs-xs); }
+.toggle--sm button { min-height: 44px; padding: .3rem .8rem; font-size: var(--fs-xs); }
 .svc-card__steps { list-style: none; counter-reset: st; margin: 0; padding: var(--s-3) 0 0; border-top: 1px solid var(--forest-08); display: grid; gap: .45rem; font-size: var(--fs-sm); color: var(--muted); }
 .svc-card__steps li { counter-increment: st; display: grid; grid-template-columns: 1.6rem 1fr; }
 .svc-card__steps li::before { content: counter(st, decimal-leading-zero); font-family: var(--font-serif); font-style: italic; color: var(--sand-ink); }
@@ -654,3 +654,9 @@
 .calc__gift-hint { margin: 0; }
 .not-found { min-height: 60vh; display: grid; align-content: center; }
 .footer__studios { font-style: normal; }
+
+/* порожній блок фото студії не займає місця, поки немає знімків */
+.studio-sec__photos:empty { display: none; }
+/* зона дотику ≥44 px для текстових посилань і кнопок слайдера */
+.link-arrow, .phone-link { min-height: 44px; display: inline-flex; align-items: center; }
+.svc-tabs { min-height: 52px; } /* резерв висоти, щоб вкладки не зсували сторінку (CLS) */

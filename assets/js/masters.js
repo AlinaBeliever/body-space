@@ -254,7 +254,7 @@
             <p class="studio-sec__hours"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>${UI.esc(s.days)} · ${s.hours[0]}:00–${s.hours[1]}:00 <span class="status js-status ${st.open ? "" : "is-closed"}" data-studio="${s.id}">${st.text}</span></p>
             ${g}
             <div class="studio-sec__how"><p class="toggle-label">Як дістатися</p>
-              <p>${s.howToGet ? UI.esc(s.howToGet) : "Напишіть нам у Direct перед першим візитом — підкажемо вхід і де залишити авто, проведемо до дверей."}</p></div>
+              <p>${s.howToGet ? UI.esc(s.howToGet) : "Напишіть нам у Direct перед першим візитом — підкажемо, як знайти вхід і де залишити авто."}</p></div>
             <div class="studio-sec__actions">
               <a class="btn js-book" data-studio="${s.id}" href="${BS.brand.direct}">Записатися сюди</a>
               <a class="btn btn--ghost" href="https://www.google.com/maps/dir/?api=1&destination=${q}" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg>Маршрут</a>
@@ -264,7 +264,7 @@
           <div class="studio-sec__media reveal">
             <div class="studio-sec__map"><button class="map-facade js-map" type="button" data-src="https://maps.google.com/maps?q=${q}&z=16&output=embed" data-title="Карта: ${UI.esc(s.label)}">
               <svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg>Показати на карті</button></div>
-            <div class="studio-sec__photos">${s.entrancePhoto ? UI.img(s.entrancePhoto, 720, 540, "Вхід у студію " + s.short) : s.interiorPhotos[0] ? UI.img(s.interiorPhotos[0], 720, 540, "Інтер’єр " + s.short) : UI.placeholder("Фото від студії")}</div>
+            <div class="studio-sec__photos">${s.entrancePhoto ? UI.img(s.entrancePhoto, 720, 540, "Вхід у студію " + s.short) : s.interiorPhotos[0] ? UI.img(s.interiorPhotos[0], 720, 540, "Інтер’єр " + s.short) : ""}</div>
           </div>
           <div class="studio-sec__team reveal">
             <p class="toggle-label">Майстрині студії</p>

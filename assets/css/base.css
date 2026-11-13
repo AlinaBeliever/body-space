@@ -24,7 +24,6 @@ body {
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  overflow-x: hidden;
   font-variant-numeric: lining-nums; /* рівні цифри в цінах на всіх сторінках */
 }
 /* Мобільна смуга запису ховається над футером, а футер має запас знизу — тож вона нічого не перекриває */
@@ -45,11 +44,15 @@ h1, h2, h3, h4 {
   margin: 0;
   color: var(--forest-deep);
   text-wrap: balance;
+  overflow-wrap: break-word; /* довге слово ніколи не виштовхує заголовок за межі екрана */
+  hyphens: manual;
 }
 h1 { font-size: var(--fs-h1); line-height: var(--lh-tight); }
 h2 { font-size: var(--fs-h2); }
 h3 { font-size: var(--fs-h3); }
-h1 em, h2 em, h3 em { font-style: italic; font-weight: 500; }
+/* Курсивний акцент — лише в заголовку героя на головній; в усіх інших заголовках em звичайним накресленням */
+em { font-style: normal; font-weight: inherit; }
+.hero h1 em { font-style: italic; }
 p { margin: 0; text-wrap: pretty; }
 
 /* Видимий фокус для клавіатури */
@@ -92,8 +95,10 @@ p { margin: 0; text-wrap: pretty; }
   margin-bottom: var(--s-4);
 }
 .on-forest .eyebrow { color: var(--sand); }
-.eyebrow svg { width: 14px; height: 14px; }
-.section--beige .eyebrow svg, .section--sage .eyebrow svg { display: none; }
+/* Надзаголовок — рідко: у герої, шапках внутрішніх сторінок і на зелених секціях. Листочка немає. */
+.eyebrow { display: none; }
+.hero .eyebrow, .page-hero .eyebrow, .on-forest .eyebrow, .quiz__step { display: inline-flex; }
+.eyebrow svg { display: none; }
 .section--beige, .section--sage, .card--beige, .card--sage { --muted: #4E5A50; }
 .section-head { max-width: 720px; margin-bottom: clamp(2rem, 1.5rem + 2vw, 3.5rem); }
 .section-head p { margin-top: var(--s-4); color: var(--muted); font-size: var(--fs-md); }

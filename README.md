@@ -82,7 +82,7 @@ JavaScript: нічого встановлювати й збирати не тр�
 - `index.html` і 8 сторінок у корені; `sitemap.xml`, `robots.txt`
 - `assets/css/` — `tokens.css` (кольори, шрифти, відступи), `base.css`,
   `components.css`, `pages.css`
-- `assets/js/` — `data.js` (дані), `main.js` (шапка, вибір студії, світна
+- `assets/js/` — `data.js` (дані), `main.js` (шапка, вибір студії,
   лінія, анімації), `concerns.js`, `pricing.js`, `calculator.js`, `quiz.js`,
   `masters.js`, `certificate.js`, `shop.js`
 - `assets/img/` — фото у WebP; `assets/video/` — відео зі сторіс

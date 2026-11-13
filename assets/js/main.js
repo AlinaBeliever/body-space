@@ -2,7 +2,7 @@
    Body Space — спільна логіка для всіх сторінок:
    збереження вибору, студії і запис, панель вибору студії, статус
    «відкрито» за київським часом, шапка, меню, мобільна смуга, тост,
-   анімовані числа, поява блоків, світна лінія.
+   анімовані числа, поява блоків.
    ===================================================================== */
 (function () {
   "use strict";
@@ -346,125 +346,6 @@
     els.forEach((el) => io.observe(el));
   }
 
-  /* ---------- Світна лінія ----------
-     Тонкий шлях уздовж сторінки, що малюється під час скролу і закінчується
-     на кнопці запису у футері. На кремовому — пісок, у зелених секціях — світиться. */
-  function glowLine() {
-    const svg = $(".glow-line");
-    const page = $(".page");
-    const end = $(".js-line-end");
-    if (!svg || !page || !end) return;
-    const NS = "http://www.w3.org/2000/svg";
-    let base, glow, total = 0, samples = [];
-
-    function build() {
-      const pr = page.getBoundingClientRect();
-      const top0 = pr.top + window.scrollY;
-      svg.setAttribute("height", 0); // щоб стара висота лінії не розтягувала сторінку
-      const W = page.clientWidth, H = page.offsetHeight;
-      svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
-      svg.setAttribute("width", W); svg.setAttribute("height", H);
-      const cont = document.querySelector(".container");
-      const contW = cont ? cont.getBoundingClientRect().width : W;
-      const mobile = W < 768;
-      const side = mobile ? 6 : Math.max(9, (W - contW) / 2 + 14); // на мобільному — у полі, не торкаючись літер
-      const X = { left: side, right: W - side };
-
-      const secs = $$("[data-line]", page).filter((s) => s.dataset.line !== "end");
-      const pts = [];
-      secs.forEach((s) => {
-        const r = s.getBoundingClientRect();
-        const y0 = r.top + window.scrollY - top0, y1 = y0 + r.height;
-        const pad = Math.min(90, r.height * 0.18);
-        pts.push({ x: X[s.dataset.line] || X.left, a: y0 + pad, b: y1 - pad });
-      });
-      const er = end.getBoundingClientRect();
-      const ex = er.left + er.width / 2 - pr.left, ey = er.top + window.scrollY - top0 + er.height / 2;
-
-      // старт: лінія «виходить» з неону на фото стіни студії в герої
-      const arch = $(".hero__arch");
-      let d;
-      if (arch && pts.length) {
-        const ar = arch.getBoundingClientRect();
-        const sx = ar.right - pr.left - 2, sy = ar.top + window.scrollY - top0 + ar.height * 0.3;
-        d = `M ${sx} ${sy} C ${sx + 30} ${sy}, ${X.right} ${sy + 10}, ${X.right} ${sy + 70}`;
-      } else {
-        d = `M ${X.right} ${pts.length ? pts[0].a - 40 : 0}`;
-      }
-      pts.forEach((p, i) => {
-        if (i === 0) { d += ` L ${p.x} ${p.b}`; return; }
-        const prev = pts[i - 1];
-        const midY = (prev.b + p.a) / 2;
-        // перехід через межу секцій — по відступах, а не по тексту
-        d += ` C ${prev.x} ${midY}, ${p.x} ${midY}, ${p.x} ${p.a}`;
-        // невелика «неонова» хвиля всередині секції
-        const len = p.b - p.a;
-        if (len > 260 && !mobile) {
-          const amp = (p.x < W / 2 ? 1 : -1) * Math.min(26, side * 0.9);
-          const y1 = p.a + len * 0.33, y2 = p.a + len * 0.66;
-          d += ` C ${p.x} ${y1 - 40}, ${p.x + amp} ${y1 - 30}, ${p.x + amp} ${y1}`;
-          d += ` S ${p.x} ${y2 - 30}, ${p.x} ${y2}`;
-        }
-        d += ` L ${p.x} ${p.b}`;
-      });
-      const last = pts[pts.length - 1] || { x: X.left, b: 0 };
-      // до кнопки — полем вниз до її рівня, потім горизонтально: заголовок над кнопкою не перетинаємо
-      const fromLeft = last.x < ex;
-      const endX = fromLeft ? er.left - pr.left - 6 : er.right - pr.left + 6;
-      const turn = fromLeft ? 48 : -48;
-      d += ` L ${last.x} ${ey - 48} Q ${last.x} ${ey}, ${last.x + turn} ${ey} L ${endX} ${ey}`;
-
-      svg.innerHTML = "";
-      const defs = document.createElementNS(NS, "defs");
-      const clip = document.createElementNS(NS, "clipPath");
-      clip.setAttribute("id", "glow-clip");
-      $$("[data-glow]", page).forEach((g) => {
-        const r = g.getBoundingClientRect();
-        const rect = document.createElementNS(NS, "rect");
-        rect.setAttribute("x", 0); rect.setAttribute("width", W);
-        rect.setAttribute("y", r.top + window.scrollY - top0); rect.setAttribute("height", r.height);
-        clip.appendChild(rect);
-      });
-      defs.appendChild(clip); svg.appendChild(defs);
-
-      base = document.createElementNS(NS, "path");
-      base.setAttribute("d", d); base.setAttribute("class", "glow-line__base");
-      glow = document.createElementNS(NS, "path");
-      glow.setAttribute("d", d); glow.setAttribute("class", "glow-line__glow"); glow.setAttribute("clip-path", "url(#glow-clip)");
-      svg.appendChild(base); svg.appendChild(glow);
-      const dot = document.createElementNS(NS, "circle");
-      dot.setAttribute("cx", endX); dot.setAttribute("cy", ey); dot.setAttribute("r", 4);
-      dot.setAttribute("class", "glow-line__dot"); svg.appendChild(dot);
-
-      total = base.getTotalLength();
-      samples = [];
-      const N = 400;
-      for (let i = 0; i <= N; i++) { const l = (total * i) / N; samples.push([l, base.getPointAtLength(l).y + top0]); }
-      [base, glow].forEach((p) => { p.style.strokeDasharray = total; });
-      draw();
-    }
-    function draw() {
-      if (!base) return;
-      if (reducedMotion) { base.style.strokeDashoffset = 0; glow.style.strokeDashoffset = 0; svg.classList.add("is-done"); return; }
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      const nearEnd = Math.max(0, 1 - (maxScroll - window.scrollY) / 400);
-      const target = window.scrollY + window.innerHeight * (0.72 + 0.4 * nearEnd);
-      let l = 0;
-      for (let i = 0; i < samples.length; i++) { if (samples[i][1] <= target) l = samples[i][0]; else break; }
-      if (window.scrollY >= maxScroll - 4) l = total;
-      const off = total - l;
-      base.style.strokeDashoffset = off; glow.style.strokeDashoffset = off;
-      svg.classList.toggle("is-done", off < 2);
-    }
-    let raf = 0;
-    window.addEventListener("scroll", () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; draw(); }); }, { passive: true });
-    let t;
-    const rebuild = () => { clearTimeout(t); t = setTimeout(build, 150); };
-    if ("ResizeObserver" in window) new ResizeObserver(rebuild).observe(page); else window.addEventListener("resize", rebuild);
-    window.addEventListener("load", build);
-    build();
-  }
-
   /* ---------- Спільні рендери для кількох сторінок ---------- */
   function renderRating() {
     $$(".js-rating").forEach((el) => {
@@ -664,7 +545,9 @@
       { id: "relax", title: "Релакс-масаж: просто видихнути" },
       { id: "styx", title: "Засоби STYX у Body Space" }
     ];
-    box.innerHTML = S.map((s) => `<figure class="story reveal">
+    // reveal — на весь ряд, а не на кожну історію: зсув елементів усередині горизонтального скролера (overflow-y стає auto) давав ряду власну вертикальну прокрутку, і відео «літали» під пальцем
+    box.classList.add("reveal");
+    box.innerHTML = S.map((s) => `<figure class="story">
         <div class="story__media">
           <video class="story__video" muted playsinline loop preload="none" width="360" height="640"
             poster="assets/img/stories/story-${s.id}.webp" aria-label="${esc(s.title)}">
@@ -716,6 +599,6 @@
   renderFooter();
   refreshBooking();
   // DOMContentLoaded настає після всіх скриптів сторінки — тоді вже все відмальовано
-  document.addEventListener("DOMContentLoaded", () => { observeReveal(); glowLine(); });
+  document.addEventListener("DOMContentLoaded", () => { observeReveal(); });
   setInterval(updateStatuses, 60000); // статус «відкрито» оновлюється щохвилини
 })();

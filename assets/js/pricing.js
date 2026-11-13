@@ -126,7 +126,6 @@
           <p class="svc-card__price"><span class="num js-sp" data-value="${price}">${UI.fmt(price)}</span> <small>грн</small></p>
         </div>
         ${s.price.all ? '<p class="small muted">Ціна однакова для всіх майстринь</p>' : ""}
-        <ol class="svc-card__steps">${s.steps.map((t) => `<li>${UI.esc(t)}</li>`).join("")}</ol>
         ${s.product ? `<p class="tag tag--sand">Засоби: ${UI.esc(s.product)}</p>` : ""}
         <a class="btn btn--block js-book" data-service="${s.id}" href="${BS.brand.direct}">Записатися<span class="js-book-studio"></span></a>
       </article>`;

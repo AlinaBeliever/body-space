@@ -33,7 +33,6 @@
   function masterCard(m, opts = {}) {
     const tier = BS.tiers[m.tier];
     const studios = m.studios.map((s) => studioOf(s).short).join(" · ");
-    const rev = cardReview(m, opts.tag);
     const days = m.days && m.days.length
       ? `<ul class="master-card__days" aria-label="Робочі дні">${m.days.map((d) => `<li>${UI.esc(d)}</li>`).join("")}</ul>` : "";
     const hands = m.handsPhoto
@@ -51,7 +50,6 @@
         <p class="master-card__studio"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg>${UI.esc(studios)}</p>
         ${days}
         <blockquote class="master-card__quote"><p>${UI.esc(m.quote)}</p></blockquote>
-        ${rev ? `<figure class="master-card__review"><figcaption>${stars(rev.rating)}${rev.date ? ` <span>${UI.fmtDate(rev.date)}</span>` : ""}</figcaption><blockquote><p>«${UI.esc(rev.text)}»</p></blockquote></figure>` : ""}
         <div class="master-card__actions">
           <a class="btn btn--block js-book" data-master="${m.id}"${opts.studio && m.studios.includes(opts.studio) ? ` data-studio="${opts.studio}"` : ""} href="${BS.brand.direct}">Записатися до ${UI.esc(m.nameTo)}</a>
           ${opts.more ? `<button class="link-arrow js-master-more" type="button" data-id="${m.id}">Усі відгуки (${reviewsOf(m).length})<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>` : ""}
@@ -121,7 +119,7 @@
             <blockquote><p>${UI.esc(r.text)}</p></blockquote>
             <figcaption>
               ${stars(r.rating)}
-              <span class="review-focus__meta">${[r.date ? UI.fmtDate(r.date) : (r.source === "direct" ? "Повідомлення в Direct" : ""), m ? `майстриня ${m.name}` : "", where].filter(Boolean).map(UI.esc).join(" · ")}</span>
+              <span class="review-focus__meta">${[r.source === "direct" ? "Повідомлення в Direct" : "", m ? `майстриня ${m.name}` : "", where].filter(Boolean).map(UI.esc).join(" · ")}</span>
               ${m ? `<a class="link-arrow js-book" data-master="${m.id}" href="${BS.brand.direct}">Записатися до ${UI.esc(m.nameTo)}<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>` : ""}
             </figcaption>
           </figure>`;
@@ -167,7 +165,7 @@
         </div>
       </div>
       <h3 class="mm__h">Відгуки (${revs.length})</h3>
-      <ul class="mm__reviews">${revs.map((r) => `<li><p class="mm__meta">${stars(r.rating)} ${r.date ? UI.fmtDate(r.date) : r.source === "direct" ? "Повідомлення в Direct" : ""}</p><p>${UI.esc(r.text)}</p></li>`).join("")}</ul>`;
+      <ul class="mm__reviews">${revs.map((r) => `<li><p class="mm__meta">${stars(r.rating)} ${r.source === "direct" ? "Повідомлення в Direct" : ""}</p><p>${UI.esc(r.text)}</p></li>`).join("")}</ul>`;
     UI.refreshBooking();
     UI.openModal(mm, trigger);
   }
@@ -247,13 +245,13 @@
           <div class="studio-sec__info reveal">
             <p class="studio-card__num">0${i + 1}</p>
             <h2 id="st-${s.id}" class="studio-sec__title">${UI.studioTitle(s)}</h2>
-            <p class="studio-sec__addr">${UI.esc(s.address)}</p>
+            <p class="studio-sec__addr"><a href="${BS.mapUrl(s)}" target="_blank" rel="noopener">${UI.esc(s.address)}</a></p>
             <p class="muted">${UI.esc(s.landmark || "")}</p>
             <p class="studio-sec__hours"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>${UI.esc(s.days)} · ${s.hours[0]}:00–${s.hours[1]}:00 <span class="status js-status ${st.open ? "" : "is-closed"}" data-studio="${s.id}">${st.text}</span></p>
             ${s.howToGet ? `<div class="studio-sec__how"><p class="toggle-label">Як дістатися</p><p>${UI.esc(s.howToGet)}</p></div>` : ""}
             <div class="studio-sec__actions">
               <a class="btn js-book" data-studio="${s.id}" href="${BS.brand.direct}">Записатися сюди</a>
-              <a class="link-arrow" href="${s.phone ? "tel:" + s.phone : BS.brand.direct}" ${s.phone ? "" : 'target="_blank" rel="noopener"'}>${s.phone ? "Подзвонити" : "Написати в Direct"}<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+              <a class="link-arrow" href="${BS.mapUrl(s)}" target="_blank" rel="noopener">Як дістатися<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
             </div>
           </div>
           <div class="studio-sec__media reveal">

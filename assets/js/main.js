@@ -354,7 +354,7 @@
         const st = openStatus(s);
         return `<div class="footer__studio">
           <p class="footer__h">${esc(s.label.replace(" | ", " · "))}</p>
-          <p>${esc(s.address)}</p>
+          <p><a href="${esc(BS.mapUrl(s))}" target="_blank" rel="noopener">${esc(s.address)}</a></p>
           <p class="status js-status ${st.open ? "" : "is-closed"}" data-studio="${s.id}">${st.text}</p>
           <a class="footer__studio-book" href="${esc(BS.bookingUrl(s.id))}" target="_blank" rel="noopener">Записатися сюди</a>
         </div>`;
@@ -433,7 +433,7 @@
       const st = openStatus(s);
       const n = String(BS.studios.indexOf(s) + 1).padStart(2, "0");
       const hasPhoto = s.interiorPhotos && s.interiorPhotos[0];
-      // Поки немає фото інтер’єру — типографічна картка (TODO власниця: фото студій)
+      // Поки немає фото інтер’єру — типографічна картка (
       const media = hasPhoto
         ? `<div class="studio-card__media">${img(s.interiorPhotos[0], 720, 540, "Інтер’єр студії " + s.short)}</div>`
         : `<svg class="studio-card__leaf" aria-hidden="true"><use href="#i-leaf"/></svg>`;
@@ -442,12 +442,12 @@
         <div class="studio-card__body">
           <p class="studio-card__num">${n}${s.id === currentStudio ? ' <span class="tag studio-card__mine">Ваша студія</span>' : ""}</p>
           <h3 class="studio-card__name">${studioTitle(s)}</h3>
-          <p class="studio-card__addr">${esc(s.address)}</p>
+          <p class="studio-card__addr"><a href="${esc(BS.mapUrl(s))}" target="_blank" rel="noopener">${esc(s.address)}</a></p>
           <p class="studio-card__landmark small muted">${esc(s.landmark || "")}</p>
           <p class="studio-card__meta"><span class="status js-status ${st.open ? "" : "is-closed"}" data-studio="${s.id}">${st.text}</span></p>
           <div class="studio-card__actions">
             <a class="btn btn--sm js-book" data-studio="${s.id}" href="${BS.brand.direct}">Записатися сюди</a>
-            <a class="link-arrow" href="studii.html#${s.id}">Як дістатися<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="link-arrow" href="${esc(BS.mapUrl(s))}" target="_blank" rel="noopener">Як дістатися<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
           </div>
         </div>
       </article>`;
@@ -531,8 +531,7 @@
     const S = [
       { id: "pregnancy", title: "Як проходить масаж для вагітних" },
       { id: "healthy", title: "Оздоровчий масаж: коли він підійде" },
-      { id: "relax", title: "Релакс-масаж: просто видихнути" },
-      { id: "styx", title: "Засоби STYX у Body Space" }
+      { id: "relax", title: "Релакс-масаж: просто видихнути" }
     ];
     // reveal — на весь ряд, а не на кожну історію: зсув елементів усередині горизонтального скролера (overflow-y стає auto) давав ряду власну вертикальну прокрутку, і відео «літали» під пальцем
     box.classList.add("reveal");

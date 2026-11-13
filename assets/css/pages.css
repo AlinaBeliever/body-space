@@ -66,7 +66,6 @@
 .concerns__chips { margin-top: var(--s-6); }
 .concerns__chips .chip { flex: 1 1 auto; }
 .concerns__result { display: grid; gap: var(--s-5); justify-items: center; text-align: center; }
-.concerns__photo { width: min(78vw, 340px); box-shadow: 0 0 0 10px var(--cream), 0 0 0 11px rgba(201, 169, 120, .55), var(--shadow-md); }
 .xfade { position: relative; width: 100%; height: 100%; }
 .xfade__layer { position: absolute; inset: 0; opacity: 0; transition: opacity 400ms var(--ease); }
 .xfade__layer.is-on { opacity: 1; }
@@ -109,7 +108,7 @@
 .fact { min-width: 0; border-top: 1px solid var(--sand); padding-top: var(--s-4); }
 .fact__num { font-family: var(--font-serif); font-size: clamp(2.6rem, 2rem + 3vw, 5rem); line-height: 1; color: var(--forest-deep); font-weight: 500; letter-spacing: -.02em; white-space: nowrap; }
 .fact__text { margin-top: var(--s-3); color: var(--muted); font-size: var(--fs-sm); max-width: 26ch; }
-@media (max-width: 599px) { .fact:first-child { grid-column: 1 / -1; } .fact:first-child .fact__num { font-size: clamp(4.5rem, 3.5rem + 8vw, 6rem); } }
+@media (max-width: 599px) { .facts__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .fact__num { font-size: clamp(2.4rem, 1.4rem + 7vw, 3.4rem); } }
 @media (min-width: 900px) {
   .facts__grid { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--s-7) var(--s-6); align-items: start; }
   .fact:nth-child(1) { grid-column: 1 / span 5; }
@@ -260,25 +259,25 @@
 .master-card__actions { margin-top: auto; padding-top: var(--s-5); display: grid; gap: var(--s-2); justify-items: center; }
 
 /* ---------- Історії ---------- */
-.stories__row { padding-block: 4px 8px; display: grid; grid-template-columns: repeat(4, minmax(150px, 1fr)); gap: var(--s-4); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); overflow-y: hidden; overscroll-behavior-x: contain; }
+.stories__row { padding-block: 4px 8px; display: grid; grid-template-columns: repeat(3, minmax(150px, 1fr)); gap: var(--s-4); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); overflow-y: hidden; overscroll-behavior-x: contain; }
 .stories__row::-webkit-scrollbar { display: none; }
 .story { margin: 0; scroll-snap-align: start; min-width: 0; }
 .story__media { position: relative; aspect-ratio: 9 / 16; border-radius: var(--r-lg); overflow: hidden; background: var(--forest); box-shadow: var(--shadow-sm); }
 .story__video { width: 100%; height: 100%; object-fit: cover; }
 .story__play { position: absolute; left: 12px; bottom: 12px; width: 48px; height: 48px; border-radius: 50%; border: 0; background: rgba(247, 242, 232, .92); color: var(--forest-deep); display: grid; place-items: center; box-shadow: var(--shadow-sm); }
 .story figcaption { margin-top: var(--s-3); font-size: var(--fs-sm); font-weight: 600; color: var(--forest-deep); line-height: 1.35; }
-@media (max-width: 767px) { .stories__row { grid-template-columns: repeat(4, 58vw); } }
+@media (max-width: 767px) { .stories__row { grid-template-columns: repeat(3, 58vw); } }
 
 /* ---------- Відгук у фокусі ---------- */
-.review-focus { max-width: 980px; }
-.review-focus__stage { min-height: 15rem; opacity: 0; transform: translateY(10px); transition: opacity 400ms var(--ease), transform 400ms var(--ease); }
+.review-focus { max-width: 720px; }
+.review-focus__stage { min-height: 9rem; opacity: 0; transform: translateY(10px); transition: opacity 400ms var(--ease), transform 400ms var(--ease); }
 .review-focus__stage.is-in { opacity: 1; transform: none; }
 .review-focus__fig { margin: 0; }
 .review-focus__fig blockquote { margin: 0; position: relative; }
-.review-focus__fig blockquote::before { content: "“"; position: absolute; left: -.05em; top: -.42em; font-family: var(--font-serif); font-size: 7rem; line-height: 1; color: var(--sand); opacity: .55; }
-.review-focus__fig blockquote p { font-family: var(--font-serif); font-size: clamp(1.55rem, 1.1rem + 1.9vw, 2.75rem); line-height: 1.25; color: var(--forest-deep); padding-top: 1.4rem; }
-.review-focus__fig figcaption { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem var(--s-4); margin-top: var(--s-5); font-size: var(--fs-sm); color: var(--muted); }
-.review-focus__nav { display: flex; align-items: center; gap: var(--s-4); margin-top: var(--s-6); }
+.review-focus__fig blockquote::before { content: "“"; position: absolute; left: -.05em; top: -.42em; font-family: var(--font-serif); font-size: 4rem; line-height: 1; color: var(--sand); opacity: .55; }
+.review-focus__fig blockquote p { font-family: var(--font-serif); font-size: clamp(1.2rem, 1rem + 1vw, 1.65rem); line-height: 1.35; color: var(--forest-deep); padding-top: 1rem; }
+.review-focus__fig figcaption { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem var(--s-4); margin-top: var(--s-4); font-size: var(--fs-sm); color: var(--muted); }
+.review-focus__nav { display: flex; align-items: center; gap: var(--s-4); margin-top: var(--s-5); }
 .review-focus__count { font-family: var(--font-serif); font-size: 1.2rem; color: var(--muted); min-width: 4.5ch; text-align: center; }
 @media (prefers-reduced-motion: reduce) { .review-focus__stage { transition: none; opacity: 1; transform: none; } }
 
@@ -393,7 +392,8 @@
 .svc-tabs { display: flex; gap: var(--s-2); overflow-x: auto; scrollbar-width: none; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); }
 .svc-tabs::-webkit-scrollbar { display: none; }
 @media (max-width: 767px) { .svc-tabs { -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent); mask-image: linear-gradient(90deg, #000 85%, transparent); } }
-@media (min-width: 768px) { .svc-toolbar { position: sticky; top: var(--header-h); } }
+.svc-toolbar { position: sticky; top: var(--header-h); }
+@media (max-width: 767px) { .svc-toolbar { gap: var(--s-2); padding-block: var(--s-2); margin-bottom: var(--s-4); } .svc-toolbar .toggle-group { display: flex; align-items: center; gap: var(--s-3); } }
 .svc-tabs .chip { flex: none; }
 .svc-cat { padding-block: var(--s-6); scroll-margin-top: 180px; }
 .svc-cat + .svc-cat { border-top: 1px solid var(--forest-08); }
@@ -641,3 +641,41 @@
 /* зона дотику ≥44 px для текстових посилань і кнопок слайдера */
 .link-arrow, .phone-link { min-height: 44px; display: inline-flex; align-items: center; }
 .svc-tabs { min-height: 52px; } /* резерв висоти, щоб вкладки не зсували сторінку (CLS) */
+
+
+/* ---------- Адреси-посилання на карту ---------- */
+.studio-card__addr a, .studio-sec__addr a, .footer__studio a:not(.footer__studio-book) { color: inherit; text-decoration: underline; text-decoration-color: rgba(201, 169, 120, .8); text-underline-offset: 3px; }
+.studio-card__addr a:hover, .studio-sec__addr a:hover, .footer__studio a:not(.footer__studio-book):hover { text-decoration-color: currentColor; }
+
+/* ---------- Прайс на головній: кнопка «Усі послуги» лише на телефоні ---------- */
+.prices__all { display: none; margin-top: var(--s-5); }
+@media (max-width: 767px) {
+  .prices__all { display: block; }
+  .prices__all .btn { width: 100%; justify-content: center; }
+  .prices .section-head--split > .link-arrow { display: none; }
+}
+
+/* ---------- Ендосфера: рівень майстрині закріплений зверху на телефоні ---------- */
+@media (max-width: 899px) {
+  .endo__intro:has(.endo__tier) { display: contents; }
+  .endo__grid:has(.endo__tier) { gap: var(--s-4); }
+  .endo__tier { position: sticky; top: var(--header-h); z-index: 6; margin: 0 calc(var(--gutter) * -1); padding: var(--s-2) var(--gutter); background: rgba(247, 242, 232, .96); border-bottom: 1px solid var(--forest-08); display: flex; align-items: center; gap: var(--s-3); }
+}
+
+/* ---------- Сертифікат: картка закріплена зверху на телефоні ---------- */
+@media (max-width: 899px) {
+  .cert-live__sticky { position: sticky; top: var(--header-h); z-index: 6; padding: var(--s-2) var(--gutter); margin: 0 calc(var(--gutter) * -1); background: rgba(247, 242, 232, .96); border-bottom: 1px solid var(--forest-08); gap: var(--s-1); }
+  .cert-live .gift-card { max-width: 230px; padding: 12px 14px; border-radius: 14px; }
+  .cert-live .gift-card__title { font-size: 1.15rem; }
+  .cert-live .gift-card__for, .cert-live .gift-card__wish { font-size: .75rem; margin-top: 0; }
+  .cert-live .gift-card__label, .cert-live .gift-card__bottom { font-size: .55rem; }
+  .cert-live .gift-card__top { font-size: .7rem; }
+  .cert-live__price b { font-size: 1.3rem; }
+  .cert-live { display: contents; }
+  .cert-live__sticky { order: -1; }
+  .cert-live .gift-card { aspect-ratio: auto; }
+}
+
+/* ---------- Засоби: фото без підкладки ---------- */
+.product-card__media { background: var(--white); }
+.product-card__media img { mix-blend-mode: normal; object-position: center; }

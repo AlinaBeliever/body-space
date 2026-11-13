@@ -75,6 +75,7 @@
 .nav a::after { content: ""; position: absolute; left: 0; right: 100%; bottom: .2rem; height: 1px; background: var(--sand); transition: right var(--t-fast) var(--ease); }
 .nav a:hover::after, .nav a[aria-current="page"]::after { right: 0; }
 @media (min-width: 1100px) { .nav { display: block; margin-left: auto; } }
+@media (min-width: 1100px) and (max-width: 1299px) { .nav ul { gap: .75rem; } .nav a { font-size: .8125rem; } }
 
 .header-actions { display: flex; align-items: center; gap: var(--s-2); margin-left: auto; }
 @media (min-width: 1100px) { .header-actions { margin-left: var(--s-4); } }

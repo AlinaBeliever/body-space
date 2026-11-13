@@ -7,9 +7,8 @@
   "use strict";
   const BS = window.BS, UI = window.BSUI;
   const chipsBox = UI.$(".js-concerns");
-  const photoBox = UI.$(".js-concern-photo");
   const cardBox = UI.$(".js-concern-card");
-  if (!chipsBox || !photoBox || !cardBox) return;
+  if (!chipsBox || !cardBox) return;
 
   let current = null;
 
@@ -20,19 +19,6 @@
     `<button class="chip" type="button" data-id="${c.id}" aria-pressed="${i === 0}">
        <svg class="leaf-mark" aria-hidden="true"><use href="#i-leaf"/></svg>${UI.esc(c.label)}
      </button>`).join("");
-
-  // Фото: два шари для плавної зміни
-  photoBox.innerHTML = `<div class="xfade"><div class="xfade__layer is-on"></div><div class="xfade__layer"></div></div>`;
-  const layers = UI.$$(".xfade__layer", photoBox);
-  let front = 0;
-  function setPhoto(c) {
-    const html = c.photo ? UI.img(c.photo, c.photoW, c.photoH, c.label) : UI.placeholder("Body Space");
-    const next = layers[1 - front];
-    next.innerHTML = html;
-    next.classList.add("is-on");
-    layers[front].classList.remove("is-on");
-    front = 1 - front;
-  }
 
   function render(c, first) {
     const svc = BS.byId(BS.services, c.service);
@@ -67,7 +53,6 @@
     if (!c || (current && current.id === id && !first)) return;
     current = c;
     UI.$$(".chip", chipsBox).forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.id === id)));
-    setPhoto(c);
     render(c, first);
   }
 

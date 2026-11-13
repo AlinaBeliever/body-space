@@ -4,7 +4,7 @@
    посилання — міняйте тут, і зміниться на всіх сторінках.
 
    Джерела: сторіс-хайлайти Instagram, живі сторінки Altegio (11.11.2026).
-   Нічого не вигадано: чого немає — null і позначка «// TODO власниця».
+   Нічого не вигадано: чого немає — null.
    ===================================================================== */
 
 (function () {
@@ -13,7 +13,7 @@
   /* ---------- Бренд і контакти ---------- */
   const brand = {
     name: "Body Space",
-    tagline: "Місце, де про вас турбуються",       // з біо Instagram
+    tagline: "Масаж біля вашого дому",
     about: "Масаж | для вагітних | ендосфера | Київ", // з біо Instagram
     note: "Усі майстрині — дівчата",                 // з біо Instagram
     instagram: "https://www.instagram.com/body__space/",
@@ -23,8 +23,8 @@
     threads: "https://www.threads.net/@body__space",
     altegioNetwork: "https://n803030.alteg.io/select-city/4/select-branch",
     altegioBase: "https://n803030.alteg.io/company/",
-    phone: null,   // TODO власниця: номер телефону (одного чи кожної студії)
-    email: null,   // TODO власниця: пошта для заявок Formspree
+    phone: null,
+    email: null,
     instagramFollowers: 9390 // станом на 11.11.2026
   };
 
@@ -37,7 +37,7 @@
       shortLoc: "на Оболоні",
       short: "Оболонь",
       district: "Оболонь",
-      complex: null,                 // TODO власниця: назва ЖК на Оболоні (якщо є)
+      complex: null,
       label: "Оболонь",
       address: "вул. Героїв полку «Азов», 12в",
       landmark: "Біля метро «Оболонь»",
@@ -46,10 +46,10 @@
       lat: 50.5040, lng: 30.4908,
       altegioId: 754773,
       hasTesters: true,              // тестери гелів White Mandarin — лише тут
-      phone: null,                   // TODO власниця
-      howToGet: null,                // TODO власниця: вхід, поверх, паркінг
-      entrancePhoto: null,           // TODO власниця: фото входу
-      interiorPhotos: []             // TODO власниця: 2–3 фото інтер'єру
+      phone: null,
+      howToGet: null,
+      entrancePhoto: null,
+      interiorPhotos: []
     },
     {
       id: "teremky",
@@ -93,7 +93,7 @@
       id: "varshavskyi",
       shortLoc: "у ЖК Варшавський+",
       short: "Варшавський+",
-      district: "Поділ",            // TODO власниця: як ви називаєте район (Виноградар? Поділ?)
+      district: "Поділ",
       complex: "ЖК Варшавський+",
       label: "ЖК Варшавський+",
       address: "вул. Олександра Олеся, 8а",
@@ -125,8 +125,7 @@
   /* ---------- Послуги ----------
      durations — хвилини; price.top / price.lead — ціни рівнів «топ» і
      «провідна» в тому ж порядку, що й durations. Якщо ціна одна для всіх —
-     price.all. steps — 3 кроки процедури (TODO власниця: перевірити
-     формулювання). product — засіб, яким працюють, якщо відомо. */
+     price.all. steps — кроки процедури (на сайті не показуються). product — засіб, яким працюють, якщо відомо. */
   const services = [
     // Оздоровчий масаж
     { id: "spyna", cat: "ozdorovchyi", name: "Масаж спини",
@@ -331,7 +330,6 @@
             top: { 1: svc("endosfera-oblychchia").price.top[0], 5: 3600, 10: 6400 }, lead: { 1: svc("endosfera-oblychchia").price.lead[0], 5: 4050, 10: 7200 } },
     bodyFace: { minutes: 75, zones: "стопи, ноги, сідниці, спина, руки, долоні, обличчя",
             top: { 1: svc("endosfera-kompleks").price.top[0], 5: 8750, 10: 15600 }, lead: { 1: svc("endosfera-kompleks").price.lead[0], 5: 9200, 10: 16400 } }
-            // TODO власниця: 5 процедур — 8750 / 9200 у прайсі, а −10% дає 8775 / 9225
   };
 
   /* ---------- Майстрині ----------
@@ -366,14 +364,13 @@
       photo: "assets/img/masters/master-diana", handsPhoto: null, days: null,
       altegio: { obolon: 2855554 }, altegioReviews: 66 },
     { id: "mariia", name: "Марія", studios: ["obolon"], tier: "lead", since: 2021, sinceMonth: 9,
-      // В Altegio підпис «Топ масажист», але записують за цінами провідної. TODO власниця: уточнити рівень
+      // В Altegio підпис «Топ масажист», але записують за цінами провідної
       education: "медична", specs: ["vagitni", "relaks", "ozdorovchyi"],
       bio: null,
       quote: "Я завжди поєдную техніки для досягнення максимального задоволення, розслаблення та оздоровлення організму",
       photo: "assets/img/masters/master-mariia", handsPhoto: null, days: null,
       altegio: { obolon: 2764145 }, altegioReviews: 137 },
     { id: "liudmyla", name: "Людмила", studios: ["teremky"], tier: "apparatus", since: 2003, sinceMonth: 9,
-      // TODO власниця: за якими цінами (топ / провідна) записують Людмилу
       education: "медична", specs: ["endosfera"],
       bio: "Майстриня апаратного масажу",
       quote: "Працюю у сфері естетичної медицини, спеціалізуюся на апаратних методиках корекції фігури та обгортаннях",
@@ -406,7 +403,7 @@
     { id: "liubov", name: "Любов", studios: ["obolon"], tier: "top", since: 2024, sinceMonth: 9,
       education: "курс практичної кінезіології", specs: ["ozdorovchyi", "relaks", "sport", "antytselulit", "oblychchia", "vagitni"],
       bio: "Спеціалізуюсь на оздоровчому, релакс, спортивному та антицелюлітному масажі, а також на масажах обличчя",
-      // Виправлено «інтергую» → «інтегрую». TODO власниця: погодити
+      // Виправлено «інтергую» → «інтегрую»
       quote: "Пройшла курс практичної кінезіології, тож при потребі інтегрую ці знання в масажну практику",
       photo: "assets/img/masters/master-liubov", handsPhoto: null, days: null,
       altegio: { obolon: 2891770 }, altegioReviews: 67 }
@@ -416,8 +413,6 @@
     mariia: "Марії", liudmyla: "Людмили", anna: "Анни", valeriia: "Валерії",
     nataliia: "Наталії", tetiana: "Тетяни", liubov: "Любові" };
   masters.forEach((m) => { m.nameTo = nameTo[m.id]; });
-  // TODO власниця: робочі дні та фото рук кожної майстрині.
-  // TODO власниця: у Altegio є ще Марина (Оболонь, Варшавський) і Алла (Солом’янка) — додати?
 
   const specs = [
     { id: "vagitni", name: "Для вагітних" },
@@ -427,7 +422,6 @@
     { id: "antytselulit", name: "Антицелюлітний масаж" },
     { id: "relaks", name: "Релакс-масаж" },
     { id: "ozdorovchyi", name: "Оздоровчий масаж" }
-    // «Тейпування» і «Лімфодренаж» — TODO власниця: хто з майстринь це робить
   ];
 
   const tiers = {
@@ -436,7 +430,6 @@
     apparatus: { name: "Майстриня апаратного масажу", short: "Апаратний масаж" }
   };
   // Підказка біля перемикача рівнів (стратегія): «Провідна — найбільший досвід».
-  // TODO власниця: чи хоче перейменувати рівні «топ / провідна».
 
   /* ---------- Відгуки ----------
      Дослівно зі скриншотів (емодзі прибрано, слова не змінено).
@@ -571,13 +564,13 @@
       photo: "assets/img/massage-neon-healthy", photoW: 720, photoH: 733 },
     { id: "legs", label: "Важкість у ногах", service: "limfodrenazh", duration: 60,
       text: "М’які ритмічні рухи, після яких у тілі й ногах з’являється легкість.",
-      photo: null }, // TODO власниця: фото масажу ніг
+      photo: null },
     { id: "stress", label: "Стрес, погано сплю", service: "relaks", duration: 60,
       text: "М’які, плавні рухи і тиша, щоб відпустити напругу. Якщо заснете — це цілком нормально.",
       photo: "assets/img/massage-relax-green", photoW: 720, photoH: 800 },
     { id: "figure", label: "Хочу більше тонусу", service: "endosfera", duration: 45,
       text: "Апаратний масаж ендосферою — для відчуття тонусу в тілі. Почніть з тест-драйву — це 30 хвилин, щоб зрозуміти, чи вам підходить.",
-      photo: null }, // TODO власниця: фото процедури ендосфери
+      photo: null },
     { id: "pregnant", label: "Я вагітна", service: "vagitni-zahalnyi", duration: 60, link: "vagitnym.html",
       text: "Масаж у положенні на боці або сидячи, з м’якими рухами. Перед записом погодьте масаж з лікарем.",
       photo: "assets/img/pregnancy-belly", photoW: 720, photoH: 779 },
@@ -635,7 +628,6 @@
       use: "Для дитячої шкіри в морозну чи сонячну погоду.", after: null,
       photo: "assets/img/products/wm-kids-cream" }
   ];
-  // TODO власниця: об’єми засобів STYX і гелів White Mandarin.
 
   const productNeeds = [
     { id: "tonus", name: "Тонус і пружність" },
@@ -668,7 +660,7 @@
   /* ---------- Вагітним ---------- */
   // (сертифікат оголошено нижче, тому його термін у правилах підставляємо після оголошення)
   const pregnancy = {
-    fromWeek: null, // TODO власниця: з якого терміну приймаєте
+    fromWeek: null,
     positions: "Лежачи на боці або сидячи — залежно від терміну вагітності та самопочуття.",
     approach: "Рухи м’які й делікатні: майстриня орієнтується на ваші відчуття, щоб процедура була максимально комфортною.",
     doctorNote: "Перед записом обов’язково узгодьте масаж зі своїм акушером-гінекологом, особливо якщо вагітність має ускладнення.",
@@ -680,25 +672,25 @@
       "підвищений тонус матки"
     ],
     contraNote: "За будь-яких сумнівів спочатку зверніться до лікаря.",
-    oils: null,       // TODO власниця: якими оліями працюєте з вагітними
-    whatToBring: null // TODO власниця: що взяти з собою
+    oils: null,
+    whatToBring: null
   };
 
   /* ---------- Сертифікати ---------- */
   const certificate = {
     validityDays: 30,
-    nominals: null,   // TODO власниця: номінали сертифікатів (або тільки на процедуру?)
-    formats: ["Цифровий (PDF)", "Друкований у студії"], // TODO власниця: підтвердити
+    nominals: null,
+    formats: ["Цифровий (PDF)", "Друкований у студії"],
     designs: ["Лісовий", "Кремовий", "Свічковий"]       // дизайни карток на сайті
   };
 
   rules.find((r) => r.id === "certificate").text = `${certificate.validityDays} днів з моменту дарування.`;
 
   /* ---------- Що входить у вартість візиту ---------- */
-  const included = null; // TODO власниця: чай, тепла кушетка, душ, засоби — що саме?
+  const included = null;
 
   /* ---------- Formspree ---------- */
-  const FORMSPREE_ID = null; // TODO: вставити ID Formspree (напр. "xyzabcd")
+  const FORMSPREE_ID = null;
 
   /* ---------- Допоміжні функції ---------- */
   const byId = (list, id) => list.find((x) => x.id === id) || null;
@@ -718,6 +710,11 @@
     return url;
   }
 
+  /** Посилання на локацію студії в Google Maps (за адресою). */
+  function mapUrl(studio) {
+    return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(studio.address + ", Київ");
+  }
+
   /** Ціна послуги для рівня й тривалості. */
   function priceOf(service, tier, duration) {
     if (!service || !service.price) return null;
@@ -731,6 +728,6 @@
     brand, studios, categories, services, addons, courses, endosphere,
     masters, specs, tiers, reviews, concerns, products, productNeeds, shop,
     rules, pregnancy, certificate, included, FORMSPREE_ID,
-    byId, bookingUrl, priceOf
+    byId, bookingUrl, mapUrl, priceOf
   };
 })();

@@ -243,7 +243,7 @@
       const st = UI.openStatus(s);
       const q = encodeURIComponent("Київ, " + s.address);
       const team = BS.masters.filter((m) => m.studios.includes(s.id));
-      const g = s.google ? `<p class="studio-sec__rating"><b>${s.google.rating.toFixed(1).replace(".", ",")}</b> <span class="stars" aria-hidden="true">★★★★★</span> ${s.google.count} ${UI.reviewsWord(s.google.count)} у Google</p>` : "";
+      const g = s.google && s.google.count >= 5 ? `<p class="studio-sec__rating"><b>${s.google.rating.toFixed(1).replace(".", ",")}</b> <span class="stars" aria-hidden="true">★★★★★</span> ${s.google.count} ${UI.reviewsWord(s.google.count)} у Google</p>` : "";
       return `<section class="section studio-sec${i % 2 ? " section--beige" : ""}" id="${s.id}" data-line="${i % 2 ? "right" : "left"}" aria-labelledby="st-${s.id}">
         <div class="container studio-sec__grid">
           <div class="studio-sec__info reveal">
@@ -253,8 +253,7 @@
             <p class="muted">${UI.esc(s.landmark || "")}</p>
             <p class="studio-sec__hours"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>${UI.esc(s.days)} · ${s.hours[0]}:00–${s.hours[1]}:00 <span class="status js-status ${st.open ? "" : "is-closed"}" data-studio="${s.id}">${st.text}</span></p>
             ${g}
-            <div class="studio-sec__how"><p class="toggle-label">Як дістатися</p>
-              <p>${s.howToGet ? UI.esc(s.howToGet) : "Напишіть нам у Direct перед першим візитом — підкажемо, як знайти вхід і де залишити авто."}</p></div>
+            ${s.howToGet ? `<div class="studio-sec__how"><p class="toggle-label">Як дістатися</p><p>${UI.esc(s.howToGet)}</p></div>` : ""}
             <div class="studio-sec__actions">
               <a class="btn js-book" data-studio="${s.id}" href="${BS.brand.direct}">Записатися сюди</a>
               <a class="btn btn--ghost" href="https://www.google.com/maps/dir/?api=1&destination=${q}" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg>Маршрут</a>

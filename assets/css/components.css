@@ -38,7 +38,7 @@
 .on-forest .btn--ghost { --btn-fg: var(--cream); --btn-bd: rgba(237, 230, 214, .35); }
 .on-forest .btn--ghost:hover { --btn-bg: rgba(237, 230, 214, .08); --btn-bd: var(--cream); }
 .btn--sm { min-height: 44px; padding: .55em 1.1em; font-size: var(--fs-xs); }
-.btn--block { width: 100%; }
+.btn--block { width: 100%; white-space: normal; text-align: center; }
 @media (prefers-reduced-motion: reduce) { .btn::after { display: none; } }
 
 .link-arrow {

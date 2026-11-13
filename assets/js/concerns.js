@@ -26,7 +26,7 @@
   const layers = UI.$$(".xfade__layer", photoBox);
   let front = 0;
   function setPhoto(c) {
-    const html = c.photo ? UI.img(c.photo, c.photoW, c.photoH, c.label) : UI.placeholder();
+    const html = c.photo ? UI.img(c.photo, c.photoW, c.photoH, c.label) : UI.placeholder("Body Space");
     const next = layers[1 - front];
     next.innerHTML = html;
     next.classList.add("is-on");

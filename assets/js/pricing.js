@@ -39,7 +39,7 @@
       cardsBox.innerHTML = HOME.map((h) => {
         const s = BS.byId(BS.services, h.id);
         return `<article class="price-card reveal" data-id="${s.id}">
-          <div class="price-card__media">${h.photo ? UI.img(h.photo, h.w, h.h, h.alt) : UI.placeholder()}</div>
+          <div class="price-card__media">${h.photo ? UI.img(h.photo, h.w, h.h, h.alt) : UI.placeholder("Body Space")}</div>
           <div class="price-card__body">
             <h3 class="price-card__name">${UI.esc(s.name)}</h3>
             <p class="price-card__short">${UI.esc(s.short)}</p>
@@ -225,7 +225,7 @@
     typesBox.innerHTML = BS.services.filter((s) => s.pregnancy).map((s, i) => {
       const p = PREG_PHOTO[s.id];
       return `<article class="preg-type reveal">
-        <div class="preg-type__media">${p ? UI.img(p[0], p[1], p[2], s.name) : UI.placeholder()}</div>
+        <div class="preg-type__media">${p ? UI.img(p[0], p[1], p[2], s.name) : UI.placeholder("Body Space")}</div>
         <div class="preg-type__body">
           <span class="preg-type__n">0${i + 1}</span>
           <h3>${UI.esc(s.name.replace(" для вагітних", ""))}</h3>

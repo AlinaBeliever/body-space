@@ -315,7 +315,10 @@
     if (bar && footer) {
       // ховаємо смугу, коли видно футер з великою кнопкою запису
       const r = footer.getBoundingClientRect();
-      bar.classList.toggle("is-hidden", r.top < window.innerHeight - 40);
+      // на головній смуга з'являється лише після героя: там уже є кнопка запису
+      const hero = $(".hero");
+      const beforeHero = hero && hero.getBoundingClientRect().bottom > 0;
+      bar.classList.toggle("is-hidden", r.top < window.innerHeight - 40 || !!beforeHero);
     }
   }
   window.addEventListener("scroll", onScroll, { passive: true });
@@ -470,7 +473,7 @@
       const min = Math.min(...g.map((s) => s.google.rating)), max = Math.max(...g.map((s) => s.google.rating));
       const r = (x) => x.toFixed(1).replace(".", ",");
       el.innerHTML = `<span class="g-badge" aria-hidden="true">G</span><span><b>${r(min)}–${r(max)}</b> <span class="stars" aria-hidden="true">★★★★★</span><br>${count} ${reviewsWord(count)} у Google</span>`;
-      el.setAttribute("aria-label", `Рейтинг у Google від ${r(min)} до ${r(max)}, ${count} відгуків`);
+      el.setAttribute("aria-label", `Рейтинг у Google від ${r(min)} до ${r(max)}, ${count} ${reviewsWord(count)}`);
     });
   }
   function renderFooter() {
@@ -481,7 +484,7 @@
         return `<div class="footer__studio">
           <p class="footer__h">${esc(s.label.replace(" | ", " · "))}</p>
           <p>${esc(s.address)}</p>
-          <p class="status ${st.open ? "" : "is-closed"}">${st.text}</p>
+          <p class="status js-status ${st.open ? "" : "is-closed"}" data-studio="${s.id}">${st.text}</p>
           <a class="footer__studio-book" href="${esc(BS.bookingUrl(s.id))}" target="_blank" rel="noopener">Записатися сюди</a>
         </div>`;
       }).join("");
@@ -501,7 +504,7 @@
       ].map((t) => `<li>${esc(t)}</li>`).join("");
     }
   }
-  function updateStatuses() { renderFooter(); document.dispatchEvent(new CustomEvent("bs:tick")); }
+  function updateStatuses() { document.dispatchEvent(new CustomEvent("bs:tick")); }
 
   /* ---------- Плейсхолдер фото ---------- */
   const placeholder = (label = "Фото від студії") =>

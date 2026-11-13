@@ -94,7 +94,7 @@ p { margin: 0; text-wrap: pretty; }
 .on-forest .eyebrow { color: var(--sand); }
 .eyebrow svg { width: 14px; height: 14px; }
 .section--beige .eyebrow svg, .section--sage .eyebrow svg { display: none; }
-.section--beige, .section--sage { --muted: #4E5A50; }
+.section--beige, .section--sage, .card--beige, .card--sage { --muted: #4E5A50; }
 .section-head { max-width: 720px; margin-bottom: clamp(2rem, 1.5rem + 2vw, 3.5rem); }
 .section-head p { margin-top: var(--s-4); color: var(--muted); font-size: var(--fs-md); }
 .on-forest .section-head p { color: var(--cream-on-forest); opacity: .85; }

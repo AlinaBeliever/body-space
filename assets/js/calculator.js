@@ -35,7 +35,7 @@
         <div><span class="endo-table__k">5 процедур</span><b>${UI.fmt(r.p[5])}</b> грн<small>${UI.fmt(Math.round(r.p[5] / 5))} / процедура</small></div>
         <div><span class="endo-table__k">10 процедур</span><b>${UI.fmt(r.p[10])}</b> грн<small>${UI.fmt(Math.round(r.p[10] / 10))} / процедура</small></div>
       </div>`).join("") +
-      `<p class="endo-table__note small">Ціни ${tier === "lead" ? "провідної " : "топ-"}майстрині. Курс з 5 процедур діє ${BS.courses.validity[5]} днів, з 10 — ${BS.courses.validity[10]} днів. Подарунок «${BS.courses.gift[10]}» — до курсу з 10 процедур тіла. Тест-драйв — ${UI.fmt(E.testDrive.price)} грн у всіх майстринь.</p>`;
+      `<p class="endo-table__note small">Ціни ${tier === "lead" ? "провідної " : "топ-"}майстрині. Курс з 5 процедур діє ${BS.courses.validity[5]} днів, з 10 — ${BS.courses.validity[10]} днів. Подарунок «${BS.courses.gift[10]}» — до курсу з 10 процедур тіла. Тест-драйв — ${UI.fmt(E.testDrive.price)} грн для всіх майстринь.</p>`;
   }
   document.addEventListener("bs:tier", renderTable);
   renderTable();

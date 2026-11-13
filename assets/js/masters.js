@@ -160,7 +160,7 @@
         <div class="mm__photo">${UI.img(m.photo, 360, 450, m.name, { cls: "no-bg" })}</div>
         <div class="mm__info">
           <p class="master-card__since">${UI.esc(sinceLabel(m))}</p>
-          ${m.education ? `<p><b>Освіта:</b> ${UI.esc(m.education)}${/курс/.test(m.education) ? "" : " освіта"}</p>` : ""}
+          ${m.education ? `<p><b>Освіта:</b> ${UI.esc(m.education)}</p>` : ""}
           ${m.bio ? `<p>${UI.esc(m.bio)}</p>` : ""}
           <blockquote class="master-card__quote"><p>${UI.esc(m.quote)}</p></blockquote>
           <div class="mm__book">${m.studios.map((s) => `<a class="btn btn--sm js-book" data-master="${m.id}" data-studio="${s}" href="${BS.brand.direct}">Записатися · ${UI.esc(studioOf(s).short)}</a>`).join("")}</div>

@@ -1,6 +1,6 @@
 /* =====================================================================
    Засоби «Догляд вдома»: картки, «Список для замовлення» (localStorage)
-   і замовлення одним повідомленням у Direct.
+   і замовлення одним повідомленням у Telegram.
    ===================================================================== */
 (function () {
   "use strict";
@@ -52,7 +52,7 @@
   document.addEventListener("click", (e) => {
     const b = e.target.closest(".js-shop-toggle");
     if (b) { toggle(b.dataset.id); return; }
-    if (e.target.closest(".js-shop-order")) { const l = getList(); if (l.length) UI.copyAndOpenDirect(orderText(l)); }
+    if (e.target.closest(".js-shop-order")) { const l = getList(); if (l.length) UI.copyAndOpenTelegram(orderText(l)); }
   });
 
   /* Оновлюємо кнопки без перемальовки всієї сторінки */

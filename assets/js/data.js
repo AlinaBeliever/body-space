@@ -20,6 +20,7 @@
     instagramHandle: "@body__space",
     direct: "https://ig.me/m/body__space",          // запасний шлях запису
     telegram: "https://t.me/+OLutqxuYHAtlZDY6",
+    telegramOrder: "https://t.me/body_space",   // замовлення засобів
     threads: "https://www.threads.net/@body__space",
     altegioNetwork: "https://n803030.alteg.io/select-city/4/select-branch",
     altegioBase: "https://n803030.alteg.io/company/",
@@ -566,9 +567,6 @@
     { id: "desk", label: "Сиджу за комп’ютером, напружена шия", service: "spyna", duration: 60,
       text: "Масаж спини, шиї й плечей — там, де за день збирається напруга.",
       photo: "assets/img/massage-neon-healthy", photoW: 720, photoH: 733 },
-    { id: "legs", label: "Важкість у ногах", service: "limfodrenazh", duration: 60,
-      text: "М’які ритмічні рухи, після яких у тілі й ногах з’являється легкість.",
-      photo: null },
     { id: "stress", label: "Стрес, погано сплю", service: "relaks", duration: 60,
       text: "М’які, плавні рухи і тиша, щоб відпустити напругу. Якщо заснете — це цілком нормально.",
       photo: "assets/img/massage-relax-green", photoW: 720, photoH: 800 },

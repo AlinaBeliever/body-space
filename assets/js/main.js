@@ -292,12 +292,12 @@
     toastTimer = setTimeout(() => t.classList.remove("is-on"), 3200);
   }
 
-  /* ---------- Текст замовлення + Direct ----------
+  /* ---------- Текст замовлення + Telegram ----------
      Усе робимо одразу в момент натискання (інакше телефон блокує вікно або копіювання):
-     текст копіюється, а Direct відкривається з цим текстом у полі повідомлення (?text=).
-     Нічого не надсилається: людина сама натискає «Надіслати». Якщо Instagram не підставив текст,
+     текст копіюється, а чат у Telegram відкривається з цим текстом у полі повідомлення (?text=).
+     Нічого не надсилається: людина сама натискає «Надіслати». Якщо Telegram не підставив текст,
      він уже в буфері обміну — достатньо вставити. */
-  function copyAndOpenDirect(text) {
+  function copyAndOpenTelegram(text) {
     let ok = false;
     try {
       const ta = document.createElement("textarea"); ta.value = text; ta.setAttribute("readonly", "");
@@ -305,10 +305,32 @@
       ok = document.execCommand("copy"); ta.remove();
     } catch (e) { ok = false; }
     if (!ok && navigator.clipboard) { try { navigator.clipboard.writeText(text).catch(() => {}); ok = true; } catch (e) { /* ок */ } }
-    toast(ok ? "Замовлення скопійовано. Якщо в Direct поле порожнє, просто вставте текст" : "Відкриваємо Direct. Опишіть, що хочете замовити");
-    const url = BS.brand.direct + (text ? (BS.brand.direct.includes("?") ? "&" : "?") + "text=" + encodeURIComponent(text) : "");
+    toast(ok ? "Замовлення скопійовано. Якщо в Telegram поле порожнє, просто вставте текст" : "Відкриваємо Telegram. Опишіть, що хочете замовити");
+    const base = BS.brand.telegramOrder;
+    const url = base + (text ? (base.includes("?") ? "&" : "?") + "text=" + encodeURIComponent(text) : "");
     window.open(url, "_blank", "noopener");
   }
+
+  /* ---------- Кошик у шапці: з’являється, коли в списку замовлення є засоби ---------- */
+  function initCart() {
+    const box = $(".header-actions");
+    if (!box) return;
+    const a = document.createElement("a");
+    a.className = "cart-btn js-cart"; a.hidden = true; a.href = "zasoby.html#order-title";
+    a.setAttribute("aria-label", "Кошик із засобами");
+    a.innerHTML = '<svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 8h14l-1.2 11.2a1.5 1.5 0 0 1-1.5 1.3H7.7a1.5 1.5 0 0 1-1.5-1.3L5 8Z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cart-btn__n js-cart-n">0</span>';
+    box.insertBefore(a, box.firstChild);
+    const sync = () => {
+      const l = store.get("shopList", []);
+      const n = Array.isArray(l) ? l.filter((id) => BS.byId(BS.products, id)).length : 0;
+      a.hidden = !n; a.querySelector(".js-cart-n").textContent = n;
+      a.setAttribute("aria-label", "Кошик із засобами: " + n);
+    };
+    document.addEventListener("bs:shop", sync);
+    window.addEventListener("storage", sync);
+    sync();
+  }
+  initCart();
 
   /* ---------- Шапка, меню, мобільна смуга ---------- */
   const header = $(".site-header");
@@ -418,7 +440,7 @@
   window.BSUI = {
     $, $$, store, fmt, esc, rollNumber, kyivNow, openStatus, distanceKm, setStudio,
     get studio() { return currentStudio; }, studioName, studioTitle, openStudioSheet, openModal, closeModal,
-    toast, copyAndOpenDirect, observeReveal, placeholder, img, getTier, setTier, fmtDate, yearsWord, reviewsWord, kyivYear, serviceStudios,
+    toast, copyAndOpenTelegram, observeReveal, placeholder, img, getTier, setTier, fmtDate, yearsWord, reviewsWord, kyivYear, serviceStudios,
     refreshBooking, reducedMotion
   };
 

@@ -43,7 +43,8 @@
       landmark: "Біля метро «Оболонь»",
       hours: [9, 21],
       days: "Пн–Нд",
-      lat: 50.5040, lng: 30.4908,
+      lat: 50.5002665, lng: 30.4972124,
+      mapUrl: "https://www.google.com/maps/place/Масажна+студія+Body+Space+%7C+Масаж+Оболонь/@50.5002665,30.4972124,17z/data=!3m1!4b1!4m6!3m5!1s0x40d4d3005df876c1:0x3fdd96bfb17a29c8!8m2!3d50.5002665!4d30.4972124!16s%2Fg%2F11y4n851cq?hl=uk",
       altegioId: 754773,
       hasTesters: true,              // тестери гелів White Mandarin — лише тут
       phone: null,
@@ -62,7 +63,8 @@
       landmark: "Біля метро «Васильківська»",
       hours: [9, 21],
       days: "Пн–Нд",
-      lat: 50.3935, lng: 30.4743,
+      lat: 50.3938239, lng: 30.474454,
+      mapUrl: "https://www.google.com/maps/place/Масажна+студія+Body+Space+(Теремки)/@50.3938239,30.474454,17z/data=!3m1!4b1!4m6!3m5!1s0x40d4c9bc9cc47c8d:0x2dd2ded96e9baccd!8m2!3d50.3938239!4d30.474454!16s%2Fg%2F11ymph6s9p?hl=uk",
       altegioId: 771775,
       hasTesters: false,
       phone: null,
@@ -81,7 +83,8 @@
       landmark: "Усередині Naumova stretching studio, поруч Солом’янський ландшафтний парк",
       hours: [9, 21],
       days: "Пн–Нд",
-      lat: 50.4306, lng: 30.4832,
+      lat: 50.4306135, lng: 30.4843708,
+      mapUrl: "https://www.google.com/maps/place/Масажна+студія+Body+Space+(Соломʼянка)/@50.4306135,30.4843708,17z/data=!3m1!4b1!4m6!3m5!1s0x40d4cf002fe7e343:0x622b2cb16c11385a!8m2!3d50.4306135!4d30.4843708!16s%2Fg%2F11xlhj3387?hl=uk",
       altegioId: 771774,
       hasTesters: false,
       phone: null,
@@ -97,6 +100,7 @@
       complex: "ЖК Варшавський+",
       label: "ЖК Варшавський+",
       address: "вул. Олександра Олеся, 8а",
+      mapQuery: "Body Space, вул. Олександра Олеся, 8а, Київ",
       landmark: "Поруч ЖК Варшавський 3",
       hours: [9, 21],
       days: "Пн–Нд",
@@ -712,7 +716,8 @@
 
   /** Посилання на локацію студії в Google Maps (за адресою). */
   function mapUrl(studio) {
-    return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(studio.address + ", Київ");
+    if (studio.mapUrl) return studio.mapUrl;
+    return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(studio.mapQuery || (studio.address + ", Київ"));
   }
 
   /** Ціна послуги для рівня й тривалості. */

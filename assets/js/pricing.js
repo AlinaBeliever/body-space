@@ -39,7 +39,6 @@
       cardsBox.innerHTML = HOME.map((h) => {
         const s = BS.byId(BS.services, h.id);
         return `<article class="price-card reveal" data-id="${s.id}">
-          <div class="price-card__media">${h.photo ? UI.img(h.photo, h.w, h.h, h.alt) : UI.placeholder("Body Space")}</div>
           <div class="price-card__body">
             <h3 class="price-card__name">${UI.esc(s.name)}</h3>
             <p class="price-card__short">${UI.esc(s.short)}</p>

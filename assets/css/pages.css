@@ -64,7 +64,8 @@
 /* ---------- «Що вас турбує?» ---------- */
 .concerns__grid { display: grid; gap: var(--s-7); align-items: center; }
 .concerns__chips { margin-top: var(--s-6); }
-.concerns__chips .chip { flex: 1 1 auto; }
+.concerns__chips .chip { flex: 1 1 auto; padding-left: .35rem; }
+.chip__thumb { width: 40px; height: 40px; flex: none; border-radius: 50%; object-fit: cover; border: 2px solid var(--cream); box-shadow: 0 0 0 1px var(--forest-16); }
 .concerns__result { display: grid; gap: var(--s-5); justify-items: center; text-align: center; }
 .xfade { position: relative; width: 100%; height: 100%; }
 .xfade__layer { position: absolute; inset: 0; opacity: 0; transition: opacity 400ms var(--ease); }
@@ -140,7 +141,7 @@
 .prices__controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-4) var(--s-6); margin-bottom: var(--s-6); }
 .prices__hint { color: var(--cream-on-forest); opacity: .75; }
 .price-cards { display: grid; gap: var(--s-4); }
-.price-card { min-width: 0; display: grid; grid-template-columns: 38% minmax(0, 1fr); border-radius: var(--r-lg); overflow: hidden; background: rgba(237, 230, 214, .06); border: 1px solid rgba(237, 230, 214, .12); }
+.price-card { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); border-radius: var(--r-lg); overflow: hidden; background: rgba(237, 230, 214, .06); border: 1px solid rgba(237, 230, 214, .12); }
 .price-card__media { position: relative; min-height: 100%; }
 .price-card__media img, .price-card__media .ph { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .price-card__media .ph { background: #2A4A3C; color: var(--sage); }
@@ -156,8 +157,6 @@
 @media (min-width: 700px) { .price-cards { grid-template-columns: 1fr 1fr; } }
 @media (min-width: 1100px) {
   .price-cards { grid-template-columns: repeat(3, 1fr); }
-  .price-card { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 1fr; }
-  .price-card__media { aspect-ratio: 4 / 3; min-height: 0; }
   .price-card__body { padding: var(--s-5); }
 }
 
@@ -259,14 +258,14 @@
 .master-card__actions { margin-top: auto; padding-top: var(--s-5); display: grid; gap: var(--s-2); justify-items: center; }
 
 /* ---------- Історії ---------- */
-.stories__row { padding-block: 4px 8px; display: grid; grid-template-columns: repeat(3, minmax(150px, 1fr)); gap: var(--s-4); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); overflow-y: hidden; overscroll-behavior-x: contain; }
+.stories__row { padding-block: 4px 8px; display: grid; grid-template-columns: repeat(3, minmax(150px, 220px)); justify-content: start; gap: var(--s-4); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); overflow-y: hidden; overscroll-behavior-x: contain; }
 .stories__row::-webkit-scrollbar { display: none; }
 .story { margin: 0; scroll-snap-align: start; min-width: 0; }
 .story__media { position: relative; aspect-ratio: 9 / 16; border-radius: var(--r-lg); overflow: hidden; background: var(--forest); box-shadow: var(--shadow-sm); }
 .story__video { width: 100%; height: 100%; object-fit: cover; }
 .story__play { position: absolute; left: 12px; bottom: 12px; width: 48px; height: 48px; border-radius: 50%; border: 0; background: rgba(247, 242, 232, .92); color: var(--forest-deep); display: grid; place-items: center; box-shadow: var(--shadow-sm); }
 .story figcaption { margin-top: var(--s-3); font-size: var(--fs-sm); font-weight: 600; color: var(--forest-deep); line-height: 1.35; }
-@media (max-width: 767px) { .stories__row { grid-template-columns: repeat(3, 58vw); } }
+@media (max-width: 767px) { .stories__row { grid-template-columns: repeat(3, 40vw); } }
 
 /* ---------- Відгук у фокусі ---------- */
 .review-focus { max-width: 720px; }
@@ -309,7 +308,7 @@
 .product-row::-webkit-scrollbar { display: none; }
 @media (max-width: 767px) { .product-row { grid-template-columns: repeat(4, 70vw); } }
 .product-card { display: flex; flex-direction: column; border-radius: var(--r-lg); background: var(--white); box-shadow: var(--shadow-sm); overflow: hidden; scroll-snap-align: start; }
-.product-card__media { aspect-ratio: 1; background: var(--beige); padding: 6%; }
+.product-card__media { aspect-ratio: 1; background: var(--beige); padding: 14%; }
 .product-card__media img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
 .product-card__body { display: flex; flex-direction: column; gap: .3rem; flex: 1; padding: var(--s-4) var(--s-5) var(--s-5); }
 .product-card__brand { font-size: .72rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--sand-ink); }

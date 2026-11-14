@@ -15,9 +15,12 @@
   // Куди веде «Детальніше» для кожної послуги
   const moreLink = (c, svc) => c.link || (svc.cat === "endosfera" ? "endosfera.html" : "poslugy.html?cat=" + svc.cat);
 
+  // маленькі круглі фото до кожної категорії
+  const THUMBS = { desk: "desk", legs: "legs", stress: "stress", figure: "endo", pregnant: "pregnant", sport: "sport" };
+
   chipsBox.innerHTML = BS.concerns.map((c, i) =>
     `<button class="chip" type="button" data-id="${c.id}" aria-pressed="${i === 0}">
-       <svg class="leaf-mark" aria-hidden="true"><use href="#i-leaf"/></svg>${UI.esc(c.label)}
+       <img class="chip__thumb" src="assets/img/concerns/${THUMBS[c.id] || c.id}.webp" width="40" height="40" alt="" loading="lazy">${UI.esc(c.label)}
      </button>`).join("");
 
   function render(c, first) {

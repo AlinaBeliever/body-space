@@ -1,7 +1,7 @@
 /* =====================================================================
    Конструктор подарункового сертифіката: процедура, дизайн, ім'я,
    побажання, формат — картка (CSS) оновлюється наживо.
-   Відправка: Formspree (ID у data.js → FORMSPREE_ID) або «Оформити в Direct».
+   Відправка: Formspree (ID у data.js → FORMSPREE_ID) або «Оформити в Telegram».
    ===================================================================== */
 (function () {
   "use strict";
@@ -95,7 +95,8 @@
     ].filter(Boolean).join("\n");
   }
 
-  UI.$(".js-cert-direct").addEventListener("click", () => UI.copyAndOpenDirect(summary()));
+  const TG = { copied: "Заявку скопійовано. Якщо в Telegram поле порожнє, просто вставте текст", plain: "Відкриваємо Telegram. Напишіть, який сертифікат хочете" };
+  UI.$(".js-cert-direct").addEventListener("click", () => UI.copyAndOpenTelegram(summary(), TG));
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -107,8 +108,8 @@
     }
     err.hidden = true;
     if (!BS.FORMSPREE_ID) {
-      // Поки Formspree не підключено — надсилаємо через Direct
-      UI.copyAndOpenDirect(summary());
+      // Поки Formspree не підключено — надсилаємо через Telegram
+      UI.copyAndOpenTelegram(summary(), TG);
       return;
     }
     const btn = UI.$(".js-cert-submit");
@@ -122,8 +123,8 @@
       UI.toast("Дякуємо! Заявку надіслано — ми напишемо вам найближчим часом");
       form.reset(); form.pickup.value = state.pickup; render();
     } catch (er) {
-      UI.toast("Не вдалося надіслати — оформимо в Direct");
-      UI.copyAndOpenDirect(summary());
+      UI.toast("Не вдалося надіслати — оформимо в Telegram");
+      UI.copyAndOpenTelegram(summary(), TG);
     } finally { btn.disabled = false; }
   });
 

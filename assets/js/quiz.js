@@ -2,7 +2,7 @@
    Квіз «Який масаж потрібен вам зараз?» — модальне вікно (#pidbir),
    відкривається з будь-якої сторінки. 4 кроки, без форми з телефоном.
    Результат: послуга з цінами обох рівнів, 2 майстрині студії,
-   «Записатися» і «Надіслати в Direct».
+   «Записатися» і «Надіслати в Телеграм».
    ===================================================================== */
 (function () {
   "use strict";
@@ -123,7 +123,7 @@
           </li>`).join("")}</ul>` : ""}
         <div class="quiz__nav">
           <a class="btn js-book" data-service="${svc.id}" href="${BS.brand.direct}">Записатися<span class="js-book-studio"></span></a>
-          <button class="btn btn--ghost js-quiz-direct" type="button"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg>Надіслати в Direct</button>
+          <button class="btn btn--ghost js-quiz-direct" type="button"><svg class="icon" aria-hidden="true"><use href="#i-telegram"/></svg>Надіслати в Телеграм</button>
         </div>
         <button class="link-arrow js-quiz-restart" type="button">Пройти ще раз</button>
       </div>`;
@@ -153,7 +153,7 @@
     if (e.target.closest(".js-quiz-next")) { step++; step >= 4 ? renderResult() : renderStep(); focusFirst(); return; }
     if (e.target.closest(".js-quiz-back")) { step--; renderStep(); focusFirst(); return; }
     if (e.target.closest(".js-quiz-restart")) { step = 0; answers = {}; renderStep(); focusFirst(); return; }
-    if (e.target.closest(".js-quiz-direct")) { UI.copyAndOpenDirect(body.dataset.text || ""); return; }
+    if (e.target.closest(".js-quiz-direct")) { UI.copyAndOpenTelegram(body.dataset.text || "", { copied: "Заявку скопійовано. Якщо в Telegram поле порожнє, просто вставте текст", plain: "Відкриваємо Telegram. Напишіть, який масаж обрали" }); return; }
     if (e.target.closest(".js-quiz-close")) UI.closeModal();
   });
   function focusFirst() { const f = UI.$(".quiz__opt, .quiz__svc", body); if (f) { if (!f.matches("button")) f.setAttribute("tabindex", "-1"); f.focus({ preventScroll: true }); } }

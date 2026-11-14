@@ -5,29 +5,76 @@
    ===================================================================== */
 
 /* ---------- Герой ---------- */
-.hero { position: relative; padding: clamp(1.25rem, 1rem + 2vw, 3.5rem) 0 var(--section-y); overflow: hidden; }
-.hero__grid { display: grid; gap: var(--s-6); align-items: center; position: relative; z-index: 2; }
+.hero { position: relative; padding: clamp(1.5rem, 1rem + 3vw, 4rem) 0 var(--section-y); overflow: hidden; }
+.hero__grid { display: grid; gap: clamp(2.5rem, 2rem + 3vw, 4rem); align-items: center; position: relative; z-index: 2; }
 .hero__text { position: relative; z-index: 2; }
-.hero h1 { max-width: 11ch; }
-.hero__lead { margin-top: var(--s-5); max-width: 34rem; font-size: var(--fs-md); color: var(--muted); }
-.hero__actions { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-5); }
-@media (max-width: 767px) { .hero__actions .btn { flex: 1 1 auto; justify-content: center; padding-inline: var(--s-4); } }
-.hero__text .book-change { margin-top: var(--s-2); }
 
-.hero__media { position: relative; justify-self: center; width: min(100%, 420px); }
-.hero__arch { aspect-ratio: 3 / 4; box-shadow: var(--shadow-md); }
-.hero__arch { position: relative; }
-.hero__arch img { object-position: 50% 18%; }
-.hero__lamp { position: absolute; right: -10px; bottom: -22px; width: 34%; border: 6px solid var(--cream); box-shadow: var(--shadow-md); }
-.hero__lamp img { object-position: 30% 60%; }
+/* Надзаголовок: тонка лінія + дрібні капітелі з повітрям */
+.hero__eyebrow { gap: .9em; margin-bottom: clamp(1.25rem, 1rem + 1vw, 2rem); font-size: .72rem; font-weight: 500; letter-spacing: .28em; }
+.hero__eyebrow::before { content: ""; width: 2.5rem; height: 1px; background: currentColor; opacity: .6; }
 
+.hero h1 { max-width: none; font-size: clamp(3rem, 1.8rem + 5vw, 6.5rem); line-height: .98; letter-spacing: -.02em; }
+.hero h1 em { display: block; padding-left: .55em; color: var(--forest); }
+.hero__lead { margin-top: clamp(1.5rem, 1.2rem + 1vw, 2.25rem); max-width: 26rem; font-size: var(--fs-md); line-height: 1.65; color: var(--muted); }
+
+.hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-6); margin-top: clamp(2rem, 1.6rem + 1.5vw, 2.75rem); }
+.btn--lg { min-height: 56px; padding: .9em 2em; letter-spacing: .04em; }
+.hero__quiz { color: var(--forest-deep); border-bottom: 1px solid var(--sand); min-height: 0; padding-bottom: .3em; }
+
+.hero__meta { list-style: none; margin: clamp(2.5rem, 2rem + 2vw, 4rem) 0 0; padding: var(--s-4) 0 0; border-top: 1px solid var(--forest-16); max-width: 30rem; display: grid; gap: .35rem; font-size: var(--fs-xs); letter-spacing: .04em; color: var(--muted); }
+
+/* Відео в арці, як дзеркало в студії */
+.hero__media { position: relative; justify-self: center; width: min(100%, 380px); margin: 0; }
+.hero__frame { position: relative; }
+.hero__frame::before { /* тонкий контур арки, зсунутий за кадр */
+  content: ""; position: absolute; inset: -14px 14px 14px -14px; border: 1px solid var(--sand); border-radius: var(--r-arch); opacity: .7; pointer-events: none;
+}
+.hero__arch { position: relative; aspect-ratio: 3 / 4; background: #2a2119; }
+.hero__video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.hero__toggle {
+  position: absolute; right: 16px; bottom: 16px; z-index: 2;
+  display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 50%;
+  border: 1px solid rgba(247, 242, 232, .45); background: rgba(20, 42, 33, .28); color: var(--cream);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  opacity: .75; transition: opacity var(--t-fast) var(--ease);
+}
+.hero__toggle[hidden] { display: none; }
+.hero__toggle:hover, .hero__toggle:focus-visible { opacity: 1; }
+.hero__toggle .icon { width: 16px; height: 16px; }
+.hero__caption { display: flex; justify-content: space-between; gap: var(--s-4); margin-top: var(--s-4); font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--sand-ink); }
+
+@media (max-width: 767px) {
+  .hero__actions .btn { flex: 1 1 100%; justify-content: center; }
+  .hero__quiz { margin-inline: auto; }
+}
 @media (min-width: 900px) {
-  .hero__grid { grid-template-columns: 1.08fr .92fr; gap: var(--s-8); }
-  .hero__media { justify-self: end; width: min(100%, 470px); }
+  .hero__grid { grid-template-columns: 1.1fr .9fr; gap: var(--s-8); }
+  /* арка завжди вміщається в екран разом із підписом */
+  .hero__media { justify-self: end; margin-right: clamp(0px, 5vw, 5rem); width: min(100%, 440px, calc((100svh - var(--header-h) - 9rem) * .75)); min-width: 320px; }
 }
 @media (min-width: 1100px) {
-  .hero__grid { grid-template-columns: 1.05fr .95fr; }
-  .hero__media { width: min(100%, 540px); }
+  .hero__grid { grid-template-columns: 1.15fr .85fr; }
+  .hero__media { width: min(100%, 480px, calc((100svh - var(--header-h) - 9rem) * .75)); }
+}
+
+
+/* Поява героя: спокійно, по черзі. Лише коли є JS і людина не вимкнула анімацію. */
+@keyframes hero-rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+@keyframes hero-arch { from { opacity: 0; transform: translateY(32px) scale(.97); } to { opacity: 1; transform: none; } }
+@keyframes hero-settle { from { transform: scale(1.08); } to { transform: scale(1); } }
+@keyframes hero-fade { from { opacity: 0; } to { opacity: .7; } }
+@media (prefers-reduced-motion: no-preference) {
+  .js .hero__eyebrow, .js .hero h1, .js .hero h1 em, .js .hero__lead, .js .hero__actions, .js .hero__meta { animation: hero-rise 900ms var(--ease) both; }
+  .js .hero__eyebrow { animation-delay: .1s; }
+  .js .hero h1 { animation-delay: .25s; }
+  .js .hero h1 em { animation-delay: .45s; }
+  .js .hero__lead { animation-delay: .65s; }
+  .js .hero__actions { animation-delay: .8s; }
+  .js .hero__meta { animation-delay: .95s; }
+  .js .hero__arch { animation: hero-arch 1200ms var(--ease) .3s both; }
+  .js .hero__video { animation: hero-settle 2400ms var(--ease) .3s both; }
+  .js .hero__frame::before { animation: hero-fade 1400ms var(--ease) .9s both; }
+  .js .hero__caption { animation: hero-rise 900ms var(--ease) 1.1s both; }
 }
 
 /* Рядок швидкого запису */

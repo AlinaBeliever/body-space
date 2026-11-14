@@ -71,15 +71,14 @@
 @media (min-width: 768px) { .logo span { font-size: 1.2rem; } }
 
 .nav { display: none; }
-.nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: clamp(.9rem, .2rem + 1.2vw, 1.8rem); }
-.nav a { font-size: var(--fs-sm); font-weight: 500; text-decoration: none; color: var(--ink); padding: .5rem 0; position: relative; }
+.nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: clamp(.85rem, -.2rem + 1.6vw, 1.7rem); }
+.nav a { font-size: clamp(.8125rem, .5rem + .5vw, .9375rem); font-weight: 500; text-decoration: none; color: var(--ink); padding: .5rem 0; position: relative; }
 .nav a::after { content: ""; position: absolute; left: 0; right: 100%; bottom: .2rem; height: 1px; background: var(--sand); transition: right var(--t-fast) var(--ease); }
 .nav a:hover::after, .nav a[aria-current="page"]::after { right: 0; }
-@media (min-width: 1100px) { .nav { display: block; margin-left: auto; } }
-@media (min-width: 1100px) and (max-width: 1299px) { .nav ul { gap: .75rem; } .nav a { font-size: .8125rem; } }
+@media (min-width: 1200px) { .nav { display: block; margin-left: auto; } }
 
 .header-actions { display: flex; align-items: center; gap: var(--s-2); margin-left: auto; }
-@media (min-width: 1100px) { .header-actions { margin-left: var(--s-4); } }
+@media (min-width: 1200px) { .header-actions { margin-left: var(--s-4); } }
 .header-book { display: none; }
 @media (min-width: 768px) { .header-book { display: inline-flex; } }
 
@@ -89,6 +88,16 @@
 .cart-btn:hover { border-color: var(--forest); }
 .cart-btn .icon { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 .cart-btn__n { position: absolute; top: -4px; right: -4px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; background: var(--forest-deep); color: var(--cream, #F7F2E8); font-size: 11px; font-weight: 600; line-height: 20px; text-align: center; }
+
+/* Коли студію вже обрано (десктоп): пігулка стає круглою іконкою, бо назву студії вже показує кнопка «Записатися».
+   Текст лишається для скрінрідерів; клік, як і раніше, відкриває вибір студії. */
+@media (min-width: 768px) {
+  .has-studio .studio-pill { width: 44px; padding: 0; justify-content: center; }
+  .has-studio .studio-pill__label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .has-studio .studio-pill .icon { width: 1.25em; height: 1.25em; }
+}
+.header-book, .nav a, .js-book-studio { white-space: nowrap; }
+.header-book { font-size: .8125rem; padding-inline: 1.2em; }
 
 /* Пігулка «Оберіть студію» */
 .studio-pill {
@@ -108,7 +117,7 @@
   width: 44px; height: 44px; border: 0; border-radius: 50%; background: transparent; color: var(--forest-deep);
 }
 .menu-toggle .icon { width: 24px; height: 24px; }
-@media (min-width: 1100px) { .menu-toggle { display: none; } }
+@media (min-width: 1200px) { .menu-toggle { display: none; } }
 
 /* Мобільне меню (вікно на весь екран) */
 .mobile-menu { position: fixed; inset: 0; z-index: 110; background: var(--cream); display: flex; flex-direction: column; padding: var(--s-4) var(--gutter) calc(var(--s-6) + env(safe-area-inset-bottom)); overflow-y: auto; }

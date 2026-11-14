@@ -149,7 +149,7 @@
         el.href = BS.bookingUrl(t.studio, t.master, el.dataset.service || null);
         el.target = "_blank"; el.rel = "noopener";
         const st = BS.byId(BS.studios, t.studio);
-        if (label && !el.dataset.master) label.textContent = " · " + studioName(st);
+        if (label && !el.dataset.master) label.textContent = "· " + studioName(st);
       } else {
         el.href = BS.brand.direct; el.removeAttribute("target");
         if (label) label.textContent = "";
@@ -297,7 +297,8 @@
      текст копіюється, а чат у Telegram відкривається з цим текстом у полі повідомлення (?text=).
      Нічого не надсилається: людина сама натискає «Надіслати». Якщо Telegram не підставив текст,
      він уже в буфері обміну — достатньо вставити. */
-  function copyAndOpenTelegram(text) {
+  function copyAndOpenTelegram(text, msgs) {
+    msgs = msgs || {};
     let ok = false;
     try {
       const ta = document.createElement("textarea"); ta.value = text; ta.setAttribute("readonly", "");
@@ -305,7 +306,7 @@
       ok = document.execCommand("copy"); ta.remove();
     } catch (e) { ok = false; }
     if (!ok && navigator.clipboard) { try { navigator.clipboard.writeText(text).catch(() => {}); ok = true; } catch (e) { /* ок */ } }
-    toast(ok ? "Замовлення скопійовано. Якщо в Telegram поле порожнє, просто вставте текст" : "Відкриваємо Telegram. Опишіть, що хочете замовити");
+    toast(ok ? (msgs.copied || "Замовлення скопійовано. Якщо в Telegram поле порожнє, просто вставте текст") : (msgs.plain || "Відкриваємо Telegram. Опишіть, що хочете замовити"));
     const base = BS.brand.telegramOrder;
     const url = base + (text ? (base.includes("?") ? "&" : "?") + "text=" + encodeURIComponent(text) : "");
     window.open(url, "_blank", "noopener");
@@ -602,6 +603,32 @@
     window.BSQuiz.open(a);
   });
 
+  /* ---------- Відео в герої: грає лише на екрані, поважає «менше руху» й економію трафіку ---------- */
+  function heroVideo() {
+    const v = $(".js-hero-video");
+    const btn = $(".js-hero-toggle");
+    if (!v || !btn) return;
+    const saveData = navigator.connection && navigator.connection.saveData;
+    let wanted = !reducedMotion && !saveData; // чи має відео грати
+    const setBtn = () => {
+      btn.setAttribute("aria-label", wanted ? "Зупинити відео" : "Увімкнути відео");
+      btn.innerHTML = `<svg class="icon" aria-hidden="true"><use href="#i-${wanted ? "pause" : "play"}"/></svg>`;
+    };
+    const tryPlay = () => { const p = v.play(); if (p && p.catch) p.catch(() => { wanted = false; setBtn(); }); };
+    btn.hidden = false;
+    setBtn();
+    btn.addEventListener("click", () => {
+      wanted = !wanted; setBtn();
+      if (wanted) tryPlay(); else v.pause();
+    });
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(([e]) => {
+        if (e.isIntersecting && wanted) tryPlay(); else v.pause();
+      }, { threshold: 0.2 }).observe(v);
+    } else if (wanted) tryPlay();
+  }
+
+  heroVideo();
   renderStudioCards();
   renderFacts();
   quickbook();

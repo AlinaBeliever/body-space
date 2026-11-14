@@ -52,7 +52,7 @@
         <blockquote class="master-card__quote"><p>${UI.esc(m.quote)}</p></blockquote>
         <div class="master-card__actions">
           <a class="btn btn--block js-book" data-master="${m.id}"${opts.studio && m.studios.includes(opts.studio) ? ` data-studio="${opts.studio}"` : ""} href="${BS.brand.direct}">Записатися до ${UI.esc(m.nameTo)}</a>
-          ${opts.more ? `<button class="link-arrow js-master-more" type="button" data-id="${m.id}">Усі відгуки (${reviewsOf(m).length})<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>` : ""}
+          ${opts.more ? `<button class="link-arrow js-master-more" type="button" data-id="${m.id}"><span class="rv-full">Усі відгуки (${reviewsOf(m).length})</span><span class="rv-short">Відгуки</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>` : ""}
         </div>
       </div>
     </article>`;

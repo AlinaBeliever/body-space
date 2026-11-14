@@ -20,7 +20,7 @@
 
   chipsBox.innerHTML = BS.concerns.map((c, i) =>
     `<button class="chip" type="button" data-id="${c.id}" aria-pressed="${i === 0}">
-       <img class="chip__thumb" src="assets/img/concerns/${THUMBS[c.id] || c.id}.webp" width="40" height="40" alt="" loading="lazy">${UI.esc(c.label)}
+       ${UI.esc(c.label)}
      </button>`).join("");
 
   function render(c, first) {
@@ -30,6 +30,7 @@
     const tierName = BS.tiers[tier].short.toLowerCase();
     if (first || !cardBox.firstElementChild) {
       cardBox.innerHTML = `
+        <div class="concerns__photo"><img class="js-c-photo" src="" width="400" height="400" alt=""></div>
         <p class="concerns__kicker">Вам підійде</p>
         <h3 class="concerns__name js-c-name"></h3>
         <p class="concerns__text js-c-text"></p>
@@ -40,6 +41,15 @@
           <a class="link-arrow js-c-more" href="poslugy.html"><span class="js-c-more-t">Усе про масаж</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </div>`;
     }
+    const photo = UI.$(".js-c-photo", cardBox);
+    const src = "assets/img/concerns/" + (THUMBS[c.id] || c.id) + ".webp";
+    if (!photo.getAttribute("src").endsWith(src)) {
+      photo.classList.remove("is-in");
+      photo.onload = () => photo.classList.add("is-in");
+      photo.src = src;
+      if (photo.complete && photo.naturalWidth) photo.classList.add("is-in");
+    }
+    photo.alt = svc.name;
     UI.$(".js-c-name", cardBox).textContent = svc.name;
     UI.$(".js-c-text", cardBox).textContent = c.text;
     UI.$(".js-c-dur", cardBox).textContent = c.duration + " хв";

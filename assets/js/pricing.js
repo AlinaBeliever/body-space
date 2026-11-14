@@ -160,6 +160,12 @@
       // фільтр в адресі — таке посилання можна вставити в сторіс
       try { const u = new URL(location.href); if (cat === "all") u.searchParams.delete("cat"); else u.searchParams.set("cat", cat); history.replaceState(null, "", u); } catch (err) { /* ок */ }
       render();
+      // після зміни фільтра повертаємо екран до початку списку, щоб сторінка не «стрибала» кудись інде
+      const bar = UI.$(".svc-toolbar");
+      const stuck = window.matchMedia("(max-width: 767px)").matches ? (UI.$(".svc-toolbar .toggle-group") || bar) : bar;
+      const offset = (parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--header-h")) || 64) + (stuck ? stuck.offsetHeight : 0) + 8;
+      const top = list.getBoundingClientRect().top + window.scrollY - offset;
+      if (window.scrollY > top) window.scrollTo({ top: Math.max(0, top), behavior: "auto" });
     });
     list.addEventListener("click", (e) => {
       const b = e.target.closest(".svc-card .toggle button");
@@ -216,14 +222,11 @@
      Сторінка «Вагітним»
      ===================================================================== */
   const typesBox = UI.$(".js-preg-types");
-  const PREG_PHOTO = { "vagitni-spyna": ["assets/img/massage-relax-green", 720, 800], "vagitni-zahalnyi": ["assets/img/massage-pregnant-side", 600, 1269], "vagitni-oblychchia": ["assets/img/studio-lamp", 720, 456] };
   function renderTypes() {
     if (!typesBox) return;
     const tier = UI.getTier();
     typesBox.innerHTML = BS.services.filter((s) => s.pregnancy).map((s, i) => {
-      const p = PREG_PHOTO[s.id];
       return `<article class="preg-type reveal">
-        <div class="preg-type__media">${p ? UI.img(p[0], p[1], p[2], s.name) : UI.placeholder("Body Space")}</div>
         <div class="preg-type__body">
           <span class="preg-type__n">0${i + 1}</span>
           <h3>${UI.esc(s.name.replace(" для вагітних", ""))}</h3>

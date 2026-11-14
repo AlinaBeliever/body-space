@@ -64,8 +64,10 @@
 /* ---------- «Що вас турбує?» ---------- */
 .concerns__grid { display: grid; gap: var(--s-7); align-items: center; }
 .concerns__chips { margin-top: var(--s-6); }
-.concerns__chips .chip { flex: 1 1 auto; padding-left: .35rem; }
-.chip__thumb { width: 40px; height: 40px; flex: none; border-radius: 50%; object-fit: cover; border: 2px solid var(--cream); box-shadow: 0 0 0 1px var(--forest-16); }
+.concerns__chips .chip { flex: 1 1 auto; }
+.concerns__photo { width: clamp(150px, 40vw, 220px); aspect-ratio: 1; margin: 0 auto var(--s-4); border-radius: 50%; overflow: hidden; box-shadow: var(--shadow-md); background: var(--beige); }
+.concerns__photo img { width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 400ms var(--ease); }
+.concerns__photo img.is-in { opacity: 1; }
 .concerns__result { display: grid; gap: var(--s-5); justify-items: center; text-align: center; }
 .xfade { position: relative; width: 100%; height: 100%; }
 .xfade__layer { position: absolute; inset: 0; opacity: 0; transition: opacity 400ms var(--ease); }
@@ -258,14 +260,18 @@
 .master-card__actions { margin-top: auto; padding-top: var(--s-5); display: grid; gap: var(--s-2); justify-items: center; }
 
 /* ---------- Історії ---------- */
-.stories__row { padding-block: 4px 8px; display: grid; grid-template-columns: repeat(3, minmax(150px, 220px)); justify-content: start; gap: var(--s-4); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); overflow-y: hidden; overscroll-behavior-x: contain; }
-.stories__row::-webkit-scrollbar { display: none; }
-.story { margin: 0; scroll-snap-align: start; min-width: 0; }
+.stories__row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-4); max-width: 640px; margin-inline: auto; }
+.story { margin: 0; min-width: 0; }
 .story__media { position: relative; aspect-ratio: 9 / 16; border-radius: var(--r-lg); overflow: hidden; background: var(--forest); box-shadow: var(--shadow-sm); }
 .story__video { width: 100%; height: 100%; object-fit: cover; }
-.story__play { position: absolute; left: 12px; bottom: 12px; width: 48px; height: 48px; border-radius: 50%; border: 0; background: rgba(247, 242, 232, .92); color: var(--forest-deep); display: grid; place-items: center; box-shadow: var(--shadow-sm); }
-.story figcaption { margin-top: var(--s-3); font-size: var(--fs-sm); font-weight: 600; color: var(--forest-deep); line-height: 1.35; }
-@media (max-width: 767px) { .stories__row { grid-template-columns: repeat(3, 40vw); } }
+.story__play { position: absolute; left: 12px; bottom: 12px; width: 44px; height: 44px; border-radius: 50%; border: 0; background: rgba(247, 242, 232, .92); color: var(--forest-deep); display: grid; place-items: center; box-shadow: var(--shadow-sm); }
+.story figcaption { margin-top: var(--s-3); font-size: var(--fs-sm); font-weight: 600; color: var(--forest-deep); line-height: 1.35; text-align: center; }
+@media (max-width: 767px) {
+  .stories__row { gap: var(--s-2); }
+  .story__media { border-radius: var(--r-md); }
+  .story__play { left: 6px; bottom: 6px; }
+  .story figcaption { font-size: var(--fs-xs); }
+}
 
 /* ---------- Відгук у фокусі ---------- */
 .review-focus { max-width: 720px; }
@@ -676,5 +682,36 @@
 }
 
 /* ---------- Засоби: фото без підкладки ---------- */
-.product-card__media { background: var(--white); }
 .product-card__media img { mix-blend-mode: normal; object-position: center; }
+
+
+/* ---------- Правки: відступи, заголовки, засоби ---------- */
+/* Сторінки з фільтрами: менше порожнього місця між заголовком і фільтрами */
+.page-hero:has(+ .svc-page, + .team, + .shop, + .faq-page, + .js-studio-sections) { padding-bottom: clamp(.5rem, .25rem + 1vw, 1.25rem); }
+.page-hero + .svc-page, .page-hero + .team, .page-hero + .shop, .page-hero + .faq-page { padding-top: clamp(1rem, .5rem + 1.5vw, 2rem); }
+.page-hero + .js-studio-sections > .studio-sec:first-child { padding-top: clamp(1.25rem, .75rem + 1.5vw, 2.25rem); }
+.page-hero:has(+ .js-studio-sections) .page-hero__actions { margin-top: var(--s-4); }
+.page-hero:has(+ .svc-page, + .team, + .shop, + .faq-page) .page-hero__actions { margin-top: var(--s-4); }
+.crumbs { margin-bottom: var(--s-4); }
+
+/* Довгий заголовок (ендосфера): менший розмір і ширший рядок */
+.page-hero h1.h1--long { font-size: clamp(2.1rem, 1.5rem + 2.4vw, 3.6rem); max-width: 22ch; }
+
+/* Послуги на телефоні: закріплений лише перемикач рівня майстрині, категорії гортаються разом зі сторінкою */
+@media (max-width: 767px) {
+  .svc-toolbar { position: static; display: contents; }
+  .svc-tabs { margin-bottom: var(--s-3); }
+  .svc-toolbar .toggle-group { position: sticky; top: var(--header-h); z-index: 6; display: flex; align-items: center; gap: var(--s-3); margin: 0 calc(var(--gutter) * -1) var(--s-3); padding: var(--s-2) var(--gutter); background: rgba(247, 242, 232, .97); border-bottom: 1px solid var(--forest-08); }
+  .svc-cat { scroll-margin-top: calc(var(--header-h) + 64px); }
+}
+.svc-list { min-height: 70vh; overflow-anchor: none; }
+
+/* Кнопка відгуків: на телефоні просто «Відгуки» */
+.rv-short { display: none; }
+@media (max-width: 767px) { .rv-full { display: none; } .rv-short { display: inline; } }
+
+/* Засоби: фото менше, в рамці, не впритул до країв */
+.product-card__media { background: #fff; padding: 16%; margin: var(--s-3) var(--s-3) 0; border-radius: var(--r-md); }
+.product-row { scroll-padding-inline: var(--gutter); }
+@media (max-width: 767px) { .product-row { grid-template-columns: repeat(4, 66vw); } }
+.page-hero:has(+ .js-studio-sections) h1 { max-width: none; }

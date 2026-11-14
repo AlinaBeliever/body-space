@@ -292,18 +292,22 @@
     toastTimer = setTimeout(() => t.classList.remove("is-on"), 3200);
   }
 
-  /* ---------- Копіювання тексту + Direct ---------- */
-  async function copyAndOpenDirect(text) {
+  /* ---------- Текст замовлення + Direct ----------
+     Усе робимо одразу в момент натискання (інакше телефон блокує вікно або копіювання):
+     текст копіюється, а Direct відкривається з цим текстом у полі повідомлення (?text=).
+     Нічого не надсилається: людина сама натискає «Надіслати». Якщо Instagram не підставив текст,
+     він уже в буфері обміну — достатньо вставити. */
+  function copyAndOpenDirect(text) {
     let ok = false;
-    try { await navigator.clipboard.writeText(text); ok = true; } catch (e) {
-      try {
-        const ta = document.createElement("textarea"); ta.value = text; ta.setAttribute("readonly", "");
-        ta.style.position = "fixed"; ta.style.opacity = "0"; document.body.appendChild(ta); ta.select();
-        ok = document.execCommand("copy"); ta.remove();
-      } catch (e2) { ok = false; }
-    }
-    toast(ok ? "Текст скопійовано — вставте його в повідомлення" : "Відкриваємо Direct — опишіть, що хочете замовити");
-    window.open(BS.brand.direct, "_blank", "noopener");
+    try {
+      const ta = document.createElement("textarea"); ta.value = text; ta.setAttribute("readonly", "");
+      ta.style.position = "fixed"; ta.style.opacity = "0"; document.body.appendChild(ta); ta.select();
+      ok = document.execCommand("copy"); ta.remove();
+    } catch (e) { ok = false; }
+    if (!ok && navigator.clipboard) { try { navigator.clipboard.writeText(text).catch(() => {}); ok = true; } catch (e) { /* ок */ } }
+    toast(ok ? "Замовлення скопійовано. Якщо в Direct поле порожнє, просто вставте текст" : "Відкриваємо Direct. Опишіть, що хочете замовити");
+    const url = BS.brand.direct + (text ? (BS.brand.direct.includes("?") ? "&" : "?") + "text=" + encodeURIComponent(text) : "");
+    window.open(url, "_blank", "noopener");
   }
 
   /* ---------- Шапка, меню, мобільна смуга ---------- */

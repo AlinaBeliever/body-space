@@ -941,7 +941,7 @@ window.BS_CONTENT = {
    ],
    "price": {
     "all": [
-     1
+     15
     ]
    },
    "steps": null,

@@ -122,34 +122,36 @@
 
   <!-- 2. Герой -->
   <section class="hero" aria-labelledby="hero-title">
-    <div class="container hero__grid">
-      <div class="hero__text">
-        <p class="eyebrow hero__eyebrow">Масажні студії · Київ</p>
-        <h1 id="hero-title">Час подбати <em>про себе</em></h1>
-        <p class="hero__lead">Масаж, ендосфера і масаж для вагітних у чотирьох студіях поруч із домом.</p>
-        <div class="hero__actions">
-          <a class="btn btn--lg js-book" href="https://ig.me/m/body__space">Записатися<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-          <a class="link-arrow hero__quiz js-quiz-open" href="#turbuie">Підібрати масаж<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-        </div>
-        <ul class="hero__meta">
-          <li>Оболонь · Теремки · Солом’янка · ЖК Варшавський+</li>
-          <li>Щодня 9:00–21:00</li>
-        </ul>
-      </div>
+    <div class="container">
+    <div class="hero__stage js-hero-stage">
+      <!-- Золота нитка: малюється один раз, проходить у проміжку між текстом і відео та виходить під панель запису -->
+      <svg class="hero__line" viewBox="0 0 1440 800" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <path pathLength="1" d="M 0 215 C 330 50, 830 10, 909 270 C 969 490, 954 730, 944 940"/>
+      </svg>
 
-      <figure class="hero__media">
-        <div class="hero__frame"><div class="hero__arch frame-arch">
-          <video class="hero__video js-hero-video" muted loop playsinline preload="metadata"
-                 width="720" height="960" poster="assets/img/hero-stone-poster.webp"
-                 aria-label="Майстриня Body Space робить масаж теплим камінням">
-            <source src="assets/video/hero-stone.mp4" type="video/mp4">
-          </video>
-          <button class="hero__toggle js-hero-toggle" type="button" aria-label="Зупинити відео" hidden>
-            <svg class="icon" aria-hidden="true"><use href="#i-pause"/></svg>
-          </button>
-        </div></div>
-        <figcaption class="hero__caption"><span>Стоун-масаж</span></figcaption>
-      </figure>
+      <div class="hero__inner">
+        <div class="hero__text">
+          <h1 id="hero-title">Місце, де про вас <em>турбуються</em></h1>
+          <p class="hero__lead">Чотири студії в Києві, де всі майстрині — дівчата.</p>
+          <div class="hero__actions">
+            <a class="btn btn--lg js-book" href="https://ig.me/m/body__space">Записатися<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="link-arrow hero__quiz js-quiz-open" href="#turbuie">Підібрати масаж<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </div>
+        </div>
+
+        <div class="hero__side">
+        <div class="hero__media">
+          <div class="hero__breath">
+            <video class="hero__clip js-hero-video is-active" data-label="Стоун-масаж" muted loop playsinline preload="metadata"
+                   poster="assets/img/hero-stone-poster.webp" aria-label="Майстриня Body Space робить масаж теплим камінням">
+              <source src="assets/video/hero-stone.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+        <p class="hero__caption">Стоун-масаж</p>
+        </div>
+      </div>
+    </div>
     </div>
 
     <!-- Рядок швидкого запису: Студія · Послуга · Майстриня → Записатися -->

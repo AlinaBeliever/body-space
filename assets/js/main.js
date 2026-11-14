@@ -603,32 +603,74 @@
     window.BSQuiz.open(a);
   });
 
-  /* ---------- Відео в герої: грає лише на екрані, поважає «менше руху» й економію трафіку ---------- */
+  /* ---------- Відео в герої: грає лише на екрані, поважає «менше руху» й економію трафіку. ---------- */
   function heroVideo() {
     const v = $(".js-hero-video");
-    const btn = $(".js-hero-toggle");
-    if (!v || !btn) return;
+    const stage = $(".js-hero-stage");
+    if (!v || !stage) return;
     const saveData = navigator.connection && navigator.connection.saveData;
-    let wanted = !reducedMotion && !saveData; // чи має відео грати
-    const setBtn = () => {
-      btn.setAttribute("aria-label", wanted ? "Зупинити відео" : "Увімкнути відео");
-      btn.innerHTML = `<svg class="icon" aria-hidden="true"><use href="#i-${wanted ? "pause" : "play"}"/></svg>`;
-    };
-    const tryPlay = () => { const p = v.play(); if (p && p.catch) p.catch(() => { wanted = false; setBtn(); }); };
-    btn.hidden = false;
-    setBtn();
-    btn.addEventListener("click", () => {
-      wanted = !wanted; setBtn();
-      if (wanted) tryPlay(); else v.pause();
-    });
+    const wanted = !reducedMotion && !saveData;
+    let visible = true;
+    const sync = () => { if (wanted && visible) { const p = v.play(); if (p && p.catch) p.catch(() => {}); } else v.pause(); };
     if ("IntersectionObserver" in window) {
-      new IntersectionObserver(([e]) => {
-        if (e.isIntersecting && wanted) tryPlay(); else v.pause();
-      }, { threshold: 0.2 }).observe(v);
-    } else if (wanted) tryPlay();
+      new IntersectionObserver(([e]) => { visible = e.isIntersecting; sync(); }, { threshold: 0.2 }).observe(stage);
+    } else sync();
+  }
+
+  /* ---------- Вибір студії в герої: «Солом’янка — найближче вікно сьогодні о 14:30 →».
+     Вільні вікна поки НЕ з Altegio: час рахується від поточного (за Києвом) зі зсувом на студію. ---------- */
+  function heroPick() {
+    const root = $(".js-hero-pick");
+    if (!root) return;
+    const btn = $(".js-hp-btn", root), name = $(".js-hp-name", root), time = $(".js-hp-time", root), link = $(".js-hp-link", root), menu = $(".js-hp-menu", root);
+    const offsets = { solomianka: 45, obolon: 90, teremky: 135, varshavskyi: 180 }; // хв від зараз (демо)
+    const windowFor = (st) => {
+      let now;
+      try {
+        const p = new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Kyiv", hour: "2-digit", minute: "2-digit", hour12: false }).formatToParts(new Date());
+        now = +p.find((x) => x.type === "hour").value % 24 * 60 + +p.find((x) => x.type === "minute").value;
+      } catch (e) { const d = new Date(); now = d.getHours() * 60 + d.getMinutes(); }
+      const [open, close] = st.hours;
+      let t = Math.ceil((now + (offsets[st.id] || 60)) / 30) * 30;
+      if (t < open * 60) t = open * 60;
+      if (t > close * 60 - 60) return `завтра о ${open}:00`;
+      return `сьогодні о ${Math.floor(t / 60)}:${String(t % 60).padStart(2, "0")}`;
+    };
+    const apply = (id) => {
+      const st = BS.byId(BS.studios, id) || BS.byId(BS.studios, "solomianka");
+      name.textContent = st.short;
+      time.textContent = windowFor(st);
+      link.dataset.studio = st.id;
+      $$("button", menu).forEach((b) => b.setAttribute("aria-selected", b.dataset.id === st.id ? "true" : "false"));
+      refreshBooking();
+    };
+    menu.innerHTML = BS.studios.map((s) => `<li role="none"><button type="button" role="option" data-id="${s.id}" aria-selected="false"><span>${esc(s.short)}</span><small>${esc(windowFor(s))}</small></button></li>`).join("");
+    const close = (focus) => { menu.hidden = true; btn.setAttribute("aria-expanded", "false"); if (focus) btn.focus(); };
+    btn.addEventListener("click", () => {
+      const open = menu.hidden;
+      menu.hidden = !open; btn.setAttribute("aria-expanded", String(open));
+      if (open) { const sel = $('[aria-selected="true"]', menu) || $("button", menu); sel.focus(); }
+    });
+    menu.addEventListener("click", (e) => {
+      const b = e.target.closest("button[data-id]");
+      if (!b) return;
+      setStudio(b.dataset.id); // запам’ятовує вибір для всього сайту
+      close(true);
+    });
+    menu.addEventListener("keydown", (e) => {
+      const items = $$("button", menu), i = items.indexOf(document.activeElement);
+      if (e.key === "ArrowDown") { e.preventDefault(); items[(i + 1) % items.length].focus(); }
+      else if (e.key === "ArrowUp") { e.preventDefault(); items[(i - 1 + items.length) % items.length].focus(); }
+      else if (e.key === "Escape") { e.preventDefault(); close(true); }
+    });
+    document.addEventListener("click", (e) => { if (!root.contains(e.target)) close(false); });
+    document.addEventListener("bs:studio", (e) => apply(e.detail));
+    apply(currentStudio || "solomianka");
+    setInterval(() => apply(link.dataset.studio), 60000);
   }
 
   heroVideo();
+  heroPick();
   renderStudioCards();
   renderFacts();
   quickbook();

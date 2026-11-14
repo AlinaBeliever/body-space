@@ -564,12 +564,12 @@
      6 відчуттів (стратегія) → послуга. Формулювання — про відчуття,
      без діагнозів і обіцянок. */
   const concerns = [
-    { id: "desk", label: "Сиджу за комп’ютером, напружена шия", service: "spyna", duration: 60,
-      text: "Масаж спини, шиї й плечей — там, де за день збирається напруга.",
-      photo: "assets/img/massage-neon-healthy", photoW: 720, photoH: 733 },
     { id: "stress", label: "Стрес, погано сплю", service: "relaks", duration: 60,
       text: "М’які, плавні рухи і тиша, щоб відпустити напругу. Якщо заснете — це цілком нормально.",
       photo: "assets/img/massage-relax-green", photoW: 720, photoH: 800 },
+    { id: "desk", label: "Сиджу за комп’ютером, напружена шия", service: "spyna", duration: 60,
+      text: "Масаж спини, шиї й плечей — там, де за день збирається напруга.",
+      photo: "assets/img/massage-neon-healthy", photoW: 720, photoH: 733 },
     { id: "figure", label: "Хочу більше тонусу", service: "endosfera", duration: 45,
       text: "Апаратний масаж ендосферою — для відчуття тонусу в тілі. Почніть з тест-драйву — це 30 хвилин, щоб зрозуміти, чи вам підходить.",
       photo: null },

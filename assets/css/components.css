@@ -62,6 +62,9 @@
   .site-header { background: rgba(247, 242, 232, .82); -webkit-backdrop-filter: saturate(1.4) blur(14px); backdrop-filter: saturate(1.4) blur(14px); }
 }
 .site-header.is-scrolled { border-bottom-color: var(--forest-08); }
+
+/* Над світлим hero шапка прозора, без смуги */
+body:has(.hero) .site-header:not(.is-scrolled) { background: transparent; -webkit-backdrop-filter: none; backdrop-filter: none; }
 .site-header .container { height: 100%; display: flex; align-items: center; gap: var(--s-4); }
 
 .logo { min-height: 44px; display: inline-flex; align-items: center; gap: .55rem; text-decoration: none; color: var(--forest-deep); flex: none; }

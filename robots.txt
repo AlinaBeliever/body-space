@@ -2,3 +2,5 @@ User-agent: *
 Allow: /
 
 Sitemap: https://alinabeliever.github.io/body-space/sitemap.xml
+
+Disallow: /admin/

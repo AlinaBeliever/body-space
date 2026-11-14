@@ -318,23 +318,58 @@
     gift: { 10: "1 антицелюлітне обгортання" } // лише до курсу 10 процедур тіла
   };
 
+  /* ---------- Зміни з адмінки (/admin) ----------
+     data/content.js кладе сюди назви студій і повний список послуг.
+     Послуги, на які посилаються квіз, сертифікат і головна, не зникають. */
+  const PROTECTED = ["spyna", "zahalnyi", "limfodrenazh", "oblychchia", "vagitni-spyna", "vagitni-zahalnyi",
+    "vagitni-oblychchia", "antytselulitnyi", "endosfera-test", "endosfera", "endosfera-oblychchia",
+    "endosfera-kompleks", "sportyvnyi", "relaks", "presoterapiia", "stoun", "kompleks-zahalnyi-oblychchia"];
+  (function applyContent(c) {
+    if (!c || typeof c !== "object") return;
+    if (Array.isArray(c.studios)) {
+      c.studios.forEach((o) => {
+        const st = studios.find((x) => x.id === o.id);
+        if (!st) return;
+        if (o.short) { st.short = o.short; st.district = o.short; }
+        st.complex = o.complex || null;
+        if (o.short) st.label = o.short + (st.complex ? " | " + st.complex : "");
+        if (o.shortLoc) st.shortLoc = o.shortLoc;
+        else if (o.short) st.shortLoc = o.short;
+        if (o.address) st.address = o.address;
+      });
+    }
+    if (Array.isArray(c.services) && c.services.length) {
+      const base = services.slice();
+      const next = c.services.map((o) => {
+        const b = base.find((x) => x.id === o.id) || {};
+        return Object.assign({ steps: null, product: null }, b, o);
+      });
+      PROTECTED.forEach((id) => {
+        if (!next.some((x) => x.id === id)) { const b = base.find((x) => x.id === id); if (b) next.push(b); }
+      });
+      services.length = 0;
+      next.forEach((x) => services.push(x));
+    }
+  })(window.BS_CONTENT);
+
   /* Ендосфера: точні суми з прайсу (не рахуємо — беремо як у студії).
      Для калькулятора на сайті. */
   const svc = (id) => services.find((x) => x.id === id);
+  const course = (p, n) => Math.floor(p * n * (1 - courses.endosphereDiscount[n]) / 50) * 50;
+  const tierPrices = (p) => ({ 1: p, 5: course(p, 5), 10: course(p, 10) });
+  const sp = (id, tier, i) => { const s = svc(id); return (s.price[tier] || s.price.all)[i]; };
   const endosphere = {
     testDrive: { minutes: svc("endosfera-test").durations[0], price: svc("endosfera-test").price.all[0] },
     body: {
       45: { zones: "ноги, сідниці, спина, живіт",
-            top:  { 1: svc("endosfera").price.top[0], 5: 5850, 10: 10400 },
-            lead: { 1: svc("endosfera").price.lead[0], 5: 6300, 10: 11200 } },
+            top: tierPrices(sp("endosfera", "top", 0)), lead: tierPrices(sp("endosfera", "lead", 0)) },
       60: { zones: "стопи, ноги, сідниці, спина, руки, долоні",
-            top:  { 1: svc("endosfera").price.top[1], 5: 7200, 10: 12800 },
-            lead: { 1: svc("endosfera").price.lead[1], 5: 7650, 10: 13600 } }
+            top: tierPrices(sp("endosfera", "top", 1)), lead: tierPrices(sp("endosfera", "lead", 1)) }
     },
     face: { minutes: 30, zones: "зона декольте, шия, обличчя",
-            top: { 1: svc("endosfera-oblychchia").price.top[0], 5: 3600, 10: 6400 }, lead: { 1: svc("endosfera-oblychchia").price.lead[0], 5: 4050, 10: 7200 } },
+            top: tierPrices(sp("endosfera-oblychchia", "top", 0)), lead: tierPrices(sp("endosfera-oblychchia", "lead", 0)) },
     bodyFace: { minutes: 75, zones: "стопи, ноги, сідниці, спина, руки, долоні, обличчя",
-            top: { 1: svc("endosfera-kompleks").price.top[0], 5: 8750, 10: 15600 }, lead: { 1: svc("endosfera-kompleks").price.lead[0], 5: 9200, 10: 16400 } }
+            top: tierPrices(sp("endosfera-kompleks", "top", 0)), lead: tierPrices(sp("endosfera-kompleks", "lead", 0)) }
   };
 
   /* ---------- Майстрині ----------
@@ -728,7 +763,7 @@
   }
 
   window.BS = {
-    brand, studios, categories, services, addons, courses, endosphere,
+    PROTECTED, brand, studios, categories, services, addons, courses, endosphere,
     masters, specs, tiers, reviews, concerns, products, productNeeds, shop,
     rules, pregnancy, certificate, included, FORMSPREE_ID,
     byId, bookingUrl, mapUrl, priceOf

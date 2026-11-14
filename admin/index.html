@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Адмінка · Body Space</title>
+<style>
+  :root{--forest:#1E3B2F;--forest-deep:#142A21;--olive:#6F7D52;--sage:#DDE3D0;--cream:#EFE6DA;--beige:#E6D9C6;--sand:#C9A978;--ink:#3A2E27;--muted:#6B5A4F;--white:#FFFDF8;--red:#A23B2E;
+    --font:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;--serif:"Cormorant Garamond",Georgia,serif}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--cream);color:var(--ink);font:16px/1.5 var(--font);padding-bottom:110px}
+  header{background:var(--forest);color:#EDE6D6;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  header h1{margin:0;font:600 26px var(--serif)}
+  header a{color:#EDE6D6;font-size:14px}
+  main{max-width:900px;margin:0 auto;padding:20px 16px}
+  h2{font:600 28px var(--serif);margin:32px 0 12px;color:var(--forest-deep)}
+  .card{background:var(--white);border:1px solid var(--beige);border-radius:14px;padding:16px;margin-bottom:12px}
+  label{display:block;font-size:13px;color:var(--muted);margin:0 0 4px}
+  input[type=text],input[type=number],input[type=password],select,textarea{width:100%;font:inherit;padding:10px 12px;border:1px solid #cdbfa9;border-radius:10px;background:#fff;color:var(--ink)}
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--olive);outline-offset:1px}
+  textarea{resize:vertical;min-height:60px}
+  .grid{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+  @media(max-width:620px){.grid{grid-template-columns:1fr}}
+  .tabs{display:flex;gap:8px;margin-bottom:8px}
+  .tab{border:1px solid var(--forest);background:transparent;color:var(--forest);padding:10px 20px;border-radius:999px;font:600 15px var(--font);cursor:pointer}
+  .tab[aria-pressed=true]{background:var(--forest);color:#fff}
+  .btn{border:0;background:var(--forest);color:#fff;padding:12px 22px;border-radius:999px;font:600 15px var(--font);cursor:pointer}
+  .btn:hover{background:var(--forest-deep)}
+  .btn:disabled{opacity:.5;cursor:default}
+  .btn--ghost{background:transparent;color:var(--forest);border:1px solid var(--forest)}
+  .btn--ghost:hover{background:var(--sage)}
+  .btn--danger{background:transparent;color:var(--red);border:1px solid var(--red)}
+  .btn--danger:hover{background:#f4dcd8}
+  .btn--sm{padding:7px 14px;font-size:13px}
+  .svc-head{display:flex;gap:10px;align-items:flex-end}
+  .svc-head>div{flex:1}
+  .rows{margin-top:12px}
+  .row{display:grid;grid-template-columns:110px 1fr 1fr 40px;gap:8px;align-items:end;margin-bottom:8px}
+  .row.single{grid-template-columns:110px 1fr 40px}
+  .row .x{height:42px;border:0;background:transparent;color:var(--red);font-size:22px;cursor:pointer;border-radius:10px}
+  .row .x:hover{background:#f4dcd8}
+  .opts{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-top:8px;font-size:14px}
+  .opts label{display:flex;gap:6px;align-items:center;margin:0;color:var(--ink);font-size:14px}
+  .cat-title{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  .muted{color:var(--muted);font-size:14px}
+  .hint{font-size:13px;color:var(--muted);margin-top:6px}
+  .savebar{position:fixed;left:0;right:0;bottom:0;background:var(--white);border-top:1px solid var(--beige);padding:12px 16px;display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap;box-shadow:0 -6px 20px rgba(0,0,0,.06)}
+  #status{font-size:14px}
+  #status.ok{color:var(--olive);font-weight:600}
+  #status.err{color:var(--red);font-weight:600}
+  #status.dirty{color:#8a6a1e;font-weight:600}
+  .login{max-width:520px;margin:40px auto}
+  .login h2{margin-top:0}
+  ol{padding-left:20px}
+  ol li{margin-bottom:6px}
+  .badge{font-size:12px;background:var(--sage);color:var(--forest);padding:2px 8px;border-radius:999px;margin-left:6px}
+  .new{border-color:var(--olive);box-shadow:0 0 0 2px #dde3d0}
+  .hidden{display:none!important}
+</style>
+</head>
+<body>
+<header>
+  <h1>Body Space · Адмінка</h1>
+  <a href="../index.html" target="_blank" rel="noopener">Відкрити сайт ↗</a>
+</header>
+<main>
+
+<section id="login" class="login card hidden">
+  <h2>Вхід</h2>
+  <p>Щоб зберігати зміни на сайті, вставте ключ доступу. Це потрібно зробити <b>один раз</b> — далі браузер його запам’ятає.</p>
+  <label for="token">Ключ доступу</label>
+  <input type="password" id="token" autocomplete="off" placeholder="github_pat_…">
+  <p class="hint">Ключ вам передала людина, яка робила сайт. Нікому його не пересилайте.</p>
+  <p><button class="btn" id="loginBtn">Увійти</button></p>
+  <p id="loginErr" class="muted" style="color:var(--red)"></p>
+</section>
+
+<section id="app" class="hidden">
+  <div class="tabs">
+    <button class="tab" data-tab="services" aria-pressed="true">Послуги й ціни</button>
+    <button class="tab" data-tab="studios" aria-pressed="false">Салони</button>
+  </div>
+  <p class="muted">Змініть, що потрібно, і натисніть <b>«Зберегти на сайті»</b> внизу. Нові ціни з’являться на сайті приблизно за 1–3 хвилини.</p>
+  <div id="tab-services"></div>
+  <div id="tab-studios" class="hidden"></div>
+  <p style="margin-top:32px"><button class="btn btn--ghost btn--sm" id="logout">Вийти</button></p>
+</section>
+</main>
+
+<div class="savebar hidden" id="savebar">
+  <span id="status">Усе збережено</span>
+  <button class="btn" id="saveBtn" disabled>Зберегти на сайті</button>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  /* ---- налаштування репозиторію ---- */
+  const REPO = "AlinaBeliever/body-space", BRANCH = "main", FILE = "data/content.js";
+  const API = "https://api.github.com/repos/" + REPO + "/contents/" + FILE;
+  const KEY = "bs-admin-token";
+
+  const $ = (s, r) => (r || document).querySelector(s);
+  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const store = { get: () => { try { return localStorage.getItem(KEY); } catch (e) { return null; } },
+                  set: (v) => { try { v ? localStorage.setItem(KEY, v) : localStorage.removeItem(KEY); } catch (e) {} } };
+
+  let token = store.get(), BS = null, sha = null, state = null, dirty = false;
+
+  const b64enc = (str) => btoa(unescape(encodeURIComponent(str)));
+  const b64dec = (b) => decodeURIComponent(escape(atob(b.replace(/\n/g, ""))));
+  const hdr = () => ({ "Authorization": "Bearer " + token, "Accept": "application/vnd.github+json" });
+
+  function setStatus(text, cls) { const s = $("#status"); s.textContent = text; s.className = cls || ""; }
+  function markDirty() { dirty = true; $("#saveBtn").disabled = false; setStatus("Є незбережені зміни", "dirty"); }
+
+  /* ---- читання поточного вмісту з GitHub (не з кешу сайту) ---- */
+  async function loadRemote() {
+    const r = await fetch(API + "?ref=" + BRANCH, { headers: hdr(), cache: "no-store" });
+    if (r.status === 401 || r.status === 403) throw new Error("auth");
+    if (!r.ok) throw new Error("load " + r.status);
+    const j = await r.json();
+    sha = j.sha;
+    const txt = b64dec(j.content);
+    const m = txt.match(/window\.BS_CONTENT\s*=\s*([\s\S]*?);\s*$/);
+    window.BS_CONTENT = m ? JSON.parse(m[1]) : null;
+  }
+
+  function loadScript(src) {
+    return new Promise((res, rej) => { const s = document.createElement("script"); s.src = src; s.onload = res; s.onerror = () => rej(new Error("script")); document.head.appendChild(s); });
+  }
+
+  async function init() {
+    $("#login").classList.add("hidden"); $("#app").classList.add("hidden"); $("#savebar").classList.add("hidden");
+    if (!token) { $("#login").classList.remove("hidden"); return; }
+    try {
+      await loadRemote();
+      await loadScript("../assets/js/data.js?v=" + Date.now());
+    } catch (e) {
+      if (e.message === "auth") { store.set(null); token = null; $("#loginErr").textContent = "Ключ не підійшов або термін його дії закінчився."; $("#login").classList.remove("hidden"); return; }
+      $("#login").classList.remove("hidden"); $("#loginErr").textContent = "Не вдалося завантажити дані (" + e.message + "). Перевірте інтернет і спробуйте ще раз."; return;
+    }
+    BS = window.BS;
+    state = {
+      studios: BS.studios.map((s) => ({ id: s.id, short: s.short, complex: s.complex || "", shortLoc: s.shortLoc || "", address: s.address })),
+      services: JSON.parse(JSON.stringify(BS.services))
+    };
+    dirty = false; $("#saveBtn").disabled = true; setStatus("Усе збережено");
+    $("#app").classList.remove("hidden"); $("#savebar").classList.remove("hidden");
+    render();
+  }
+
+  /* ---- послуги ---- */
+  const protectedIds = () => new Set(BS.PROTECTED || []);
+  const tiersOf = (s) => !!(s.price && s.price.all);
+
+  function renderServices() {
+    const prot = protectedIds();
+    const box = $("#tab-services");
+    box.innerHTML = BS.categories.map((c) => {
+      const items = state.services.filter((s) => s.cat === c.id);
+      return `<h2 class="cat-title"><span>${esc(c.name)}</span><button class="btn btn--sm" data-act="add" data-cat="${c.id}">+ Додати послугу</button></h2>
+        ${items.map((s) => svcCard(s, prot.has(s.id))).join("") || '<p class="muted">У цьому розділі поки немає послуг.</p>'}`;
+    }).join("");
+  }
+
+  function svcCard(s, isProt) {
+    const single = tiersOf(s);
+    const n = s.durations ? s.durations.length : (single ? s.price.all.length : s.price.top.length);
+    const hasDur = !!s.durations;
+    let rows = "";
+    for (let i = 0; i < n; i++) {
+      const dur = hasDur ? `<div><label>Хвилин</label><input type="number" min="1" inputmode="numeric" data-f="dur" data-i="${i}" value="${s.durations[i] ?? ""}"></div>` : `<div><label>&nbsp;</label><span class="muted">—</span></div>`;
+      if (single) rows += `<div class="row single" data-i="${i}">${dur}<div><label>Ціна, грн</label><input type="number" min="0" inputmode="numeric" data-f="all" data-i="${i}" value="${s.price.all[i] ?? ""}"></div><button class="x" data-act="delrow" data-i="${i}" title="Прибрати цей варіант" aria-label="Прибрати цей варіант">×</button></div>`;
+      else rows += `<div class="row" data-i="${i}">${dur}<div><label>Топ-майстриня, грн</label><input type="number" min="0" inputmode="numeric" data-f="top" data-i="${i}" value="${s.price.top[i] ?? ""}"></div><div><label>Провідна, грн</label><input type="number" min="0" inputmode="numeric" data-f="lead" data-i="${i}" value="${s.price.lead[i] ?? ""}"></div><button class="x" data-act="delrow" data-i="${i}" title="Прибрати цей варіант" aria-label="Прибрати цей варіант">×</button></div>`;
+    }
+    return `<div class="card ${s._new ? "new" : ""}" data-id="${esc(s.id)}">
+      <div class="svc-head">
+        <div><label>Назва послуги${s._new ? '<span class="badge">нова</span>' : ""}</label><input type="text" data-f="name" value="${esc(s.name)}"></div>
+        <button class="btn btn--danger btn--sm" data-act="delete" ${isProt ? 'disabled title="Ця послуга використовується на головній, у квізі або сертифікаті — її можна змінювати, але не видаляти"' : ""}>Видалити</button>
+      </div>
+      <div style="margin-top:10px"><label>Короткий опис (необов’язково)</label><textarea data-f="short" rows="2">${esc(s.short || "")}</textarea></div>
+      <div class="rows">${rows}</div>
+      <div class="opts">
+        <button class="btn btn--ghost btn--sm" data-act="addrow">+ Додати варіант тривалості</button>
+        <label><input type="checkbox" data-f="single" ${single ? "checked" : ""}> Ціна однакова для всіх майстринь</label>
+      </div>
+      ${isProt ? '<p class="hint">Цю послугу не можна видалити — на неї посилаються інші сторінки сайту.</p>' : ""}
+    </div>`;
+  }
+
+  const num = (v) => { const n = parseInt(v, 10); return isFinite(n) && n >= 0 ? n : 0; };
+
+  function onServiceInput(e) {
+    const el = e.target, card = el.closest(".card[data-id]"); if (!card) return;
+    const s = state.services.find((x) => x.id === card.dataset.id), f = el.dataset.f; if (!s || !f) return;
+    const i = parseInt(el.dataset.i, 10);
+    if (f === "name") s.name = el.value;
+    else if (f === "short") s.short = el.value;
+    else if (f === "dur") s.durations[i] = num(el.value);
+    else if (f === "all") s.price.all[i] = num(el.value);
+    else if (f === "top") s.price.top[i] = num(el.value);
+    else if (f === "lead") s.price.lead[i] = num(el.value);
+    else if (f === "single") { toggleSingle(s, el.checked); renderServices(); }
+    markDirty();
+  }
+
+  function toggleSingle(s, toSingle) {
+    if (toSingle) { s.price = { all: s.price.top ? s.price.top.slice() : s.price.all }; }
+    else { const a = s.price.all || []; s.price = { top: a.slice(), lead: a.slice() }; }
+  }
+
+  function onServiceClick(e) {
+    const b = e.target.closest("[data-act]"); if (!b) return;
+    const act = b.dataset.act;
+    if (act === "add") {
+      const cat = b.dataset.cat;
+      state.services.push({ id: "svc-" + Date.now().toString(36), cat, name: "Нова послуга", short: "", durations: [60], price: { top: [0], lead: [0] }, steps: null, product: null, _new: true });
+      markDirty(); renderServices();
+      const cards = document.querySelectorAll(".card.new"); const last = cards[cards.length - 1];
+      if (last) { last.scrollIntoView({ behavior: "smooth", block: "center" }); const inp = last.querySelector('[data-f=name]'); if (inp) { inp.focus(); inp.select(); } }
+      return;
+    }
+    const card = b.closest(".card[data-id]"); if (!card) return;
+    const idx = state.services.findIndex((x) => x.id === card.dataset.id), s = state.services[idx];
+    if (act === "delete") {
+      if (confirm("Видалити послугу «" + s.name + "»? Вона зникне з сайту після збереження.")) { state.services.splice(idx, 1); markDirty(); renderServices(); }
+    } else if (act === "addrow") {
+      const single = tiersOf(s);
+      if (s.durations) s.durations.push((s.durations[s.durations.length - 1] || 30) + 30); else s.durations = [60];
+      if (single) s.price.all.push(s.price.all[s.price.all.length - 1] || 0);
+      else { s.price.top.push(s.price.top[s.price.top.length - 1] || 0); s.price.lead.push(s.price.lead[s.price.lead.length - 1] || 0); }
+      markDirty(); renderServices();
+    } else if (act === "delrow") {
+      const i = parseInt(b.dataset.i, 10);
+      const count = s.durations ? s.durations.length : (tiersOf(s) ? s.price.all.length : s.price.top.length);
+      if (count <= 1) { alert("Має лишитися хоча б один варіант. Щоб прибрати послугу повністю, натисніть «Видалити»."); return; }
+      if (s.durations) s.durations.splice(i, 1);
+      if (s.price.all) s.price.all.splice(i, 1); else { s.price.top.splice(i, 1); s.price.lead.splice(i, 1); }
+      markDirty(); renderServices();
+    }
+  }
+
+  /* ---- салони ---- */
+  function renderStudios() {
+    $("#tab-studios").innerHTML = '<h2>Салони</h2>' + state.studios.map((s) => `<div class="card" data-sid="${s.id}">
+      <div class="grid">
+        <div><label>Назва салону (наприклад, «Оболонь»)</label><input type="text" data-f="short" value="${esc(s.short)}"></div>
+        <div><label>Назва ЖК (необов’язково)</label><input type="text" data-f="complex" value="${esc(s.complex)}"></div>
+        <div><label>Адреса</label><input type="text" data-f="address" value="${esc(s.address)}"></div>
+        <div><label>Як звучить у реченні («на Оболоні»)</label><input type="text" data-f="shortLoc" value="${esc(s.shortLoc)}"></div>
+      </div></div>`).join("") + '<p class="hint">Графік роботи, телефон і посилання на карту поки що змінює той, хто робив сайт.</p>';
+  }
+  function onStudioInput(e) {
+    const el = e.target, card = el.closest("[data-sid]"); if (!card || !el.dataset.f) return;
+    const s = state.studios.find((x) => x.id === card.dataset.sid); s[el.dataset.f] = el.value; markDirty();
+  }
+
+  function render() { renderServices(); renderStudios(); }
+
+  /* ---- перевірка і збереження ---- */
+  function validate() {
+    for (const s of state.services) {
+      if (!s.name.trim()) return "У якійсь послузі порожня назва.";
+      const prices = s.price.all || s.price.top.concat(s.price.lead);
+      if (prices.some((p) => !p)) return "У послузі «" + s.name + "» не вказана ціна (або вона дорівнює 0).";
+      if (s.durations && s.durations.some((d) => !d)) return "У послузі «" + s.name + "» не вказана тривалість.";
+    }
+    for (const s of state.studios) if (!s.short.trim() || !s.address.trim()) return "У салоні має бути назва й адреса.";
+    return null;
+  }
+
+  async function save() {
+    const err = validate(); if (err) { setStatus(err, "err"); return; }
+    $("#saveBtn").disabled = true; setStatus("Зберігаємо…");
+    const out = {
+      studios: state.studios.map((s) => ({ id: s.id, short: s.short.trim(), complex: s.complex.trim(), shortLoc: s.shortLoc.trim(), address: s.address.trim() })),
+      services: state.services.map((s) => { const o = Object.assign({}, s); delete o._new; o.name = o.name.trim(); o.short = (o.short || "").trim(); return o; })
+    };
+    const text = "/* Цей файл змінює адмінка (/admin). Руками не редагуйте. */\nwindow.BS_CONTENT = " + JSON.stringify(out, null, 1).replace(/</g, "\\u003c") + ";\n";
+    try {
+      const r = await fetch(API, { method: "PUT", headers: Object.assign({ "Content-Type": "application/json" }, hdr()),
+        body: JSON.stringify({ message: "Адмінка: оновлено послуги й салони", content: b64enc(text), sha, branch: BRANCH }) });
+      if (r.status === 409 || r.status === 422) { setStatus("Хтось уже змінив дані. Оновіть сторінку й повторіть.", "err"); $("#saveBtn").disabled = false; return; }
+      if (r.status === 401 || r.status === 403 || r.status === 404) { setStatus("Немає права зберігати. Перевірте ключ доступу.", "err"); $("#saveBtn").disabled = false; return; }
+      if (!r.ok) throw new Error(r.status);
+      const j = await r.json(); sha = j.content.sha;
+      state.services.forEach((s) => delete s._new);
+      dirty = false; setStatus("Збережено ✓ Сайт оновиться за 1–3 хвилини", "ok"); renderServices();
+    } catch (e) { setStatus("Не вдалося зберегти (" + e.message + "). Спробуйте ще раз.", "err"); $("#saveBtn").disabled = false; }
+  }
+
+  /* ---- події ---- */
+  $("#tab-services").addEventListener("input", onServiceInput);
+  $("#tab-services").addEventListener("change", onServiceInput);
+  $("#tab-services").addEventListener("click", onServiceClick);
+  $("#tab-studios").addEventListener("input", onStudioInput);
+  document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach((x) => x.setAttribute("aria-pressed", String(x === t)));
+    $("#tab-services").classList.toggle("hidden", t.dataset.tab !== "services");
+    $("#tab-studios").classList.toggle("hidden", t.dataset.tab !== "studios");
+  }));
+  $("#saveBtn").addEventListener("click", save);
+  $("#loginBtn").addEventListener("click", () => { token = $("#token").value.trim(); if (!token) return; store.set(token); $("#loginErr").textContent = ""; init(); });
+  $("#token").addEventListener("keydown", (e) => { if (e.key === "Enter") $("#loginBtn").click(); });
+  $("#logout").addEventListener("click", () => { if (dirty && !confirm("Є незбережені зміни. Все одно вийти?")) return; store.set(null); token = null; location.reload(); });
+  window.addEventListener("beforeunload", (e) => { if (dirty) { e.preventDefault(); e.returnValue = ""; } });
+  init();
+})();
+</script>
+</body>
+</html>

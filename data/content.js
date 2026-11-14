@@ -930,6 +930,22 @@ window.BS_CONTENT = {
    "steps": null,
    "product": null,
    "short": ""
+  },
+  {
+   "id": "svc-mwgvzppn",
+   "cat": "ozdorovchyi",
+   "name": "Нова послуга",
+   "short": "",
+   "durations": [
+    60
+   ],
+   "price": {
+    "all": [
+     1
+    ]
+   },
+   "steps": null,
+   "product": null
   }
  ]
 };
